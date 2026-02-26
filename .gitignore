@@ -1,0 +1,109 @@
+# ─────────────────────────────────────────────────────────────────────────────
+#  .gitignore — Projet Django / Bondoraa
+# ─────────────────────────────────────────────────────────────────────────────
+
+# ── CRITIQUE : Ne jamais committer ───────────────────────────────────────────
+.env
+.env.*
+!.env.example
+
+# ── Python ────────────────────────────────────────────────────────────────────
+__pycache__/
+*.py[cod]
+*$py.class
+*.pyo
+*.pyd
+*.so
+*.egg
+*.egg-info/
+dist/
+build/
+eggs/
+parts/
+var/
+sdist/
+develop-eggs/
+.installed.cfg
+lib/
+lib64/
+wheels/
+pip-wheel-metadata/
+share/python-wheels/
+*.egg-link
+MANIFEST
+
+# ── Environnements virtuels ───────────────────────────────────────────────────
+venv/
+env/
+ENV/
+.venv/
+.env/
+virtualenv/
+.virtualenv/
+
+# ── Django ────────────────────────────────────────────────────────────────────
+*.log
+logs/
+local_settings.py
+db.sqlite3
+db.sqlite3-journal
+
+# Fichiers statiques collectés (générés par collectstatic)
+staticfiles/
+
+# Médias uploadées par les utilisateurs (stocker sur S3 ou volume dédié)
+media/
+
+# Migrations (optionnel — certaines équipes les committent, d'autres non)
+# */migrations/*.py
+# !*/migrations/__init__.py
+
+# ── Certificats & secrets ─────────────────────────────────────────────────────
+*.pem
+*.key
+*.crt
+*.p12
+*.pfx
+
+# ── Éditeurs & IDEs ───────────────────────────────────────────────────────────
+.vscode/
+.idea/
+*.sublime-project
+*.sublime-workspace
+*.swp
+*.swo
+*~
+.DS_Store
+Thumbs.db
+
+# ── Tests & couverture ────────────────────────────────────────────────────────
+.coverage
+.coverage.*
+htmlcov/
+.tox/
+.pytest_cache/
+.cache/
+nosetests.xml
+coverage.xml
+*.cover
+.hypothesis/
+
+# ── Jupyter ───────────────────────────────────────────────────────────────────
+.ipynb_checkpoints
+*.ipynb
+
+# ── Docker (si utilisé) ───────────────────────────────────────────────────────
+# docker-compose.override.yml
+
+# ── Node (si assets frontend) ─────────────────────────────────────────────────
+node_modules/
+npm-debug.log*
+yarn-error.log
+.npm
+.yarn-integrity
+
+# ── Divers ────────────────────────────────────────────────────────────────────
+*.bak
+*.tmp
+*.temp
+.bash_history

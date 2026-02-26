@@ -1,0 +1,1062 @@
+{% load static i18n %}
+<!DOCTYPE html>
+<html lang="{% get_current_language as LANGUAGE_CODE %}">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>{% trans "Demande de crédit" %} – Bondora</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+:root {
+  --green: #99df2b;
+  --green-light: #b5fe4d;
+  --green-dark: #7dbb1c;
+  --blue: #448dbf;
+  --blue-dark: #2d6e9e;
+  --dark: #101828;
+  --gray: #475467;
+  --gray-light: #98a2b3;
+  --border: #d0d5dd;
+  --bg: #f7f7f9;
+  --white: #ffffff;
+  --shadow-sm: 0 1px 3px rgba(16,24,40,.08), 0 1px 2px rgba(16,24,40,.06);
+  --shadow-md: 0 4px 16px rgba(16,24,40,.10), 0 2px 6px rgba(16,24,40,.06);
+  --shadow-card: -5px 10px 5px rgba(16,24,40,.086),5px 5px 5px rgba(16,24,40,.086),0px 5px 5px rgba(16,24,40,.086);
+  --radius: 16px;
+  --radius-sm: 8px;
+}
+
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html{font-size:16px;scroll-behavior:smooth}
+body{font-family:'Plus Jakarta Sans',sans-serif;background:var(--bg);color:var(--dark);min-height:100vh;padding-top:64px}
+
+/* ── NAV ── */
+.nav{position:fixed;top:0;left:0;right:0;z-index:100;background:#fff;border-bottom:1px solid #eee;height:64px;display:flex;align-items:center}
+.nav-inner{max-width:960px;margin:0 auto;padding:0 24px;display:flex;align-items:center;justify-content:space-between;width:100%}
+.nav-logo{font-size:1.5rem;font-weight:800;color:var(--blue);text-decoration:none;letter-spacing:-0.5px}
+.nav-logo span{color:var(--green-dark)}
+.nav-badge{background:var(--green-light);color:var(--dark);font-size:.72rem;font-weight:700;padding:4px 10px;border-radius:20px;letter-spacing:.3px}
+
+/* ── WRAPPER ── */
+.page{max-width:760px;margin:0 auto;padding:32px 16px 64px}
+
+/* ── PROGRESS BAR ── */
+.progress-track{margin-bottom:36px}
+.progress-steps{display:flex;justify-content:space-between;position:relative;margin-bottom:10px}
+.progress-steps::before{content:'';position:absolute;top:18px;left:28px;right:28px;height:2px;background:var(--border);z-index:0}
+.progress-fill{position:absolute;top:18px;left:28px;height:2px;background:linear-gradient(90deg,var(--green-dark),var(--green));z-index:1;transition:width .5s cubic-bezier(.4,0,.2,1)}
+.step-dot{display:flex;flex-direction:column;align-items:center;gap:8px;z-index:2;cursor:default}
+.step-circle{width:36px;height:36px;border-radius:50%;border:2px solid var(--border);background:#fff;display:flex;align-items:center;justify-content:center;font-size:.78rem;font-weight:700;color:var(--gray-light);transition:all .3s ease;position:relative}
+.step-dot.active .step-circle{border-color:var(--blue);background:var(--blue);color:#fff;box-shadow:0 0 0 4px rgba(68,141,191,.15)}
+.step-dot.done .step-circle{border-color:var(--green-dark);background:var(--green-dark);color:#fff}
+.step-dot.done .step-circle::after{content:'✓';font-size:.9rem}
+.step-dot.done .step-circle span{display:none}
+.step-label{font-size:.7rem;font-weight:600;color:var(--gray-light);text-align:center;max-width:70px;line-height:1.2;transition:color .3s}
+.step-dot.active .step-label{color:var(--blue)}
+.step-dot.done .step-label{color:var(--green-dark)}
+
+/* ── CARD ── */
+.form-card{background:#fff;border-radius:var(--radius);box-shadow:var(--shadow-card);overflow:hidden;animation:slideIn .4s cubic-bezier(.4,0,.2,1)}
+@keyframes slideIn{from{opacity:0;transform:translateY(18px)}to{opacity:1;transform:translateY(0)}}
+.card-header{padding:28px 36px 0;border-bottom:0}
+.card-header h2{font-size:1.6rem;font-weight:800;color:var(--dark);margin-bottom:6px;line-height:1.2}
+.card-header p{color:var(--gray);font-size:.92rem;line-height:1.5}
+.card-header .step-badge{display:inline-flex;align-items:center;gap:6px;background:var(--bg);border:1px solid var(--border);border-radius:20px;padding:4px 12px;font-size:.75rem;font-weight:600;color:var(--gray);margin-bottom:14px}
+.card-header .step-badge .dot{width:7px;height:7px;border-radius:50%;background:var(--blue)}
+.card-body{padding:28px 36px 32px}
+
+/* ── STEPS ── */
+.form-step{display:none}
+.form-step.active{display:block;animation:fadeStep .35s ease}
+@keyframes fadeStep{from{opacity:0;transform:translateX(20px)}to{opacity:1;transform:translateX(0)}}
+
+/* ── FORM FIELDS ── */
+.field-grid{display:grid;gap:18px}
+.field-grid.two-cols{grid-template-columns:1fr 1fr}
+@media(max-width:580px){.field-grid.two-cols{grid-template-columns:1fr}}
+.field{display:flex;flex-direction:column;gap:6px}
+.field label{font-size:.82rem;font-weight:600;color:var(--dark);letter-spacing:.1px}
+.field label .req{color:#e53e3e;margin-left:2px}
+.field input,.field select,.field textarea{padding:11px 14px;border:1.5px solid var(--border);border-radius:var(--radius-sm);font-family:'Plus Jakarta Sans',sans-serif;font-size:.92rem;color:var(--dark);background:#fff;transition:border-color .2s,box-shadow .2s;outline:none;width:100%}
+.field input:focus,.field select:focus,.field textarea:focus{border-color:var(--blue);box-shadow:0 0 0 3px rgba(68,141,191,.12)}
+.field input::placeholder{color:#c2c2c2}
+.field select{cursor:pointer;appearance:none;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'%3E%3Cpath fill='%2398a2b3' d='M6 8L1 3h10z'/%3E%3C/svg%3E");background-repeat:no-repeat;background-position:right 14px center}
+.field textarea{resize:vertical;min-height:80px}
+.field-hint{font-size:.75rem;color:var(--gray-light);margin-top:2px}
+.field-error{font-size:.75rem;color:#e53e3e;margin-top:2px;display:none}
+.field.invalid input,.field.invalid select{border-color:#e53e3e;box-shadow:0 0 0 3px rgba(229,62,62,.1)}
+.field.invalid .field-error{display:block}
+.field.valid input,.field.valid select{border-color:var(--green-dark)}
+
+/* ── RADIO CARDS ── */
+.radio-group{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+@media(max-width:480px){.radio-group{grid-template-columns:1fr}}
+.radio-card{position:relative}
+.radio-card input{position:absolute;opacity:0;width:0;height:0}
+.radio-card label{display:flex;align-items:flex-start;gap:12px;padding:14px 16px;border:1.5px solid var(--border);border-radius:var(--radius-sm);cursor:pointer;transition:all .2s;background:#fff}
+.radio-card input:checked+label{border-color:var(--blue);background:rgba(68,141,191,.05);box-shadow:0 0 0 3px rgba(68,141,191,.12)}
+.radio-card label:hover{border-color:var(--blue);background:rgba(68,141,191,.03)}
+.radio-icon{font-size:1.4rem;line-height:1}
+.radio-text strong{display:block;font-size:.88rem;font-weight:700;color:var(--dark)}
+.radio-text span{font-size:.77rem;color:var(--gray-light)}
+
+/* ── SLIDER ── */
+.slider-wrap{padding:8px 0}
+.slider-display{display:flex;justify-content:space-between;align-items:baseline;margin-bottom:10px}
+.slider-value{font-size:1.8rem;font-weight:800;color:var(--dark)}
+.slider-unit{font-size:.9rem;color:var(--gray-light);font-weight:500}
+input[type=range]{-webkit-appearance:none;width:100%;height:6px;border-radius:3px;background:linear-gradient(90deg,var(--blue) var(--pct,50%),var(--border) var(--pct,50%));outline:none;cursor:pointer;border:none}
+input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;width:22px;height:22px;border-radius:50%;background:var(--blue);cursor:pointer;box-shadow:0 2px 8px rgba(68,141,191,.4);border:3px solid #fff;transition:transform .15s}
+input[type=range]::-webkit-slider-thumb:hover{transform:scale(1.15)}
+.slider-labels{display:flex;justify-content:space-between;margin-top:6px}
+.slider-labels span{font-size:.72rem;color:var(--gray-light)}
+
+/* ── UPLOAD ZONE ── */
+.upload-zone{border:2px dashed var(--border);border-radius:var(--radius-sm);padding:28px 20px;text-align:center;cursor:pointer;transition:all .25s;background:#fafafa;position:relative}
+.upload-zone:hover,.upload-zone.drag-over{border-color:var(--blue);background:rgba(68,141,191,.04)}
+.upload-zone input[type=file]{position:absolute;inset:0;opacity:0;cursor:pointer;z-index:2}
+.upload-icon{font-size:2rem;margin-bottom:10px;line-height:1}
+.upload-zone h4{font-size:.9rem;font-weight:700;color:var(--dark);margin-bottom:4px}
+.upload-zone p{font-size:.78rem;color:var(--gray-light)}
+.upload-zone .browse{color:var(--blue);font-weight:600;text-decoration:underline}
+.upload-formats{font-size:.72rem;color:var(--gray-light);margin-top:6px}
+
+.file-list{margin-top:14px;display:flex;flex-direction:column;gap:8px}
+.file-item{display:flex;align-items:center;gap:10px;padding:10px 14px;background:#f0f6ff;border:1px solid #c9dcf0;border-radius:var(--radius-sm);animation:popIn .2s ease}
+@keyframes popIn{from{opacity:0;transform:scale(.95)}to{opacity:1;transform:scale(1)}}
+.file-icon{font-size:1.2rem}
+.file-info{flex:1;min-width:0}
+.file-name{font-size:.82rem;font-weight:600;color:var(--dark);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.file-size{font-size:.72rem;color:var(--gray-light)}
+.file-remove{background:none;border:none;cursor:pointer;color:var(--gray-light);font-size:1rem;padding:4px;border-radius:4px;transition:color .15s}
+.file-remove:hover{color:#e53e3e}
+
+/* ── SUMMARY ── */
+.summary-grid{display:grid;grid-template-columns:1fr 1fr;gap:1px;background:var(--border);border:1px solid var(--border);border-radius:var(--radius-sm);overflow:hidden;margin-bottom:20px}
+@media(max-width:480px){.summary-grid{grid-template-columns:1fr}}
+.summary-item{background:#fff;padding:14px 18px}
+.summary-item .s-label{font-size:.72rem;font-weight:600;color:var(--gray-light);text-transform:uppercase;letter-spacing:.5px;margin-bottom:4px}
+.summary-item .s-value{font-size:.95rem;font-weight:700;color:var(--dark)}
+.summary-item .s-value.highlight{color:var(--blue);font-size:1.1rem}
+
+/* ── SIGNATURE PAD ── */
+.sig-pad-wrap{border:1.5px solid var(--border);border-radius:var(--radius-sm);overflow:hidden;background:#fafafa;position:relative}
+.sig-pad-wrap canvas{display:block;width:100%;touch-action:none}
+.sig-toolbar{display:flex;justify-content:space-between;align-items:center;padding:8px 14px;background:#fff;border-top:1px solid var(--border)}
+.sig-toolbar span{font-size:.78rem;color:var(--gray-light)}
+.sig-clear{background:none;border:1px solid var(--border);border-radius:6px;padding:5px 14px;font-size:.78rem;font-family:inherit;cursor:pointer;color:var(--gray);transition:all .15s}
+.sig-clear:hover{border-color:#e53e3e;color:#e53e3e}
+.sig-placeholder{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;pointer-events:none;font-size:.85rem;color:#ccc;font-style:italic}
+
+/* ── CHECKBOX ── */
+.checkbox-field{display:flex;gap:12px;align-items:flex-start;padding:14px 16px;background:var(--bg);border-radius:var(--radius-sm);border:1.5px solid transparent;transition:border-color .2s}
+.checkbox-field:has(input:checked){border-color:var(--green-dark);background:rgba(125,187,28,.05)}
+.checkbox-field input[type=checkbox]{width:18px;height:18px;min-width:18px;accent-color:var(--green-dark);cursor:pointer;margin-top:1px}
+.checkbox-field label{font-size:.84rem;color:var(--gray);cursor:pointer;line-height:1.5}
+.checkbox-field label a{color:var(--blue);font-weight:600}
+
+/* ── BUTTONS ── */
+.btn-row{display:flex;gap:12px;margin-top:28px;justify-content:space-between}
+.btn-back{background:none;border:1.5px solid var(--border);border-radius:30px;padding:12px 24px;font-family:'Plus Jakarta Sans',sans-serif;font-size:.9rem;font-weight:600;color:var(--gray);cursor:pointer;transition:all .2s;display:flex;align-items:center;gap:8px}
+.btn-back:hover{border-color:var(--gray);color:var(--dark)}
+.btn-back svg{width:16px;height:16px}
+.btn-next{flex:1;background:linear-gradient(135deg,var(--green-dark),var(--green));border:none;border-radius:30px;padding:14px 28px;font-family:'Plus Jakarta Sans',sans-serif;font-size:.95rem;font-weight:800;color:#fff;cursor:pointer;transition:all .25s;display:flex;align-items:center;justify-content:center;gap:10px;box-shadow:0 4px 14px rgba(125,187,28,.35);letter-spacing:.2px}
+.btn-next:hover{transform:translateY(-1px);box-shadow:0 6px 20px rgba(125,187,28,.4)}
+.btn-next:active{transform:translateY(0)}
+.btn-next svg{width:18px;height:18px}
+.btn-next.blue{background:linear-gradient(135deg,var(--blue-dark),var(--blue));box-shadow:0 4px 14px rgba(68,141,191,.35)}
+.btn-next.blue:hover{box-shadow:0 6px 20px rgba(68,141,191,.4)}
+
+/* ── SUCCESS ── */
+.success-screen{display:none;text-align:center;padding:20px 36px 40px;animation:successAnim .5s ease}
+@keyframes successAnim{from{opacity:0;transform:scale(.9)}to{opacity:1;transform:scale(1)}}
+@keyframes fadeIn{from{opacity:0}to{opacity:1}}
+.success-screen.show{display:block}
+.success-icon{width:80px;height:80px;background:linear-gradient(135deg,var(--green-dark),var(--green));border-radius:50%;display:flex;align-items:center;justify-content:center;margin:0 auto 20px;font-size:2.2rem;box-shadow:0 8px 24px rgba(125,187,28,.35)}
+.success-screen h2{font-size:1.8rem;font-weight:800;color:var(--dark);margin-bottom:10px}
+.success-screen p{color:var(--gray);font-size:.95rem;line-height:1.6;margin-bottom:24px;max-width:400px;margin-left:auto;margin-right:auto}
+.success-ref{background:var(--bg);border:1px solid var(--border);border-radius:var(--radius-sm);padding:14px 20px;display:inline-block;font-size:.85rem;color:var(--gray)}
+.success-ref strong{color:var(--blue);font-size:1rem}
+.success-actions{display:flex;gap:12px;justify-content:center;margin-top:24px;flex-wrap:wrap}
+.success-actions a{padding:11px 22px;border-radius:24px;font-weight:700;font-size:.88rem;text-decoration:none;transition:all .2s}
+.success-actions .btn-primary-a{background:var(--blue);color:#fff}
+.success-actions .btn-primary-a:hover{background:var(--blue-dark)}
+.success-actions .btn-secondary-a{border:2px solid var(--border);color:var(--gray)}
+.success-actions .btn-secondary-a:hover{border-color:var(--gray)}
+
+/* ── DIVIDER ── */
+.section-divider{display:flex;align-items:center;gap:12px;margin:22px 0 18px;color:var(--gray-light);font-size:.78rem;font-weight:600;text-transform:uppercase;letter-spacing:.5px}
+.section-divider::before,.section-divider::after{content:'';flex:1;height:1px;background:var(--border)}
+
+/* ── INFO BOX ── */
+.info-box{background:#f0f6ff;border:1px solid #c9dcf0;border-radius:var(--radius-sm);padding:12px 16px;display:flex;gap:10px;font-size:.82rem;color:#2d6e9e;line-height:1.5;margin-bottom:4px}
+.info-box .info-icon{font-size:1rem;flex-shrink:0;margin-top:1px}
+
+/* ── MONTHLY ESTIMATE ── */
+.estimate-bar{background:linear-gradient(135deg,#e8f4fc,#f0fbea);border:1px solid #c5e0f5;border-radius:var(--radius-sm);padding:16px 20px;display:flex;justify-content:space-between;align-items:center;margin-bottom:20px}
+.estimate-bar .est-label{font-size:.82rem;color:var(--gray);font-weight:500}
+.estimate-bar .est-amount{font-size:1.4rem;font-weight:800;color:var(--dark)}
+.estimate-bar .est-sub{font-size:.72rem;color:var(--gray-light)}
+
+/* ── MOBILE ── */
+@media(max-width:640px){
+  .card-header,.card-body{padding-left:20px;padding-right:20px}
+  .card-header h2{font-size:1.3rem}
+  .btn-row{flex-wrap:wrap}
+  .btn-back{width:100%;justify-content:center}
+  .summary-grid{grid-template-columns:1fr}
+}
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav class="nav">
+  <div class="nav-inner">
+    <a href="{% url 'home' %}" class="nav-logo">Bon<span>dora</span></a>
+    <div style="display:flex;align-items:center;gap:1rem;">
+      <a href="{% url 'home' %}" style="font-size:.9rem;font-weight:600;color:var(--gray);text-decoration:none;">{% trans "Accueil" %}</a>
+      <form method="post" action="{% url 'logout' %}" style="display:inline;">{% csrf_token %}<button type="submit" style="background:none;border:none;cursor:pointer;font-size:.9rem;font-weight:600;color:var(--blue);font-family:inherit;">{% trans "Déconnexion" %}</button></form>
+      <span class="nav-badge">🔒 {% trans "Connexion sécurisée SSL" %}</span>
+    </div>
+  </div>
+</nav>
+
+<div class="page">
+
+  <!-- PROGRESS -->
+  <div class="progress-track">
+    <div class="progress-steps" id="progressSteps">
+      <div class="step-dot active" data-step="1">
+        <div class="step-circle"><span>1</span></div>
+        <div class="step-label">{% trans "Votre prêt" %}</div>
+      </div>
+      <div class="step-dot" data-step="2">
+        <div class="step-circle"><span>2</span></div>
+        <div class="step-label">{% trans "Informations personnelles" %}</div>
+      </div>
+      <div class="step-dot" data-step="3">
+        <div class="step-circle"><span>3</span></div>
+        <div class="step-label">{% trans "Situation financière" %}</div>
+      </div>
+      <div class="step-dot" data-step="4">
+        <div class="step-circle"><span>4</span></div>
+        <div class="step-label">{% trans "Documents" %}</div>
+      </div>
+      <div class="step-dot" data-step="5">
+        <div class="step-circle"><span>5</span></div>
+        <div class="step-label">{% trans "Signature" %}</div>
+      </div>
+    </div>
+    <div class="progress-fill" id="progressFill" style="width:0%"></div>
+  </div>
+
+  <!-- CARD -->
+  <div class="form-card">
+    <div class="card-header" id="cardHeader">
+      <div class="step-badge"><span class="dot"></span><span id="stepBadgeText">{% trans "Étape 1 sur 5" %}</span></div>
+      <h2 id="cardTitle">{% trans "Configurer votre prêt" %}</h2>
+      <p id="cardDesc">{% trans "Choisissez le montant et la durée de votre prêt selon vos besoins." %}</p>
+    </div>
+
+    <div class="card-body">
+      <input type="hidden" name="csrfmiddlewaretoken" id="csrfToken" value="{{ csrf_token }}">
+
+      <!-- ── ÉTAPE 1 : LE PRÊT ── -->
+      <div class="form-step active" id="step1">
+
+        <div class="field-grid" style="gap:24px">
+          <div class="field">
+            <label>{% trans "Montant du prêt souhaité" %}</label>
+            <div class="slider-wrap">
+              <div class="slider-display">
+                <span class="slider-value" id="montantVal">4 000 €</span>
+                <span class="slider-unit">{% trans "de 100 € à 20 000 €" %}</span>
+              </div>
+              <input type="range" id="sliderMontant" min="100" max="20000" step="100" value="4000" style="--pct:19.9%">
+              <div class="slider-labels"><span>100 €</span><span>20 000 €</span></div>
+            </div>
+          </div>
+
+          <div class="field">
+            <label>{% trans "Durée de remboursement" %}</label>
+            <div class="slider-wrap">
+              <div class="slider-display">
+                <span class="slider-value" id="dureeVal">60 mois</span>
+                <span class="slider-unit">{% trans "de 6 à 120 mois" %}</span>
+              </div>
+              <input type="range" id="sliderDuree" min="6" max="120" step="6" value="60" style="--pct:47.4%">
+              <div class="slider-labels"><span>6 mois</span><span>120 mois</span></div>
+            </div>
+          </div>
+        </div>
+
+        <div style="margin-top:24px">
+          <div class="estimate-bar">
+            <div>
+              <div class="est-label">{% trans "Mensualité estimée à partir de" %}</div>
+              <div class="est-amount" id="mensualiteVal">— €/mois</div>
+              <div class="est-sub">{% trans "TAEG indicatif 17,71%" %}</div>
+            </div>
+            <div style="text-align:right">
+              <div class="est-label">{% trans "Coût total estimé" %}</div>
+              <div class="est-amount" id="coutTotalVal">— €</div>
+              <div class="est-sub">{% trans "Intérêts + capital" %}</div>
+            </div>
+          </div>
+          <div class="info-box">
+            <span class="info-icon">ℹ️</span>
+            <span>{% trans "Le taux final dépendra de votre profil. Ceci est une estimation indicative. Aucun engagement à cette étape." %}</span>
+          </div>
+        </div>
+
+        <div class="btn-row">
+          <button class="btn-next" onclick="nextStep()">
+            {% trans "Continuer" %}
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+          </button>
+        </div>
+      </div>
+
+      <!-- ── ÉTAPE 2 : INFOS PERSONNELLES ── -->
+      <div class="form-step" id="step2">
+
+        <div class="field-grid two-cols">
+          <div class="field" id="f-prenom">
+            <label>{% trans "Prénom" %} <span class="req">*</span></label>
+            <input type="text" id="prenom" placeholder="{% trans 'ex : Marie' %}" autocomplete="given-name">
+            <span class="field-error">{% trans "Veuillez saisir votre prénom" %}</span>
+          </div>
+          <div class="field" id="f-nom">
+            <label>{% trans "Nom de famille" %} <span class="req">*</span></label>
+            <input type="text" id="nom" placeholder="{% trans 'ex : Dupont' %}" autocomplete="family-name">
+            <span class="field-error">{% trans "Veuillez saisir votre nom" %}</span>
+          </div>
+        </div>
+
+        <div class="field-grid two-cols" style="margin-top:18px">
+          <div class="field" id="f-naissance">
+            <label>{% trans "Date de naissance" %} <span class="req">*</span></label>
+            <input type="date" id="naissance" autocomplete="bday" max="2006-01-01">
+            <span class="field-error">{% trans "Vous devez avoir au moins 18 ans" %}</span>
+          </div>
+          <div class="field" id="f-nationalite">
+            <label>{% trans "Nationalité" %} <span class="req">*</span></label>
+            <select id="nationalite">
+              <option value="">{% trans "Sélectionnez…" %}</option>
+              <option>Française</option>
+              <option>Belge</option>
+              <option>Suisse</option>
+              <option>Estonienne</option>
+              <option>Autre</option>
+            </select>
+            <span class="field-error">{% trans "Veuillez sélectionner votre nationalité" %}</span>
+          </div>
+        </div>
+
+        <div class="section-divider">{% trans "Coordonnées" %}</div>
+
+        <div class="field-grid" style="gap:18px">
+          <div class="field" id="f-email">
+            <label>{% trans "Adresse e-mail" %} <span class="req">*</span></label>
+            <input type="email" id="email" placeholder="marie.dupont@exemple.fr" autocomplete="email">
+            <span class="field-error">{% trans "Veuillez saisir une adresse e-mail valide" %}</span>
+          </div>
+          <div class="field-grid two-cols">
+            <div class="field" id="f-tel">
+              <label>{% trans "Téléphone" %} <span class="req">*</span></label>
+              <input type="tel" id="tel" placeholder="+33 6 12 34 56 78" autocomplete="tel">
+              <span class="field-error">{% trans "Numéro de téléphone requis" %}</span>
+            </div>
+            <div class="field">
+              <label>{% trans "Code postal" %}</label>
+              <input type="text" id="codePostal" placeholder="75001" maxlength="10">
+            </div>
+          </div>
+          <div class="field">
+            <label>{% trans "Adresse complète" %}</label>
+            <input type="text" id="adresse" placeholder="12 rue de la Paix, Paris" autocomplete="street-address">
+          </div>
+        </div>
+
+        <div class="section-divider">{% trans "Situation personnelle" %}</div>
+
+        <div class="field">
+          <label>{% trans "Situation familiale" %} <span class="req">*</span></label>
+          <div class="radio-group" style="grid-template-columns:repeat(3,1fr)">
+            <div class="radio-card">
+              <input type="radio" name="famille" id="cel" value="celibataire">
+              <label for="cel"><span class="radio-icon">👤</span><div class="radio-text"><strong>{% trans "Célibataire" %}</strong></div></label>
+            </div>
+            <div class="radio-card">
+              <input type="radio" name="famille" id="mar" value="marie">
+              <label for="mar"><span class="radio-icon">💍</span><div class="radio-text"><strong>{% trans "Marié(e)" %}</strong></div></label>
+            </div>
+            <div class="radio-card">
+              <input type="radio" name="famille" id="div" value="divorce">
+              <label for="div"><span class="radio-icon">📋</span><div class="radio-text"><strong>{% trans "Divorcé(e)" %}</strong></div></label>
+            </div>
+          </div>
+        </div>
+
+        <div class="btn-row">
+          <button class="btn-back" onclick="prevStep()">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M19 12H5M12 5l-7 7 7 7"/></svg>
+            {% trans "Retour" %}
+          </button>
+          <button class="btn-next" onclick="validateAndNext(2)">
+            {% trans "Continuer" %}
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+          </button>
+        </div>
+      </div>
+
+      <!-- ── ÉTAPE 3 : FINANCES ── -->
+      <div class="form-step" id="step3">
+
+        <div class="field">
+          <label>{% trans "Situation professionnelle" %} <span class="req">*</span></label>
+          <div class="radio-group">
+            <div class="radio-card">
+              <input type="radio" name="emploi" id="cdi" value="cdi">
+              <label for="cdi"><span class="radio-icon">💼</span><div class="radio-text"><strong>CDI</strong><span>{% trans "Contrat à durée indéterminée" %}</span></div></label>
+            </div>
+            <div class="radio-card">
+              <input type="radio" name="emploi" id="cdd" value="cdd">
+              <label for="cdd"><span class="radio-icon">📄</span><div class="radio-text"><strong>CDD</strong><span>{% trans "Contrat à durée déterminée" %}</span></div></label>
+            </div>
+            <div class="radio-card">
+              <input type="radio" name="emploi" id="ind" value="independant">
+              <label for="ind"><span class="radio-icon">🏢</span><div class="radio-text"><strong>{% trans "Indépendant" %}</strong><span>{% trans "Travailleur autonome" %}</span></div></label>
+            </div>
+            <div class="radio-card">
+              <input type="radio" name="emploi" id="ret" value="retraite">
+              <label for="ret"><span class="radio-icon">🏖️</span><div class="radio-text"><strong>{% trans "Retraité(e)" %}</strong><span>{% trans "Pension de retraite" %}</span></div></label>
+            </div>
+            <div class="radio-card">
+              <input type="radio" name="emploi" id="che" value="chomage">
+              <label for="che"><span class="radio-icon">🔍</span><div class="radio-text"><strong>{% trans "Sans emploi" %}</strong><span>{% trans "En recherche d'emploi" %}</span></div></label>
+            </div>
+            <div class="radio-card">
+              <input type="radio" name="emploi" id="aut" value="autre">
+              <label for="aut"><span class="radio-icon">📊</span><div class="radio-text"><strong>{% trans "Autre" %}</strong><span>{% trans "Autre situation" %}</span></div></label>
+            </div>
+          </div>
+        </div>
+
+        <div class="section-divider">{% trans "Revenus & charges" %}</div>
+
+        <div class="field-grid two-cols" style="margin-top:4px">
+          <div class="field" id="f-revenus">
+            <label>{% trans "Revenu net mensuel (€)" %} <span class="req">*</span></label>
+            <input type="number" id="revenus" placeholder="ex : 2500" min="0" step="50">
+            <span class="field-hint">{% trans "Salaires, pensions, revenus locatifs…" %}</span>
+            <span class="field-error">{% trans "Veuillez saisir vos revenus" %}</span>
+          </div>
+          <div class="field">
+            <label>{% trans "Autres revenus mensuels (€)" %}</label>
+            <input type="number" id="autresRevenus" placeholder="0" min="0" step="50">
+            <span class="field-hint">{% trans "Allocations, aides sociales…" %}</span>
+          </div>
+        </div>
+
+        <div class="field-grid two-cols" style="margin-top:4px">
+          <div class="field">
+            <label>{% trans "Charges mensuelles (€)" %}</label>
+            <input type="number" id="charges" placeholder="ex : 800" min="0" step="50">
+            <span class="field-hint">{% trans "Loyer, crédits en cours…" %}</span>
+          </div>
+          <div class="field">
+            <label>{% trans "Situation de logement" %}</label>
+            <select id="logement" name="logement">
+              <option value="">{% trans "Sélectionnez…" %}</option>
+              <option value="proprio_sans">{% trans "Propriétaire sans crédit" %}</option>
+              <option value="proprio_avec">{% trans "Propriétaire avec crédit" %}</option>
+              <option value="locataire">{% trans "Locataire" %}</option>
+              <option value="heberge">{% trans "Hébergé à titre gratuit" %}</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="field" style="margin-top:18px">
+          <label>{% trans "Motif de la demande de prêt" %}</label>
+          <div class="radio-group" style="grid-template-columns:repeat(3,1fr)">
+            <div class="radio-card"><input type="radio" name="motif" id="m1" value="travaux"><label for="m1"><span class="radio-icon">🏠</span><div class="radio-text"><strong>{% trans "Travaux" %}</strong></div></label></div>
+            <div class="radio-card"><input type="radio" name="motif" id="m2" value="auto"><label for="m2"><span class="radio-icon">🚗</span><div class="radio-text"><strong>{% trans "Automobile" %}</strong></div></label></div>
+            <div class="radio-card"><input type="radio" name="motif" id="m3" value="sante"><label for="m3"><span class="radio-icon">🏥</span><div class="radio-text"><strong>{% trans "Santé" %}</strong></div></label></div>
+            <div class="radio-card"><input type="radio" name="motif" id="m4" value="vacances"><label for="m4"><span class="radio-icon">✈️</span><div class="radio-text"><strong>{% trans "Vacances" %}</strong></div></label></div>
+            <div class="radio-card"><input type="radio" name="motif" id="m5" value="rachat"><label for="m5"><span class="radio-icon">🔄</span><div class="radio-text"><strong>{% trans "Rachat crédit" %}</strong></div></label></div>
+            <div class="radio-card"><input type="radio" name="motif" id="m6" value="autre-motif"><label for="m6"><span class="radio-icon">💡</span><div class="radio-text"><strong>{% trans "Autre" %}</strong></div></label></div>
+          </div>
+        </div>
+
+        <div class="btn-row">
+          <button class="btn-back" onclick="prevStep()">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M19 12H5M12 5l-7 7 7 7"/></svg>
+            {% trans "Retour" %}
+          </button>
+          <button class="btn-next" onclick="validateAndNext(3)">
+            {% trans "Continuer" %}
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+          </button>
+        </div>
+      </div>
+
+      <!-- ── ÉTAPE 4 : DOCUMENTS ── -->
+      <div class="form-step" id="step4">
+
+        <div class="info-box" style="margin-bottom:20px">
+          <span class="info-icon">ℹ️</span>
+          <span>{% trans "Tous vos documents sont chiffrés et sécurisés. Ils seront utilisés uniquement pour l'étude de votre dossier." %}</span>
+        </div>
+
+        <!-- Pièce d'identité -->
+        <div class="field" style="margin-bottom:20px">
+          <label>{% trans "Pièce d'identité" %} <span class="req">*</span></label>
+          <div style="display:flex;gap:12px;margin-bottom:12px">
+            <div class="radio-card" style="flex:1"><input type="radio" name="type_id" id="cni" value="cni" checked><label for="cni"><span class="radio-icon">🪪</span><div class="radio-text"><strong>{% trans "Carte nationale d'identité" %}</strong></div></label></div>
+            <div class="radio-card" style="flex:1"><input type="radio" name="type_id" id="pass" value="passeport"><label for="pass"><span class="radio-icon">📗</span><div class="radio-text"><strong>{% trans "Passeport" %}</strong></div></label></div>
+            <div class="radio-card" style="flex:1"><input type="radio" name="type_id" id="sejour" value="titre"><label for="sejour"><span class="radio-icon">📋</span><div class="radio-text"><strong>{% trans "Titre de séjour" %}</strong></div></label></div>
+          </div>
+          <div class="field-grid two-cols">
+            <div>
+              <div style="font-size:.78rem;font-weight:600;color:var(--gray);margin-bottom:6px">{% trans "Recto" %}</div>
+              <div class="upload-zone" id="zone-id-recto" ondragover="dragOver(event,this)" ondragleave="dragLeave(this)" ondrop="dropFile(event,this,'id-recto')">
+                <input type="file" accept="image/*,.pdf" onchange="handleFile(event,'id-recto')">
+                <div class="upload-icon">📄</div>
+                <h4>{% trans "Déposez ou" %} <span class="browse">{% trans "parcourez" %}</span></h4>
+                <p class="upload-formats">JPG, PNG, PDF — max 5 Mo</p>
+              </div>
+              <div class="file-list" id="list-id-recto"></div>
+            </div>
+            <div>
+              <div style="font-size:.78rem;font-weight:600;color:var(--gray);margin-bottom:6px">{% trans "Verso" %}</div>
+              <div class="upload-zone" id="zone-id-verso" ondragover="dragOver(event,this)" ondragleave="dragLeave(this)" ondrop="dropFile(event,this,'id-verso')">
+                <input type="file" accept="image/*,.pdf" onchange="handleFile(event,'id-verso')">
+                <div class="upload-icon">📄</div>
+                <h4>{% trans "Déposez ou" %} <span class="browse">{% trans "parcourez" %}</span></h4>
+                <p class="upload-formats">JPG, PNG, PDF — max 5 Mo</p>
+              </div>
+              <div class="file-list" id="list-id-verso"></div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Justificatif revenus -->
+        <div class="field" style="margin-bottom:20px">
+          <label>{% trans "Justificatif de revenus" %} <span class="req">*</span></label>
+          <div style="font-size:.82rem;color:var(--gray);margin-bottom:10px">{% trans "3 derniers bulletins de salaire, avis d'imposition ou relevé de pension" %}</div>
+          <div class="upload-zone" id="zone-rev" ondragover="dragOver(event,this)" ondragleave="dragLeave(this)" ondrop="dropFile(event,this,'revenus')">
+            <input type="file" accept="image/*,.pdf" multiple onchange="handleFile(event,'revenus')">
+            <div class="upload-icon">💰</div>
+            <h4>{% trans "Déposez vos justificatifs ou" %} <span class="browse">{% trans "parcourez" %}</span></h4>
+            <p>{% trans "Plusieurs fichiers acceptés" %}</p>
+            <p class="upload-formats">JPG, PNG, PDF — max 5 Mo par fichier</p>
+          </div>
+          <div class="file-list" id="list-revenus"></div>
+        </div>
+
+        <!-- Justificatif domicile -->
+        <div class="field">
+          <label>{% trans "Justificatif de domicile" %}</label>
+          <div style="font-size:.82rem;color:var(--gray);margin-bottom:10px">{% trans "Facture EDF, eau, téléphone ou quittance de loyer (moins de 3 mois)" %}</div>
+          <div class="upload-zone" id="zone-dom" ondragover="dragOver(event,this)" ondragleave="dragLeave(this)" ondrop="dropFile(event,this,'domicile')">
+            <input type="file" accept="image/*,.pdf" onchange="handleFile(event,'domicile')">
+            <div class="upload-icon">🏠</div>
+            <h4>{% trans "Déposez ou" %} <span class="browse">{% trans "parcourez" %}</span></h4>
+            <p class="upload-formats">JPG, PNG, PDF — max 5 Mo</p>
+          </div>
+          <div class="file-list" id="list-domicile"></div>
+        </div>
+
+        <div class="btn-row">
+          <button class="btn-back" onclick="prevStep()">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M19 12H5M12 5l-7 7 7 7"/></svg>
+            {% trans "Retour" %}
+          </button>
+          <button class="btn-next" onclick="validateAndNext(4)">
+            {% trans "Continuer" %}
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+          </button>
+        </div>
+      </div>
+
+      <!-- ── ÉTAPE 5 : RÉCAP + SIGNATURE ── -->
+      <div class="form-step" id="step5">
+
+        <div style="font-size:.85rem;font-weight:700;color:var(--gray);text-transform:uppercase;letter-spacing:.5px;margin-bottom:14px">{% trans "Récapitulatif de votre demande" %}</div>
+        <div class="summary-grid" id="summaryGrid">
+          <div class="summary-item"><div class="s-label">{% trans "Montant demandé" %}</div><div class="s-value highlight" id="sum-montant">—</div></div>
+          <div class="summary-item"><div class="s-label">{% trans "Durée" %}</div><div class="s-value" id="sum-duree">—</div></div>
+          <div class="summary-item"><div class="s-label">{% trans "Mensualité estimée" %}</div><div class="s-value" id="sum-mensualite">—</div></div>
+          <div class="summary-item"><div class="s-label">{% trans "Nom complet" %}</div><div class="s-value" id="sum-nom">—</div></div>
+          <div class="summary-item"><div class="s-label">{% trans "E-mail" %}</div><div class="s-value" id="sum-email">—</div></div>
+          <div class="summary-item"><div class="s-label">{% trans "Téléphone" %}</div><div class="s-value" id="sum-tel">—</div></div>
+          <div class="summary-item"><div class="s-label">{% trans "Revenus nets" %}</div><div class="s-value" id="sum-revenus">—</div></div>
+          <div class="summary-item"><div class="s-label">{% trans "Situation" %}</div><div class="s-value" id="sum-emploi">—</div></div>
+        </div>
+
+        <div class="section-divider">{% trans "Signature électronique" %}</div>
+
+        <div class="field">
+          <label>{% trans "Signez dans le cadre ci-dessous" %} <span class="req">*</span></label>
+          <div class="sig-pad-wrap">
+            <canvas id="sigCanvas" height="130"></canvas>
+            <div class="sig-placeholder" id="sigPlaceholder">{% trans "Signez ici avec votre doigt ou votre souris" %}</div>
+            <div class="sig-toolbar">
+              <span>{% trans "Signez pour confirmer votre demande" %}</span>
+              <button class="sig-clear" onclick="clearSig()">{% trans "Effacer" %}</button>
+            </div>
+          </div>
+        </div>
+
+        <div class="section-divider" style="margin-top:22px">{% trans "Consentements" %}</div>
+
+        <div style="display:flex;flex-direction:column;gap:10px;margin-bottom:8px">
+          <div class="checkbox-field">
+            <input type="checkbox" id="cgu" required>
+            <label for="cgu">{% blocktrans %}J'accepte les <a href="#">Conditions Générales d'Utilisation</a> et la <a href="#">Politique de confidentialité</a> de Bondora.{% endblocktrans %} <span style="color:#e53e3e">*</span></label>
+          </div>
+          <div class="checkbox-field">
+            <input type="checkbox" id="exacts">
+            <label for="exacts">{% trans "Je certifie que toutes les informations fournies sont exactes et sincères." %} <span style="color:#e53e3e">*</span></label>
+          </div>
+          <div class="checkbox-field">
+            <input type="checkbox" id="marketing">
+            <label for="marketing">{% trans "J'accepte de recevoir des offres personnalisées et communications marketing de Bondora. (Optionnel)" %}</label>
+          </div>
+        </div>
+
+        <div class="btn-row">
+          <button class="btn-back" onclick="prevStep()">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M19 12H5M12 5l-7 7 7 7"/></svg>
+            {% trans "Retour" %}
+          </button>
+          <button class="btn-next blue" onclick="submitForm()">
+            {% trans "Soumettre ma demande" %}
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+          </button>
+        </div>
+      </div>
+
+      <!-- ── SUCCÈS ── -->
+      <div class="success-screen" id="successScreen">
+        <div class="success-icon">✅</div>
+        <h2>{% trans "Demande envoyée !" %}</h2>
+        <p>{% blocktrans %}Votre dossier a été transmis avec succès. Notre équipe va analyser votre demande et vous contactera dans les <strong>24 à 48 heures</strong> ouvrables.{% endblocktrans %}</p>
+        <div class="success-ref">
+          {% trans "Référence de votre dossier :" %} <strong id="refDossier">BD-2026-XXXXX</strong>
+        </div>
+        <div class="success-actions">
+          <a href="{% url 'demande' %}" class="btn-primary-a">{% trans "Suivre mon dossier" %}</a>
+          <a href="{% url 'home' %}" class="btn-secondary-a">{% trans "Retour à l'accueil" %}</a>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+<script>
+// ── I18N (injecté depuis Django) ──
+window.I18N = {
+  msgSituationFamille: "{% trans 'Veuillez sélectionner votre situation familiale.' %}",
+  msgSituationPro: "{% trans 'Veuillez sélectionner votre situation professionnelle.' %}",
+  msgDocuments: "{% trans 'Veuillez télécharger les documents obligatoires.' %}",
+  msgCorriger: "{% trans 'Veuillez corriger les champs en rouge.' %}",
+  msgCgu: "{% trans 'Veuillez accepter les conditions obligatoires.' %}",
+  msgSigner: "{% trans 'Veuillez signer votre demande.' %}",
+  msgEnvoi: "{% trans 'Envoi en cours…' %}",
+  msgErreur: "{% trans 'Une erreur est survenue.' %}",
+  msgConnexion: "{% trans 'Erreur de connexion. Réessayez.' %}",
+  etapeSur: "{% trans 'Étape' %}",
+  sur: "{% trans 'sur' %}"
+};
+
+// ── STATE ──
+let currentStep = 1;
+const TOTAL_STEPS = 5;
+const uploadedFiles = {};
+
+// ── STEP META ──
+const stepsMeta = [
+  {title:"{% trans 'Configurer votre prêt' %}", desc:"{% trans 'Choisissez le montant et la durée selon vos besoins.' %}"},
+  {title:"{% trans 'Informations personnelles' %}", desc:"{% trans 'Renseignez vos coordonnées et votre situation personnelle.' %}"},
+  {title:"{% trans 'Situation financière' %}", desc:"{% trans 'Partagez vos informations professionnelles et financières.' %}"},
+  {title:"{% trans 'Pièces justificatives' %}", desc:"{% trans 'Téléchargez vos documents pour constituer votre dossier.' %}"},
+  {title:"{% trans 'Récapitulatif & Signature' %}", desc:"{% trans 'Vérifiez vos informations et signez électroniquement.' %}"}
+];
+
+// ── SLIDERS ──
+const sliderMontant = document.getElementById('sliderMontant');
+const sliderDuree = document.getElementById('sliderDuree');
+
+function updateSlider(slider, displayId, suffix, decimals) {
+  const min = +slider.min, max = +slider.max, val = +slider.value;
+  const pct = ((val - min) / (max - min)) * 100;
+  slider.style.setProperty('--pct', pct + '%');
+  const formatted = decimals === 0 ? val.toLocaleString('fr-FR') : val.toLocaleString('fr-FR', {minimumFractionDigits:0});
+  document.getElementById(displayId).textContent = formatted + suffix;
+  updateEstimate();
+}
+
+function updateEstimate() {
+  const montant = +sliderMontant.value;
+  const duree = +sliderDuree.value;
+  const taeg = 17.71;
+  const taux = Math.pow(1 + taeg / 100, 1/12) - 1;
+  const mensualite = montant * taux / (1 - Math.pow(1 + taux, -duree));
+  const total = mensualite * duree;
+  document.getElementById('mensualiteVal').textContent = mensualite.toLocaleString('fr-FR', {minimumFractionDigits:2, maximumFractionDigits:2}) + ' €/mois';
+  document.getElementById('coutTotalVal').textContent = total.toLocaleString('fr-FR', {minimumFractionDigits:2, maximumFractionDigits:2}) + ' €';
+}
+
+sliderMontant.addEventListener('input', () => updateSlider(sliderMontant, 'montantVal', ' €', 0));
+sliderDuree.addEventListener('input', () => updateSlider(sliderDuree, 'dureeVal', ' mois', 0));
+updateSlider(sliderMontant, 'montantVal', ' €', 0);
+updateSlider(sliderDuree, 'dureeVal', ' mois', 0);
+
+// ── NAVIGATION ──
+function nextStep() {
+  if (currentStep < TOTAL_STEPS) {
+    setStep(currentStep + 1);
+  }
+}
+
+function prevStep() {
+  if (currentStep > 1) {
+    setStep(currentStep - 1);
+  }
+}
+
+function setStep(n) {
+  document.getElementById('step' + currentStep).classList.remove('active');
+  const prevDot = document.querySelector('[data-step="' + currentStep + '"]');
+  if (currentStep < n) {
+    prevDot.classList.remove('active');
+    prevDot.classList.add('done');
+  } else {
+    prevDot.classList.remove('done', 'active');
+  }
+
+  currentStep = n;
+
+  const newStep = document.getElementById('step' + currentStep);
+  newStep.classList.add('active');
+  const newDot = document.querySelector('[data-step="' + currentStep + '"]');
+  newDot.classList.remove('done');
+  newDot.classList.add('active');
+
+  const meta = stepsMeta[currentStep - 1];
+  document.getElementById('cardTitle').textContent = meta.title;
+  document.getElementById('cardDesc').textContent = meta.desc;
+  var i18n = window.I18N || {};
+  document.getElementById('stepBadgeText').textContent = (i18n.etapeSur || 'Étape') + ' ' + currentStep + ' ' + (i18n.sur || 'sur') + ' ' + TOTAL_STEPS;
+
+  const pct = ((currentStep - 1) / (TOTAL_STEPS - 1)) * 100;
+  document.getElementById('progressFill').style.width = pct + '%';
+
+  window.scrollTo({top: 0, behavior: 'smooth'});
+
+  if (currentStep === 5) buildSummary();
+}
+
+// ── VALIDATION ──
+function validateAndNext(step) {
+  const errors = [];
+
+  if (step === 2) {
+    validate('prenom', v => v.trim().length > 1, 'f-prenom') || errors.push(1);
+    validate('nom', v => v.trim().length > 1, 'f-nom') || errors.push(1);
+    validate('naissance', v => {
+      if (!v) return false;
+      const d = new Date(v); const now = new Date();
+      return (now - d) / (365.25 * 24 * 3600 * 1000) >= 18;
+    }, 'f-naissance') || errors.push(1);
+    validate('nationalite', v => v !== '', 'f-nationalite') || errors.push(1);
+    validate('email', v => /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(v), 'f-email') || errors.push(1);
+    validate('tel', v => v.trim().length >= 8, 'f-tel') || errors.push(1);
+    const familleEl = document.querySelector('input[name="famille"]:checked');
+    if (!familleEl) {
+      showToast('⚠️ ' + (window.I18N && window.I18N.msgSituationFamille || 'Veuillez sélectionner votre situation familiale.'));
+      errors.push(1);
+    }
+  }
+
+  if (step === 3) {
+    const rev = document.getElementById('revenus').value;
+    if (!rev || +rev <= 0) {
+      document.getElementById('f-revenus').classList.add('invalid');
+      errors.push(1);
+    } else {
+      document.getElementById('f-revenus').classList.remove('invalid');
+      document.getElementById('f-revenus').classList.add('valid');
+    }
+    const emploiEl = document.querySelector('input[name="emploi"]:checked');
+    if (!emploiEl) {
+      showToast('⚠️ ' + (window.I18N && window.I18N.msgSituationPro || 'Veuillez sélectionner votre situation professionnelle.'));
+      errors.push(1);
+    }
+  }
+
+  if (step === 4) {
+    if (!uploadedFiles['id-recto'] || uploadedFiles['id-recto'].length === 0) {
+      document.getElementById('zone-id-recto').style.borderColor = '#e53e3e';
+      errors.push(1);
+    }
+    if (!uploadedFiles['revenus'] || uploadedFiles['revenus'].length === 0) {
+      document.getElementById('zone-rev').style.borderColor = '#e53e3e';
+      errors.push(1);
+    }
+    if (errors.length) {
+      showToast('⚠️ ' + (window.I18N && window.I18N.msgDocuments || 'Veuillez télécharger les documents obligatoires.'));
+      return;
+    }
+  }
+
+  if (errors.length > 0) {
+    showToast('⚠️ ' + (window.I18N && window.I18N.msgCorriger || 'Veuillez corriger les champs en rouge.'));
+    return;
+  }
+
+  nextStep();
+}
+
+function validate(id, fn, fieldId) {
+  const el = document.getElementById(id);
+  const wrap = document.getElementById(fieldId);
+  if (!wrap) return true;
+  if (fn(el.value)) {
+    wrap.classList.remove('invalid');
+    wrap.classList.add('valid');
+    return true;
+  } else {
+    wrap.classList.add('invalid');
+    wrap.classList.remove('valid');
+    return false;
+  }
+}
+
+// ── FILE UPLOAD ──
+function handleFile(event, zone) {
+  const files = Array.from(event.target.files);
+  if (!uploadedFiles[zone]) uploadedFiles[zone] = [];
+  files.forEach(f => {
+    uploadedFiles[zone].push(f);
+    renderFileItem(f, zone);
+  });
+  const zoneEl = event.target.closest('.upload-zone');
+  if (zoneEl) zoneEl.style.borderColor = '';
+  event.target.value = '';
+}
+
+function renderFileItem(file, zone) {
+  const listId = 'list-' + zone;
+  const list = document.getElementById(listId);
+  if (!list) return;
+  const ext = file.name.split('.').pop().toUpperCase();
+  const size = file.size < 1024*1024 ? (file.size/1024).toFixed(0)+' Ko' : (file.size/1024/1024).toFixed(1)+' Mo';
+  const icons = {PDF:'📄', JPG:'🖼️', PNG:'🖼️', JPEG:'🖼️'};
+  const icon = icons[ext] || '📎';
+  const item = document.createElement('div');
+  item.className = 'file-item';
+  item.innerHTML = `<span class="file-icon">${icon}</span>
+    <div class="file-info"><div class="file-name">${file.name}</div><div class="file-size">${size}</div></div>
+    <button class="file-remove" onclick="removeFile('${zone}','${file.name.replace(/'/g, "\\'")}',this)">✕</button>`;
+  list.appendChild(item);
+}
+
+function removeFile(zone, name, btn) {
+  if (uploadedFiles[zone]) {
+    uploadedFiles[zone] = uploadedFiles[zone].filter(f => f.name !== name);
+  }
+  btn.closest('.file-item').remove();
+}
+
+function dragOver(e, el) { e.preventDefault(); el.classList.add('drag-over'); }
+function dragLeave(el) { el.classList.remove('drag-over'); }
+function dropFile(e, el, zone) {
+  e.preventDefault();
+  el.classList.remove('drag-over');
+  const files = Array.from(e.dataTransfer.files);
+  if (!uploadedFiles[zone]) uploadedFiles[zone] = [];
+  files.forEach(f => { uploadedFiles[zone].push(f); renderFileItem(f, zone); });
+}
+
+// ── SIGNATURE PAD ──
+const canvas = document.getElementById('sigCanvas');
+const ctx = canvas.getContext('2d');
+let drawing = false;
+let hasSig = false;
+
+function resizeCanvas() {
+  const rect = canvas.parentElement.getBoundingClientRect();
+  canvas.width = rect.width;
+}
+resizeCanvas();
+window.addEventListener('resize', resizeCanvas);
+
+function getPos(e) {
+  const rect = canvas.getBoundingClientRect();
+  const src = e.touches ? e.touches[0] : e;
+  return { x: (src.clientX - rect.left) * (canvas.width / rect.width), y: (src.clientY - rect.top) * (canvas.height / rect.height) };
+}
+
+canvas.addEventListener('mousedown', e => { drawing = true; hasSig = true; document.getElementById('sigPlaceholder').style.display='none'; ctx.beginPath(); const p=getPos(e); ctx.moveTo(p.x,p.y); });
+canvas.addEventListener('mousemove', e => { if (!drawing) return; const p=getPos(e); ctx.lineWidth=2.5; ctx.lineCap='round'; ctx.strokeStyle='#101828'; ctx.lineTo(p.x,p.y); ctx.stroke(); });
+canvas.addEventListener('mouseup', () => drawing = false);
+canvas.addEventListener('mouseleave', () => drawing = false);
+canvas.addEventListener('touchstart', e => { e.preventDefault(); drawing = true; hasSig = true; document.getElementById('sigPlaceholder').style.display='none'; ctx.beginPath(); const p=getPos(e); ctx.moveTo(p.x,p.y); }, {passive:false});
+canvas.addEventListener('touchmove', e => { e.preventDefault(); if (!drawing) return; const p=getPos(e); ctx.lineWidth=2.5; ctx.lineCap='round'; ctx.strokeStyle='#101828'; ctx.lineTo(p.x,p.y); ctx.stroke(); }, {passive:false});
+canvas.addEventListener('touchend', () => drawing = false);
+
+function clearSig() {
+  ctx.clearRect(0, 0, canvas.width, canvas.height);
+  hasSig = false;
+  document.getElementById('sigPlaceholder').style.display = 'flex';
+}
+
+// ── SUMMARY ──
+function buildSummary() {
+  const montant = (+sliderMontant.value).toLocaleString('fr-FR') + ' €';
+  const duree = sliderDuree.value + ' mois';
+  const taeg = 17.71;
+  const m = +sliderMontant.value, d = +sliderDuree.value;
+  const taux = Math.pow(1+taeg/100, 1/12)-1;
+  const mens = (m*taux/(1-Math.pow(1+taux,-d))).toLocaleString('fr-FR',{minimumFractionDigits:2,maximumFractionDigits:2})+' €/mois';
+  const nomComplet = (document.getElementById('prenom').value + ' ' + document.getElementById('nom').value).trim() || '—';
+  const email = document.getElementById('email').value || '—';
+  const tel = document.getElementById('tel').value || '—';
+  const rev = document.getElementById('revenus').value ? (+document.getElementById('revenus').value).toLocaleString('fr-FR') + ' €' : '—';
+  const emploiEl = document.querySelector('input[name="emploi"]:checked');
+  const emploi = emploiEl ? emploiEl.nextElementSibling.querySelector('strong').textContent : '—';
+
+  document.getElementById('sum-montant').textContent = montant;
+  document.getElementById('sum-duree').textContent = duree;
+  document.getElementById('sum-mensualite').textContent = mens;
+  document.getElementById('sum-nom').textContent = nomComplet;
+  document.getElementById('sum-email').textContent = email;
+  document.getElementById('sum-tel').textContent = tel;
+  document.getElementById('sum-revenus').textContent = rev;
+  document.getElementById('sum-emploi').textContent = emploi;
+}
+
+// ── SUBMIT ──
+async function submitForm() {
+  var i18n = window.I18N || {};
+  if (!document.getElementById('cgu').checked || !document.getElementById('exacts').checked) {
+    showToast('⚠️ ' + (i18n.msgCgu || 'Veuillez accepter les conditions obligatoires.'));
+    return;
+  }
+  if (!hasSig) {
+    showToast('✍️ ' + (i18n.msgSigner || 'Veuillez signer votre demande.'));
+    return;
+  }
+
+  const btn = document.querySelector('.btn-next.blue');
+  const btnText = btn ? btn.innerHTML : '';
+  if (btn) {
+    btn.disabled = true;
+    btn.innerHTML = '<span>' + (window.I18N && window.I18N.msgEnvoi || 'Envoi en cours…') + '</span>';
+  }
+
+  const fd = new FormData();
+  fd.append('csrfmiddlewaretoken', document.getElementById('csrfToken').value);
+  fd.append('montant', sliderMontant.value);
+  fd.append('duree', sliderDuree.value);
+  fd.append('prenom', document.getElementById('prenom').value.trim());
+  fd.append('nom', document.getElementById('nom').value.trim());
+  fd.append('naissance', document.getElementById('naissance').value || '');
+  fd.append('nationalite', document.getElementById('nationalite').value || '');
+  fd.append('email', document.getElementById('email').value.trim());
+  fd.append('tel', document.getElementById('tel').value.trim());
+  fd.append('code_postal', document.getElementById('codePostal').value.trim());
+  fd.append('adresse', document.getElementById('adresse').value.trim());
+
+  const familleEl = document.querySelector('input[name="famille"]:checked');
+  fd.append('famille', familleEl ? familleEl.value : '');
+
+  const emploiEl = document.querySelector('input[name="emploi"]:checked');
+  fd.append('emploi', emploiEl ? emploiEl.value : '');
+
+  fd.append('revenus', document.getElementById('revenus').value || '0');
+  fd.append('autres_revenus', document.getElementById('autresRevenus').value || '0');
+  fd.append('charges', document.getElementById('charges').value || '0');
+  fd.append('logement', document.getElementById('logement').value || '');
+
+  const motifEl = document.querySelector('input[name="motif"]:checked');
+  fd.append('motif', motifEl ? motifEl.value : '');
+
+  const typeIdEl = document.querySelector('input[name="type_id"]:checked');
+  fd.append('type_id', typeIdEl ? typeIdEl.value : 'cni');
+
+  fd.append('cgu', document.getElementById('cgu').checked ? 'on' : '');
+  fd.append('exacts', document.getElementById('exacts').checked ? 'on' : '');
+  fd.append('marketing', document.getElementById('marketing').checked ? 'on' : '');
+
+  const sigData = canvas.toDataURL('image/png');
+  fd.append('signature', sigData);
+
+  if (uploadedFiles['id-recto'] && uploadedFiles['id-recto'].length > 0) {
+    uploadedFiles['id-recto'].forEach(f => fd.append('id_recto', f));
+  }
+  if (uploadedFiles['id-verso'] && uploadedFiles['id-verso'].length > 0) {
+    uploadedFiles['id-verso'].forEach(f => fd.append('id_verso', f));
+  }
+  if (uploadedFiles['revenus'] && uploadedFiles['revenus'].length > 0) {
+    uploadedFiles['revenus'].forEach(f => fd.append('revenus', f));
+  }
+  if (uploadedFiles['domicile'] && uploadedFiles['domicile'].length > 0) {
+    uploadedFiles['domicile'].forEach(f => fd.append('domicile', f));
+  }
+
+  try {
+    const resp = await fetch('{% url "demande" %}', {
+      method: 'POST',
+      body: fd,
+      headers: {
+        'X-Requested-With': 'XMLHttpRequest',
+      },
+      credentials: 'same-origin',
+    });
+
+    const data = await resp.json().catch(() => ({}));
+
+    if (resp.ok && data.success) {
+      document.getElementById('step5').classList.remove('active');
+      document.getElementById('cardHeader').style.display = 'none';
+      document.getElementById('refDossier').textContent = data.reference || 'BD-XXXXX';
+      document.querySelectorAll('.step-dot').forEach(d => { d.classList.remove('active'); d.classList.add('done'); });
+      document.getElementById('progressFill').style.width = '100%';
+      document.getElementById('successScreen').classList.add('show');
+      window.scrollTo({top: 0, behavior: 'smooth'});
+    } else {
+      var i18n = window.I18N || {};
+      const errMsg = data.errors ? Object.values(data.errors).join(' ') : (data.error || (i18n.msgErreur || 'Une erreur est survenue.'));
+      showToast('⚠️ ' + errMsg);
+      if (btn) {
+        btn.disabled = false;
+        btn.innerHTML = btnText;
+      }
+    }
+  } catch (e) {
+    showToast('⚠️ ' + (window.I18N && window.I18N.msgConnexion || 'Erreur de connexion. Réessayez.'));
+    if (btn) {
+      btn.disabled = false;
+      btn.innerHTML = btnText;
+    }
+  }
+}
+
+// ── TOAST ──
+function showToast(msg) {
+  const t = document.createElement('div');
+  t.style.cssText = 'position:fixed;bottom:24px;left:50%;transform:translateX(-50%);background:#101828;color:#fff;padding:12px 20px;border-radius:30px;font-size:.85rem;font-weight:600;z-index:999;box-shadow:0 4px 20px rgba(0,0,0,.25);animation:fadeIn .3s ease';
+  t.textContent = msg;
+  document.body.appendChild(t);
+  setTimeout(() => t.remove(), 3500);
+}
+</script>
+</body>
+</html>

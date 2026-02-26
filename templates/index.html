@@ -1,0 +1,377 @@
+{% extends 'base.html' %}
+{% load i18n %}
+
+{% block content %}
+<!-- HERO -->
+<section>
+  <div class="hero" id="hero">
+    <div class="hero-content">
+      <h1>{% trans "Prêts personnels pour tous vos projets" %}</h1>
+      <h4>{% trans "Faites une demande et obtenez une décision instantanée." %}</h4>
+      <div class="hero-features">
+        <div class="hero-feature">
+          <svg xmlns="http://www.w3.org/2000/svg" width="24" height="25" viewBox="0 0 24 25" fill="none"><path d="M9.33 15.08L14.67 9.74" stroke="#101828" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/><path d="M14.92 14.89C15.03 15.01 15.03 15.2 14.91 15.32C14.79 15.43 14.61 15.43 14.49 15.32C14.37 15.2 14.37 15.01 14.48 14.89C14.54 14.84 14.62 14.8 14.7 14.8C14.78 14.8 14.86 14.84 14.92 14.89" stroke="#101828" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/><path d="M9.52 9.49C9.63 9.61 9.63 9.8 9.52 9.92C9.4 10.03 9.21 10.03 9.09 9.92C8.98 9.8 8.97 9.61 9.09 9.49C9.15 9.44 9.22 9.4 9.3 9.4C9.39 9.4 9.46 9.44 9.52 9.49" stroke="#101828" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/><rect x="3" y="3.41" width="18" height="18" rx="6" stroke="#323232" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          <span>{% trans "Taux d'intérêt à partir de 6,9 %" %}</span>
+        </div>
+        <div class="hero-feature">
+          <svg xmlns="http://www.w3.org/2000/svg" width="24" height="25" viewBox="0 0 24 25" fill="none"><path fill-rule="evenodd" clip-rule="evenodd" d="M20 19.08H4C2.9 19.08 2 18.18 2 17.08V7.74C2 6.64 2.9 5.74 4 5.74H20C21.1 5.74 22 6.64 22 7.74V17.08C22 18.18 21.1 19.08 20 19.08Z" stroke="#101828" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/><path d="M17.55 19.08V18.05C17.55 16.35 19.05 14.97 20.89 14.97H22" stroke="#101828" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/><path d="M6.44 5.74V6.77C6.44 8.47 4.95 9.85 3.11 9.85H2" stroke="#101828" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/><path d="M2 14.97H3.11C4.95 14.97 6.44 16.35 6.44 18.05V19.08" stroke="#101828" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/><path d="M22 9.85H20.89C19.05 9.85 17.55 8.47 17.55 6.77V5.74" stroke="#323232" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/><path d="M13.77 10.64C14.74 11.62 14.74 13.2 13.77 14.18C12.79 15.15 11.21 15.15 10.23 14.18C9.26 13.2 9.26 11.62 10.23 10.64C11.21 9.67 12.79 9.67 13.77 10.64" stroke="#323232" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          <span>{% trans "Mensualités abordables" %}</span>
+        </div>
+        <div class="hero-feature">
+          <svg xmlns="http://www.w3.org/2000/svg" width="21" height="21" viewBox="0 0 21 21" fill="none"><path fill-rule="evenodd" clip-rule="evenodd" d="M4.64 11.34L6.78 12.16C8.38 12.76 9.65 14.03 10.25 15.63L11.07 17.77C11.21 18.15 11.58 18.41 12 18.41C12.42 18.41 12.79 18.15 12.93 17.77L13.75 15.63C14.35 14.03 15.62 12.76 17.22 12.16L19.36 11.34C19.74 11.2 20 10.83 20 10.41C20 9.99 19.74 9.62 19.36 9.48L17.22 8.66C15.62 8.06 14.35 6.79 13.75 5.19L12.93 3.05C12.79 2.67 12.42 2.41 12 2.41C11.58 2.41 11.21 2.67 11.07 3.05L10.25 5.19C9.65 6.79 8.38 8.06 6.78 8.66L4.64 9.48C4.26 9.62 4 9.99 4 10.41C4 10.83 4.26 11.2 4.64 11.34Z" stroke="#101828" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/><path d="M4 19.41V15.41" stroke="#101828" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/><path d="M2 17.41H6" stroke="#101828" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          <span>{% trans "Virement le jour même" %}</span>
+        </div>
+      </div>
+      <a href="{% if user.is_authenticated %}{% url 'demande' %}{% else %}{% url 'signup' %}{% endif %}" class="btn-primary btn-primary-lg">
+        {% trans "Faire une demande ici" %}
+        <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" fill="currentColor" viewBox="0 0 16 16"><path fill-rule="evenodd" d="M1 8a.5.5 0 0 1 .5-.5h11.793l-3.147-3.146a.5.5 0 0 1 .708-.708l4 4a.5.5 0 0 1 0 .708l-4 4a.5.5 0 0 1-.708-.708L13.293 8.5H1.5A.5.5 0 0 1 1 8"/></svg>
+      </a>
+    </div>
+  </div>
+</section>
+
+<!-- CALCULATOR -->
+<section class="calc-section" data-mois="{% trans 'mois' %}">
+  <div class="calc-wrapper">
+    <div class="calc-sliders">
+      <div class="slider-block" style="flex:1;">
+        <div class="slider-top">
+          <span class="slider-label">{% trans "Montant" %}</span>
+          <span class="slider-val" id="amount-display">€4 000</span>
+        </div>
+        <div class="range-track" style="margin-bottom:18px;">
+          <div class="range-progress" id="amount-progress" style="right:80%;"></div>
+          <input class="range-input" type="range" min="100" max="250000" value="4000" step="100" id="amount-slider">
+        </div>
+        <div class="slider-bottom">
+          <span class="range-min-max">€100</span>
+          <span class="range-min-max">€250 000</span>
+        </div>
+      </div>
+      <div class="slider-block" style="flex:1;">
+        <div class="slider-top">
+          <span class="slider-label">{% trans "Durée" %}</span>
+          <span class="slider-val" id="term-display">60 mois</span>
+        </div>
+        <div class="range-track" style="margin-bottom:18px;">
+          <div class="range-progress" id="term-progress" style="right:54%;"></div>
+          <input class="range-input" type="range" min="6" max="120" value="60" step="6" id="term-slider">
+        </div>
+        <div class="slider-bottom">
+          <span class="range-min-max">6 {% trans "mois" %}</span>
+          <span class="range-min-max">120 {% trans "mois" %}</span>
+        </div>
+      </div>
+    </div>
+    <div class="calc-action">
+      <div class="calc-monthly" style="display:flex;flex-direction:column;align-items:center;flex-basis:50%;">
+        <p class="calc-monthly-label">{% trans "Mensualité approximative" %}</p>
+        <span class="calc-monthly-val" id="monthly-payment">€ --</span>
+      </div>
+      <button class="calc-btn" {% if user.is_authenticated %}onclick="window.location.href='{% url 'demande' %}';"{% else %}onclick="var m=document.getElementById('amount-slider').value;var d=document.getElementById('term-slider').value;window.location.href='{% url 'signup' %}?montant='+m+'&duree='+d;"{% endif %}>
+        {% trans "Faire une demande ici" %}
+        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" viewBox="0 0 16 16"><path fill-rule="evenodd" d="M1 8a.5.5 0 0 1 .5-.5h11.793l-3.147-3.146a.5.5 0 0 1 .708-.708l4 4a.5.5 0 0 1 0 .708l-4 4a.5.5 0 0 1-.708-.708L13.293 8.5H1.5A.5.5 0 0 1 1 8"/></svg>
+      </button>
+    </div>
+  </div>
+</section>
+
+<!-- STATS -->
+<section>
+  <div class="stats-section">
+    <div class="stats-row">
+      <div class="stat-item">
+        <h2 class="stat-num">1,5 million</h2>
+        <h5 class="stat-label">{% trans "de demandeurs" %}</h5>
+      </div>
+      <div class="stat-item">
+        <h2 class="stat-num">{% blocktrans %}17 ans{% endblocktrans %}</h2>
+        <h5 class="stat-label">{% trans "d'expérience" %}</h5>
+      </div>
+      <div class="stat-item">
+        <h2 class="stat-num">{% blocktrans %}1 milliard €{% endblocktrans %}</h2>
+        <h5 class="stat-label">{% trans "en petits prêts" %}</h5>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- WHY US -->
+<section>
+  <div class="why-section">
+    <div class="why-grid">
+      <div class="why-card why-card--plain">
+        <h3>{% trans "Pourquoi choisir Bondoraa" %}</h3>
+        <p>{% trans "Choisissez-nous comme partenaire financier de confiance pour des solutions financières sécurisées et simples, adaptées à vos besoins." %}</p>
+      </div>
+      <div class="why-card">
+        <svg xmlns="http://www.w3.org/2000/svg" width="64" height="65" viewBox="0 0 64 65" fill="none"><path d="M14 14.73C14 8.47 19.07 3.39 25.33 3.39V3.39C31.59 3.39 36.67 8.47 36.67 14.73" stroke="#323232" stroke-width="2.67" stroke-linecap="round" stroke-linejoin="round"/><path d="M37.34 32.72V28.06C37.34 25.85 35.55 24.06 33.34 24.06V24.06C31.13 24.06 29.34 25.85 29.34 28.06" stroke="#101828" stroke-width="2.67" stroke-linecap="round" stroke-linejoin="round"/><path d="M37.34 30.73C37.34 28.52 39.13 26.73 41.34 26.73V26.73C43.55 26.73 45.34 28.52 45.34 30.73V35.39" stroke="#101828" stroke-width="2.67" stroke-linecap="round" stroke-linejoin="round"/><path d="M29.33 32.73V14.73C29.33 12.52 27.54 10.73 25.33 10.73V10.73C23.12 10.73 21.33 12.52 21.33 14.73V38.06L16.31 33.03C14.67 31.39 12 31.39 10.36 33.03V33.03C8.99 34.41 8.77 36.55 9.85 38.17L19.25 52.27C22.22 56.72 27.21 59.39 32.56 59.39H37.33C46.17 59.39 53.33 52.23 53.33 43.39V33.39C53.33 31.18 51.54 29.39 49.33 29.39V29.39C47.12 29.39 45.33 31.18 45.33 33.39" stroke="#101828" stroke-width="2.67" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        <h3>{% trans "Demande simple" %}</h3>
+        <p>{% trans "Faites votre demande entièrement en ligne et obtenez une offre instantanée." %}</p>
+      </div>
+      <div class="why-card">
+        <svg xmlns="http://www.w3.org/2000/svg" width="64" height="65" viewBox="0 0 64 65" fill="none"><path d="M37.66 27.07C40.78 30.19 40.78 35.26 37.66 38.39C34.54 41.51 29.47 41.51 26.34 38.39C23.22 35.27 23.22 30.2 26.34 27.07C29.47 23.94 34.54 23.94 37.66 27.07" stroke="#323232" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/><path fill-rule="evenodd" clip-rule="evenodd" d="M8 32.72C8 30.97 8.41 29.23 9.19 27.63V27.63C13.23 19.37 22.16 14.06 32 14.06C41.84 14.06 50.77 19.37 54.81 27.63V27.63C55.59 29.23 56 30.97 56 32.72C56 34.48 55.59 36.22 54.81 37.82V37.82C50.77 46.08 41.84 51.39 32 51.39C22.16 51.39 13.23 46.08 9.19 37.82V37.82C8.41 36.22 8 34.48 8 32.72Z" stroke="#101828" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        <h3>{% trans "Frais transparents" %}</h3>
+        <p>{% trans "Vous voyez le détail clair des coûts avant de signer." %}</p>
+      </div>
+      <div class="why-card">
+        <svg xmlns="http://www.w3.org/2000/svg" width="64" height="65" viewBox="0 0 64 65" fill="none"><path d="M49.69 15.04L51.61 13.12" stroke="#323232" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/><path d="M51.66 39.1L49.63 37.05" stroke="#101828" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/><path d="M27.63 15.04L25.71 13.12" stroke="#101828" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/><path fill-rule="evenodd" clip-rule="evenodd" d="M11.21 57.28L7.45 53.51C6.4 52.47 6.4 50.78 7.45 49.74L32.98 24.19C34.03 23.14 35.72 23.14 36.76 24.19L40.52 27.95C41.56 28.99 41.56 30.69 40.52 31.73L14.98 57.28C13.94 58.32 12.25 58.32 11.21 57.28Z" stroke="#101828" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/><path d="M38.65 10.11V7.39" stroke="#323232" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/><path d="M54.61 26.08H57.33" stroke="#323232" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        <h3>{% trans "Virement le jour même" %}</h3>
+        <p>{% trans "L'argent vous est envoyé directement après la signature du contrat." %}</p>
+      </div>
+      <div class="why-card">
+        <svg xmlns="http://www.w3.org/2000/svg" width="48" height="49" viewBox="0 0 48 49" fill="none"><path d="M38 38.68L42 34.68L38 30.68" stroke="#323232" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/><path d="M20.36 18.73L17.2 14.38C16.45 13.34 15.24 12.73 13.95 12.73L6 12.77" stroke="#323232" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/><path d="M38 16.73L42 12.73L38 8.73" stroke="#323232" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/><path d="M27.64 28.72L30.8 33.07C31.55 34.11 32.76 34.72 34.05 34.72L42 34.68" stroke="#323232" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/><path d="M42 12.77L34.05 12.73C32.76 12.73 31.55 13.34 30.8 14.38L17.2 33.07C16.45 34.11 15.24 34.72 13.95 34.72L6 34.68" stroke="#323232" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        <h3>{% trans "Remboursement flexible" %}</h3>
+        <p>{% trans "Remboursement anticipé sans frais supplémentaires. Modifiez votre calendrier avec nos services B Secure." %}</p>
+      </div>
+      <div class="why-card">
+        <svg xmlns="http://www.w3.org/2000/svg" width="48" height="49" viewBox="0 0 48 49" fill="none"><path d="M16.46 23.17L24.01 30.73L39.36 15.38C36.2 10.2 30.51 6.73 24 6.73C14.06 6.73 6 14.78 6 24.73C6 34.67 14.06 42.73 24 42.73C33.26 42.73 40.89 35.73 41.88 26.73" stroke="#101828" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        <h3>{% trans "Sans garantie requise" %}</h3>
+        <p>{% trans "Tous nos prêts sont sans garantie, pour plus de tranquillité d'esprit et de liberté." %}</p>
+      </div>
+    </div>
+    <div class="btn-center">
+      <a href="{% if user.is_authenticated %}{% url 'demande' %}{% else %}{% url 'signup' %}{% endif %}" class="btn-primary btn-primary-lg">
+        {% trans "Faire une demande ici" %}
+        <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" fill="currentColor" viewBox="0 0 16 16"><path fill-rule="evenodd" d="M1 8a.5.5 0 0 1 .5-.5h11.793l-3.147-3.146a.5.5 0 0 1 .708-.708l4 4a.5.5 0 0 1 0 .708l-4 4a.5.5 0 0 1-.708-.708L13.293 8.5H1.5A.5.5 0 0 1 1 8"/></svg>
+      </a>
+    </div>
+  </div>
+</section>
+
+<!-- HOW IT WORKS -->
+<section>
+  <div class="how-section">
+    <div class="how-title">
+      <h3>{% trans "Demandez. Signez." %} <span class="highlight">{% trans "Recevez." %}</span></h3>
+    </div>
+    <div class="how-content">
+      <div class="how-image"></div>
+      <div class="how-steps">
+        <div class="how-step">
+          <div><div class="how-step-num">1</div></div>
+          <p class="how-step-text">{% trans "Remplissez la simple demande de prêt en ligne." %}</p>
+        </div>
+        <div class="how-step">
+          <div><div class="how-step-num">2</div></div>
+          <p class="how-step-text">{% trans "Signez numériquement l'offre la mieux adaptée à votre situation." %}</p>
+        </div>
+        <div class="how-step">
+          <div><div class="how-step-num">3</div></div>
+          <p class="how-step-text">{% trans "Recevez l'argent directement sur votre compte bancaire presque instantanément." %}</p>
+        </div>
+      </div>
+    </div>
+    <div class="btn-center">
+      <a href="{% if user.is_authenticated %}{% url 'demande' %}{% else %}{% url 'signup' %}{% endif %}" class="btn-primary btn-primary-lg">
+        {% trans "Faire une demande ici" %}
+        <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" fill="currentColor" viewBox="0 0 16 16"><path fill-rule="evenodd" d="M1 8a.5.5 0 0 1 .5-.5h11.793l-3.147-3.146a.5.5 0 0 1 .708-.708l4 4a.5.5 0 0 1 0 .708l-4 4a.5.5 0 0 1-.708-.708L13.293 8.5H1.5A.5.5 0 0 1 1 8"/></svg>
+      </a>
+    </div>
+  </div>
+</section>
+
+<!-- TESTIMONIALS -->
+<section class="testimonials-section">
+  <div class="testimonials-inner">
+    <div class="testimonials-slider" id="slider">
+      <div class="testimonial-slide testimonial-slide--blue" id="slide-0">
+        <div class="testimonial-quote">
+          <h3>{% trans "« C'est rapide et facile, et vous pouvez tout faire sur mobile, même en déplacement. »" %}</h3>
+          <p class="author">{% trans "– Markus, client Bondoraa depuis 2013" %}</p>
+        </div>
+        <img src="https://www.bondora.ee/wp-content/uploads/2024/11/reviews-customer-img-1.png" alt="Markus" class="testimonial-img" width="377" height="409">
+      </div>
+      <div class="testimonial-slide testimonial-slide--green" id="slide-1" style="display:none;">
+        <div class="testimonial-quote">
+          <h3>{% trans "« J'ai décidé de contracter un prêt chez Bondoraa pour des rénovations domiciliaires. L'expérience fluide m'a agréablement surpris. »" %}</h3>
+          <p class="author">{% trans "– Emma, cliente Bondoraa depuis 2022" %}</p>
+        </div>
+      </div>
+      <div class="testimonial-slide testimonial-slide--dark" id="slide-2" style="display:none;">
+        <div class="testimonial-quote">
+          <h3>{% trans "« C'était presque comme un claquement de doigts. »" %}</h3>
+          <p class="author">{% trans "– Alexander, client Bondoraa depuis 2013" %}</p>
+        </div>
+      </div>
+    </div>
+    <div class="splide-pagination" id="pagination">
+      <button class="splide-dot active" onclick="goToSlide(0)"></button>
+      <button class="splide-dot" onclick="goToSlide(1)"></button>
+      <button class="splide-dot" onclick="goToSlide(2)"></button>
+    </div>
+  </div>
+</section>
+
+<!-- TRUST -->
+<section class="trust-section">
+  <div style="max-width:var(--max-w);margin:0 auto;">
+    <div class="trust-inner">
+      <div class="trust-item">
+        <svg id="t1" xmlns="http://www.w3.org/2000/svg" width="96" height="97" viewBox="0 0 96 97" fill="none"><path d="M36 12.73V28.73C36 30.93 34.21 32.73 32 32.73H16" stroke="#101828" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/><path d="M38 84.73C38 84.73 30.28 84.73 23.99 84.73C21.87 84.72 19.83 83.88 18.34 82.38C16.84 80.88 16 78.85 16 76.73V32.04C16 29.92 16.84 27.88 18.34 26.38L29.66 15.07C31.16 13.57 33.19 12.73 35.31 12.73H68C72.42 12.73 76 16.31 76 20.73V40.73" stroke="#101828" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/><path d="M56 84.73V66.73" stroke="#101828" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/><path d="M68 84.73V66.73" stroke="#101828" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/><path d="M80 84.73V66.73" stroke="#323232" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/><path d="M52 84.73H84" stroke="#323232" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/><path fill-rule="evenodd" clip-rule="evenodd" d="M52 59.33V66.73H84V59.33L68 52.73L52 59.33Z" stroke="#323232" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        <p>{% trans "Réglementé par l'Autorité de supervision financière estonienne" %}</p>
+      </div>
+      <div class="trust-item">
+        <svg xmlns="http://www.w3.org/2000/svg" width="96" height="97" viewBox="0 0 96 97" fill="none"><path fill-rule="evenodd" clip-rule="evenodd" d="M68 84.73H28C23.58 84.73 20 81.15 20 76.73V44.73C20 40.31 23.58 36.73 28 36.73H68C72.42 36.73 76 40.31 76 44.73V76.73C76 81.15 72.42 84.73 68 84.73Z" stroke="#101828" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/><path d="M48 69.09V58.73" stroke="#101828" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/><path d="M50.12 53.6C51.29 54.78 51.29 56.67 50.12 57.85C48.95 59.02 47.05 59.02 45.88 57.85C44.71 56.67 44.71 54.78 45.88 53.6C47.05 52.43 48.95 52.43 50.12 53.6" stroke="#101828" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/><path d="M32 36.73V28.73V28.73C32 19.89 39.16 12.73 48 12.73V12.73C56.84 12.73 64 19.89 64 28.73V28.73V36.73" stroke="#101828" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        <p>{% trans "Standards de protection des données de l'UE" %}</p>
+      </div>
+      <div class="trust-item">
+        <svg xmlns="http://www.w3.org/2000/svg" width="96" height="97" viewBox="0 0 96 97" fill="none"><path d="M76 60.73V32.04C76 29.92 75.16 27.88 73.66 26.38L62.34 15.07C60.84 13.57 58.81 12.73 56.69 12.73H28C23.58 12.73 20 16.31 20 20.73V76.73C20 81.15 23.58 84.73 28 84.73H52" stroke="#323232" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/><path d="M84 72.73L72 84.73L64 76.73" stroke="#101828" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/><path d="M32 44.73H56" stroke="#101828" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/><path d="M32 56.73H56" stroke="#323232" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/><path d="M32 68.73H49.32" stroke="#101828" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        <p>{% trans "Conformément aux lignes directrices sur le prêt responsable" %}</p>
+      </div>
+    </div>
+    <div class="btn-center">
+      <a href="{% if user.is_authenticated %}{% url 'demande' %}{% else %}{% url 'signup' %}{% endif %}" class="btn-primary btn-primary-lg">
+        {% trans "Faire une demande ici" %}
+        <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" fill="currentColor" viewBox="0 0 16 16"><path fill-rule="evenodd" d="M1 8a.5.5 0 0 1 .5-.5h11.793l-3.147-3.146a.5.5 0 0 1 .708-.708l4 4a.5.5 0 0 1 0 .708l-4 4a.5.5 0 0 1-.708-.708L13.293 8.5H1.5A.5.5 0 0 1 1 8"/></svg>
+      </a>
+    </div>
+  </div>
+</section>
+
+<!-- FAQ -->
+<section>
+  <div class="faq-section">
+    <div class="faq-left">
+      <div class="faq-title">
+        <h3>{% trans "Vos questions," %}</h3>
+        <h3 class="blue">{% trans "nos réponses" %}</h3>
+      </div>
+    </div>
+    <div class="faq-right">
+      <ul class="accordion">
+        <li class="accordion-item">
+          <button class="accordion-title" onclick="toggleAccordion(this)">
+            <svg class="acc-icon" viewBox="0 0 32 32"><path d="M6.3,7.5c-1.6-1.6-1.6-4.6,0-6.2C7.1,0.5,8.2,0,9.2,0c1.3,0,2.4,0.5,3.2,1.3l14.5,14.7L12.5,30.8c-1.6,1.6-4.6,1.6-6.2,0s-1.6-4.6,0-6.2l8.3-8.6L6.3,7.5z"/></svg>
+            {% trans "Quels sont les frais ?" %}
+          </button>
+          <div class="accordion-body">
+            <p>{% blocktrans %}Vous pouvez consulter tous nos frais transparents sur <a href="https://www.bondora.ee/en/contracts/fees/" target="_blank" rel="noopener">cette page</a>. Si vous contractez un prêt avec nous, vous verrez une description claire de vos frais avant de signer le contrat.{% endblocktrans %}</p>
+          </div>
+        </li>
+        <li class="accordion-item">
+          <button class="accordion-title" onclick="toggleAccordion(this)">
+            <svg class="acc-icon" viewBox="0 0 32 32"><path d="M6.3,7.5c-1.6-1.6-1.6-4.6,0-6.2C7.1,0.5,8.2,0,9.2,0c1.3,0,2.4,0.5,3.2,1.3l14.5,14.7L12.5,30.8c-1.6,1.6-4.6,1.6-6.2,0s-1.6-4.6,0-6.2l8.3-8.6L6.3,7.5z"/></svg>
+            {% trans "Comment rembourser mon prêt ?" %}
+          </button>
+          <div class="accordion-body">
+            <p>{% trans "Ajoutez simplement le montant requis pour votre mensualité sur votre compte Bondoraa avant la date d'échéance. Vous pouvez effectuer des versements ponctuels depuis votre banque en ligne, ou configurer un ordre permanent." %}</p>
+          </div>
+        </li>
+        <li class="accordion-item">
+          <button class="accordion-title" onclick="toggleAccordion(this)">
+            <svg class="acc-icon" viewBox="0 0 32 32"><path d="M6.3,7.5c-1.6-1.6-1.6-4.6,0-6.2C7.1,0.5,8.2,0,9.2,0c1.3,0,2.4,0.5,3.2,1.3l14.5,14.7L12.5,30.8c-1.6,1.6-4.6,1.6-6.2,0s-1.6-4.6,0-6.2l8.3-8.6L6.3,7.5z"/></svg>
+            {% trans "Puis-je rembourser mon prêt par anticipation ?" %}
+          </button>
+          <div class="accordion-body">
+            <p>{% blocktrans %}Oui, et il n'y a aucun frais supplémentaire pour le remboursement anticipé. Vous pouvez effectuer des remboursements partiels ou totaux de votre prêt. En savoir plus sur notre <a href="https://help.bondora.ee/hc/en-ee/sections/12671560159250-Repaying-my-loan" target="_blank">Centre d'aide</a>.{% endblocktrans %}</p>
+          </div>
+        </li>
+        <li class="accordion-item">
+          <button class="accordion-title" onclick="toggleAccordion(this)">
+            <svg class="acc-icon" viewBox="0 0 32 32"><path d="M6.3,7.5c-1.6-1.6-1.6-4.6,0-6.2C7.1,0.5,8.2,0,9.2,0c1.3,0,2.4,0.5,3.2,1.3l14.5,14.7L12.5,30.8c-1.6,1.6-4.6,1.6-6.2,0s-1.6-4.6,0-6.2l8.3-8.6L6.3,7.5z"/></svg>
+            {% trans "Combien puis-je emprunter ?" %}
+          </button>
+          <div class="accordion-body">
+            <p>{% trans "Vous pouvez obtenir un prêt personnel allant de 100 € à 250 000 €. Cependant, comme le montant du prêt est calculé en fonction de votre situation financière unique, veuillez soumettre une demande pour voir exactement quel montant vous pouvez obtenir. Conseil : obtenir une offre ne signifie pas que vous devez accepter le prêt." %}</p>
+          </div>
+        </li>
+        <li class="accordion-item">
+          <button class="accordion-title" onclick="toggleAccordion(this)">
+            <svg class="acc-icon" viewBox="0 0 32 32"><path d="M6.3,7.5c-1.6-1.6-1.6-4.6,0-6.2C7.1,0.5,8.2,0,9.2,0c1.3,0,2.4,0.5,3.2,1.3l14.5,14.7L12.5,30.8c-1.6,1.6-4.6,1.6-6.2,0s-1.6-4.6,0-6.2l8.3-8.6L6.3,7.5z"/></svg>
+            {% trans "Bondoraa est-elle sécurisée ?" %}
+          </button>
+          <div class="accordion-body">
+            <p>{% trans "Bondoraa est votre partenaire de prêt de confiance. Nous proposons des solutions financières sécurisées et transparentes, adaptées à vos besoins." %}</p>
+            <p>{% trans "Nous mettons la sécurité et la confiance au cœur de notre service pour vous accompagner dans tous vos projets." %}</p>
+          </div>
+        </li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<!-- CONTACT -->
+<section class="contact-section">
+  <div class="contact-inner">
+    <div class="contact-box">
+      <div class="contact-img">
+        <img src="https://www.bondora.ee/wp-content/uploads/2024/11/contact-us-character.png" alt="Contact" width="307" height="309">
+      </div>
+      <div class="contact-content">
+        <h3>{% trans "Vous souhaitez nous contacter ?" %}</h3>
+        <p>{% trans "Nous sommes heureux de vous aider et de répondre à toutes vos questions." %}</p>
+        <div class="contact-links">
+          <div class="contact-link">
+            <svg xmlns="http://www.w3.org/2000/svg" width="49" height="49" viewBox="0 0 49 49" fill="none"><path fill-rule="evenodd" clip-rule="evenodd" d="M22.42 27.01C20.08 24.67 18.31 22.05 17.14 19.39C16.89 18.83 17.04 18.17 17.47 17.74L19.11 16.1C20.45 14.76 20.45 12.86 19.28 11.69L16.93 9.34C15.37 7.78 12.84 7.78 11.28 9.34L9.97 10.65C8.49 12.13 7.87 14.27 8.27 16.39C9.26 21.61 12.3 27.34 17.19 32.23C22.09 37.13 27.81 40.17 33.04 41.16C35.16 41.56 37.3 40.94 38.78 39.46L40.08 38.15C41.64 36.59 41.64 34.06 40.08 32.5L37.74 30.15C36.56 28.98 34.66 28.98 33.49 30.15L31.69 31.96C31.25 32.39 30.6 32.54 30.03 32.29C27.38 31.12 24.76 29.35 22.42 27.01Z" stroke="#101828" stroke-width="3.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            <a href="tel:+33756926120">+33 7 56 92 61 20</a>
+          </div>
+          <div class="contact-link">
+            <svg xmlns="http://www.w3.org/2000/svg" width="50" height="49" viewBox="0 0 50 49" fill="none"><path d="M22.95 36.87H12.83C9.48 36.87 6.76 34.15 6.76 30.8V14.61C6.76 11.25 9.48 8.54 12.83 8.54H37.11C40.47 8.54 43.19 11.25 43.19 14.61V24.73" stroke="#323232" stroke-width="3.64" stroke-linecap="round" stroke-linejoin="round"/><path d="M43.11 13.83L28.07 22.61C26.18 23.71 23.84 23.71 21.95 22.61L6.84 13.78" stroke="#323232" stroke-width="3.64" stroke-linecap="round" stroke-linejoin="round"/><path fill-rule="evenodd" clip-rule="evenodd" d="M36.72 32.97L37.12 33.37L37.52 32.97C38.25 32.23 39.25 31.81 40.29 31.81C41.33 31.81 42.33 32.23 43.06 32.97V32.97C44.58 34.53 44.58 37.03 43.06 38.59L39.95 41.75C39.2 42.51 38.18 42.94 37.12 42.94C36.06 42.94 35.04 42.51 34.29 41.75L31.18 38.59C29.65 37.03 29.65 34.53 31.18 32.97V32.97C31.91 32.23 32.91 31.81 33.95 31.81C34.99 31.81 35.99 32.23 36.72 32.97Z" stroke="#323232" stroke-width="3.64" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            <a href="mailto:credit@bondoraa.com">credit@bondoraa.com</a>
+          </div>
+         
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+// Calculator
+function formatEur(val) {
+  return '€ ' + new Intl.NumberFormat('fr-FR').format(val);
+}
+function updateCalc() {
+  const amount = parseInt(document.getElementById('amount-slider').value);
+  const term = parseInt(document.getElementById('term-slider').value);
+  document.getElementById('amount-display').textContent = formatEur(amount);
+  var moisLabel = document.querySelector('.calc-section') && document.querySelector('.calc-section').dataset.mois ? document.querySelector('.calc-section').dataset.mois : 'mois';
+  document.getElementById('term-display').textContent = term + ' ' + moisLabel;
+  const amtPct = (amount - 100) / (250000 - 100) * 100;
+  document.getElementById('amount-progress').style.right = (100 - amtPct) + '%';
+  const termPct = (term - 6) / (120 - 6) * 100;
+  document.getElementById('term-progress').style.right = (100 - termPct) + '%';
+  const rate = 0.069 / 12;
+  let monthly;
+  if (rate === 0) {
+    monthly = amount / term;
+  } else {
+    monthly = amount * rate * Math.pow(1 + rate, term) / (Math.pow(1 + rate, term) - 1);
+  }
+  document.getElementById('monthly-payment').textContent = '€ ' + monthly.toFixed(2).replace('.', ',');
+}
+document.getElementById('amount-slider').addEventListener('input', updateCalc);
+document.getElementById('term-slider').addEventListener('input', updateCalc);
+updateCalc();
+
+// Accordion
+function toggleAccordion(btn) {
+  const body = btn.nextElementSibling;
+  const isOpen = body.classList.contains('open');
+  document.querySelectorAll('.accordion-body').forEach(b => b.classList.remove('open'));
+  document.querySelectorAll('.accordion-title').forEach(b => b.classList.remove('open'));
+  if (!isOpen) {
+    body.classList.add('open');
+    btn.classList.add('open');
+  }
+}
+
+// Testimonials slider
+let currentSlide = 0;
+function goToSlide(n) {
+  document.querySelectorAll('.testimonial-slide').forEach((s, i) => {
+    s.style.display = i === n ? 'flex' : 'none';
+  });
+  document.querySelectorAll('.splide-dot').forEach((d, i) => {
+    d.classList.toggle('active', i === n);
+  });
+  currentSlide = n;
+}
+setInterval(() => {
+  goToSlide((currentSlide + 1) % 3);
+}, 5000);
+</script>
+{% endblock %}

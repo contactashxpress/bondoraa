@@ -1,0 +1,392 @@
+{% extends 'base.html' %}
+{% load static i18n %}
+
+{% block title %}{% trans "Inscription" %} | Bondoraa{% endblock %}
+
+{% block extra_css %}
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=PT+Sans:wght@400;700;900&display=swap" rel="stylesheet">
+<style>
+  .signup-page {
+    font-family: 'PT Sans', sans-serif;
+    --green: #99df2b;
+    --green-light: #b5fe4d;
+    --green-hover: #c7ff72;
+    --blue: #448dbf;
+    --dark: #101828;
+    --text: #373a3c;
+    --text-light: #475467;
+    --border: #d3d3d3;
+    --shadow: -5px 10px 5px rgba(16,24,40,.086), 5px 5px 5px rgba(16,24,40,.086), 0 5px 5px rgba(16,24,40,.086);
+  }
+  .signup-page .signup-container {
+    max-width: 976px;
+    margin: 0 auto;
+    padding: calc(120px + 2rem) 8px 3rem;
+  }
+  .signup-page .auth-border {
+    box-shadow: var(--shadow);
+    border-radius: 25px;
+    background-color: #fff;
+    margin-top: 3%;
+  }
+  .signup-page .card-block { padding: 1.25rem 2rem 2rem; }
+  .signup-page .login-form-header {
+    color: var(--dark);
+    font-weight: 900;
+    font-size: 2.2rem;
+    text-align: center;
+    line-height: 2.3rem;
+    margin: 0.25rem 0 1.25rem;
+  }
+  .signup-page .signup-page-header > span { color: #92da3a; }
+  .signup-page .signup-preview-text {
+    color: var(--text-light);
+    font-size: 1rem;
+    font-weight: 600;
+  }
+  .signup-page .signup-preview-loan,
+  .signup-page .signup-preview-term {
+    color: var(--dark);
+    font-size: 1.6rem;
+    font-weight: 800;
+    position: relative;
+    top: -0.5rem;
+  }
+  .signup-page .signup-preview-term { text-transform: lowercase; }
+  .signup-page .signup-preview-align {
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+  }
+  .signup-page .nowrap { white-space: nowrap; }
+  .signup-page .ic-signup-edit-button {
+    padding: 0.8rem;
+    border: none;
+    background: none;
+    color: #55595c;
+    position: relative;
+    top: -1rem;
+    cursor: pointer;
+    font-size: 1rem;
+  }
+  .signup-page .ic-signup-edit-button:hover { color: var(--blue); }
+  .signup-page .form-group-wrap { margin: 1rem 0; }
+  .signup-page .form-group { margin-bottom: 1rem; }
+  .signup-page .input-border {
+    border-radius: 5px;
+    border: 1px solid var(--border);
+    overflow: hidden;
+  }
+  .signup-page .input-group {
+    position: relative;
+    width: 100%;
+    display: flex;
+  }
+  .signup-page .input-group-addon {
+    padding: 0.5rem 0.75rem;
+    font-size: 1rem;
+    color: #55595c;
+    background-color: #fff;
+    border-right: 1px solid var(--border);
+    display: flex;
+    align-items: center;
+  }
+  .signup-page .input-group .form-control {
+    flex: 1;
+    padding: 0.75rem 1rem;
+    font-size: 1.05rem;
+    line-height: 1.25;
+    color: #55595c;
+    background-color: #fff;
+    border: none;
+    outline: none;
+    font-family: 'PT Sans', sans-serif;
+  }
+  .signup-page .input-group .form-control:focus { background-color: #fff; }
+  .signup-page .input-group .form-control::placeholder { color: #b0b0b0; }
+  .signup-page .input-border.is-invalid { border-color: #dc2626; box-shadow: 0 0 0 2px rgba(220,38,38,0.2); }
+  .signup-page .input-group-email .input-group-addon,
+  .signup-page .input-group-pw .input-group-addon { border: none; }
+  .signup-page .mail-icon,
+  .signup-page .shield-icon { width: 20px; height: 20px; }
+  .signup-page .signup-form-btn {
+    margin-top: 1rem;
+    display: block;
+    width: 100%;
+    padding: 0.75rem 1.5rem;
+    font-size: 1rem;
+    font-weight: 800;
+    border: 0;
+    border-radius: 2rem;
+    background-color: var(--green-light);
+    color: var(--dark);
+    cursor: pointer;
+    font-family: 'PT Sans', sans-serif;
+    text-align: center;
+    transition: background 0.2s;
+  }
+  .signup-page .signup-form-btn:hover { background-color: var(--green-hover); }
+  .signup-page .ic-arrow-right::after { content: "→"; margin-left: 8px; }
+  .signup-page .agree-text {
+    font-size: 0.8rem;
+    color: var(--text-light);
+    text-align: center;
+    line-height: 1.3;
+    margin-top: 1rem;
+  }
+  .signup-page .agree-text a { color: var(--blue); }
+  .signup-page .agree-text a:hover { text-decoration: underline; }
+  .signup-page .login-text-link {
+    text-align: center;
+    margin-top: 0.75rem;
+    font-size: 0.9rem;
+    color: var(--text-light);
+  }
+  .signup-page .login-text-link a {
+    color: var(--blue);
+    text-decoration: none;
+    font-weight: 600;
+  }
+  .signup-page .login-text-link a:hover { text-decoration: underline; }
+  .signup-page .login-separator {
+    display: flex;
+    align-items: center;
+    text-align: center;
+    color: #98a2b3;
+    margin: 1rem 0;
+  }
+  .signup-page .login-separator::before {
+    content: "";
+    flex: 1;
+    border-bottom: 1px solid #98a2b3;
+    margin: 0 25px 0 0;
+  }
+  .signup-page .login-separator::after {
+    content: "";
+    flex: 1;
+    border-bottom: 1px solid #98a2b3;
+    margin: 0 0 0 25px;
+  }
+  .signup-page .social-btn-group { text-align: center; padding: 0.5rem 0 0; }
+  .signup-page .social-btn {
+    display: inline-flex;
+    align-items: center;
+    border: 1px solid #4285f4;
+    color: #4285f4;
+    border-radius: 0.25rem;
+    background: #fff;
+    padding: 0;
+    margin: 0.25rem 0;
+    cursor: pointer;
+    text-decoration: none;
+    font-family: 'PT Sans', sans-serif;
+    font-size: 1rem;
+    font-weight: bold;
+  }
+  .signup-page .social-btn span { padding: 0.5rem 1rem; }
+  .signup-page .social-btn:hover { background: #f8f9fa; }
+  .signup-page .alert-error {
+    background: #fee2e2;
+    color: #991b1b;
+    padding: 1rem;
+    border-radius: 8px;
+    margin-bottom: 1rem;
+    font-size: 0.9rem;
+  }
+  .signup-page .field-error {
+    font-size: 0.75rem;
+    color: #dc2626;
+    margin-top: 4px;
+  }
+  .signup-page .row {
+    display: flex;
+    flex-wrap: wrap;
+    margin: 0 -8px;
+  }
+  .signup-page .col-xs-6 {
+    flex: 0 0 50%;
+    max-width: 50%;
+    padding: 0 8px;
+    margin-bottom: 0.5rem;
+  }
+  @media (max-width: 575px) {
+    .signup-page .col-xs-6 { flex: 0 0 100%; max-width: 100%; }
+    .signup-page .signup-preview-align { justify-content: flex-start; }
+  }
+  @media (max-width: 767px) {
+    .signup-page .login-form-header { font-size: 1.6rem; line-height: 1.7rem; }
+  }
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="signup-page">
+  <div class="signup-container">
+    <div class="auth-border">
+      <div class="card-block">
+        <div style="max-width: 83%; margin: 0 auto;">
+          <form method="post" action="{% url 'signup' %}" class="custom-signup-form">
+            {% csrf_token %}
+
+            <h1 class="login-form-header signup-page-header">
+              {% trans "La réussite commence avec" %} <br/><span>Bondora</span>
+            </h1>
+
+            {% if form.non_field_errors %}
+            <div class="alert-error">
+              {{ form.non_field_errors }}
+            </div>
+            {% endif %}
+
+            <!-- Aperçu du prêt -->
+            <div class="row">
+              <div class="col-xs-6">
+                <span class="signup-preview-text">{% trans "Montant du prêt" %}</span>
+              </div>
+              <div class="col-xs-6 signup-preview-align">
+                <div class="nowrap">
+                  <span class="signup-preview-loan">€</span>
+                  <span class="signup-preview-loan" id="montantAffichage">{{ montant_display }}</span>
+                  <button type="button" class="ic-signup-edit-button" title="{% trans 'Modifier' %}" aria-label="{% trans 'Modifier le montant' %}" id="btnEditMontant">✏️</button>
+                </div>
+              </div>
+              <div class="col-xs-6">
+                <span class="signup-preview-text">{% trans "Durée" %}</span>
+              </div>
+              <div class="col-xs-6 signup-preview-align">
+                <div class="nowrap">
+                  <span class="signup-preview-term" id="dureeAffichage">{{ duree_display }}</span>
+                  <span class="signup-preview-term">{% trans "Mois" %}</span>
+                  <button type="button" class="ic-signup-edit-button" title="{% trans 'Modifier' %}" aria-label="{% trans 'Modifier la durée' %}" id="btnEditDuree">✏️</button>
+                </div>
+              </div>
+            </div>
+
+            <input name="montant" type="hidden" id="inputMontant" value="{{ form.montant.value|default:4000 }}" />
+            <input name="duree" type="hidden" id="inputDuree" value="{{ form.duree.value|default:60 }}" />
+
+            <!-- Email -->
+            <div class="form-group-wrap">
+              <div class="form-group">
+                <div class="input-border{% if form.email.errors %} is-invalid{% endif %}">
+                  <div class="input-group input-group-email">
+                    <div class="input-group-addon">
+                      <svg class="mail-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="#55595c" stroke-width="1.5"><rect x="2" y="4" width="20" height="16" rx="2"/><polyline points="2,4 12,13 22,4"/></svg>
+                    </div>
+                    <input type="email" name="email" id="id_email" class="form-control js-email-field"
+                      placeholder="{% trans 'E-mail' %}" value="{{ form.email.value|default:'' }}" autocomplete="username" required />
+                  </div>
+                </div>
+                {% if form.email.errors %}
+                <span class="field-error">{{ form.email.errors.0 }}</span>
+                {% endif %}
+              </div>
+            </div>
+
+            <!-- Mot de passe -->
+            <div class="form-group-wrap">
+              <div class="form-group">
+                <div class="input-border{% if form.password.errors %} is-invalid{% endif %}">
+                  <div class="input-group input-group-pw">
+                    <div class="input-group-addon">
+                      <svg class="shield-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="#55595c" stroke-width="1.5"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+                    </div>
+                    <input type="password" name="password" id="id_password" class="form-control"
+                      placeholder="{% trans 'Mot de passe (min. 8 caractères)' %}" autocomplete="new-password" required />
+                  </div>
+                </div>
+                {% if form.password.errors %}
+                <span class="field-error">{{ form.password.errors.0 }}</span>
+                {% endif %}
+              </div>
+            </div>
+
+            <!-- Confirmer mot de passe -->
+            <div class="form-group-wrap">
+              <div class="form-group">
+                <div class="input-border{% if form.password2.errors %} is-invalid{% endif %}">
+                  <div class="input-group input-group-pw">
+                    <div class="input-group-addon">
+                      <svg class="shield-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="#55595c" stroke-width="1.5"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+                    </div>
+                    <input type="password" name="password2" id="id_password2" class="form-control"
+                      placeholder="{% trans 'Confirmer le mot de passe' %}" autocomplete="new-password" required />
+                  </div>
+                </div>
+                {% if form.password2.errors %}
+                <span class="field-error">{{ form.password2.errors.0 }}</span>
+                {% endif %}
+              </div>
+            </div>
+
+            <button type="submit" class="signup-form-btn" id="btnDemande">
+              <span>{% trans "Demander ici" %}</span>
+              <span class="ic-arrow-right"></span>
+            </button>
+
+            <div class="agree-text">
+              {% blocktrans %}*En soumettant votre adresse e-mail, vous acceptez nos <a href="https://www.bondora.ee/fr/contracts/terms-of-use/" target="_blank" rel="noopener">Conditions d'utilisation</a>. Nous traitons vos données conformément à notre <a href="https://www.bondora.ee/fr/contracts/terms-of-use/#privacyPolicy" target="_blank" rel="noopener">Politique de confidentialité</a>.{% endblocktrans %}
+            </div>
+
+            <div class="login-text-link">
+              <p>
+                {% trans "Vous avez déjà un compte Bondora ?" %} <a href="{% url 'login' %}">{% trans "Connexion" %}</a>
+              </p>
+            </div>
+
+            <div class="login-separator">{% trans "ou continuer avec" %}</div>
+            <div class="social-btn-group">
+              <a class="social-btn" href="#" title="{% trans 'Connexion Google (à venir)' %}">
+                <span>Google</span>
+              </a>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div id="i18n-prompts" data-montant="{% trans 'Montant souhaité (€) :' %}" data-duree="{% trans 'Durée souhaitée (mois) :' %}" style="display:none"></div>
+<script>
+(function() {
+  var montantInput = document.getElementById('inputMontant');
+  var dureeInput = document.getElementById('inputDuree');
+  var montantAffichage = document.getElementById('montantAffichage');
+  var dureeAffichage = document.getElementById('dureeAffichage');
+
+  function formatMontant(v) {
+    return String(Math.round(v)).replace(/\B(?=(\d{3})+(?!\d))/g, ' ');
+  }
+
+  document.getElementById('btnEditMontant').addEventListener('click', function() {
+    var val = parseInt(montantInput.value, 10) || 4000;
+    val = Math.max(100, Math.min(250000, val));
+    var rep = prompt(document.getElementById('i18n-prompts').dataset.montant, val);
+    if (rep !== null) {
+      var n = parseInt(rep, 10);
+      if (!isNaN(n)) {
+        n = Math.max(100, Math.min(250000, n));
+        montantInput.value = n;
+        montantAffichage.textContent = formatMontant(n);
+      }
+    }
+  });
+
+  document.getElementById('btnEditDuree').addEventListener('click', function() {
+    var val = parseInt(dureeInput.value, 10) || 60;
+    val = Math.max(6, Math.min(120, val));
+    var rep = prompt(document.getElementById('i18n-prompts').dataset.duree, val);
+    if (rep !== null) {
+      var n = parseInt(rep, 10);
+      if (!isNaN(n)) {
+        n = Math.max(6, Math.min(120, n));
+        dureeInput.value = n;
+        dureeAffichage.textContent = n;
+      }
+    }
+  });
+})();
+</script>
+{% endblock %}

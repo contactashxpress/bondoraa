@@ -1,0 +1,619 @@
+{% load static %}
+{% load i18n %}
+<!DOCTYPE html>
+<html lang="{% get_current_language as lang %}{{ lang }}">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>{% block title %}{% trans "Pensez grand avec Bondoraa | Prêts de 100 € à 250 000 €" %}{% endblock %}</title>
+<meta name="description" content="{% block meta_description %}{% trans "Découvrez vos offres de prêt Bondoraa. Offre en 1 minute. Virement le jour même sur votre compte bancaire. Faites une demande maintenant !" %}{% endblock %}"/>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Sora:wght@400;500;700;800;900&display=swap" rel="stylesheet">
+<link rel="icon" href="{% static 'img/favicon-32x32.png' %}" sizes="32x32">
+<link rel="icon" href="{% static 'img/favicon-192x192.png' %}" sizes="192x192">
+<link rel="apple-touch-icon" href="{% static 'img/apple-touch-icon.png' %}">
+{% block extra_css %}{% endblock %}
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  :root {
+    --primary: #b5fe4d;
+    --primary-hover: #83c41e;
+    --secondary: #2b8ddb;
+    --dark: #101828;
+    --gray: #475467;
+    --light-gray: #98a2b3;
+    --light-blue: #eaf4fd;
+    --bg-light: #f9fafb;
+    --white: #ffffff;
+    --space-xs: 0.5rem;
+    --space-sm: 1rem;
+    --space-md: 1.5rem;
+    --space-lg: 2rem;
+    --space-xl: 3rem;
+    --space-xxl: 5rem;
+    --radius: 1rem;
+    --max-w: 1088px;
+  }
+  html { scroll-behavior: smooth; font-size: 100%; }
+  body { font-family: 'Sora', sans-serif; color: var(--dark); background: var(--white); }
+  a { text-decoration: none; color: inherit; }
+  img { max-width: 100%; height: auto; display: block; }
+  h1 { font-size: 3.5rem; line-height: 1; font-weight: 900; letter-spacing: -1px; }
+  h2 { font-size: 3.25rem; line-height: 1; font-weight: 900; letter-spacing: -1px; }
+  h3 { font-size: 2rem; line-height: 1.25; font-weight: 900; }
+  h4 { font-size: 1.75rem; line-height: 1.4; font-weight: 500; }
+  h5 { font-size: 1.25rem; font-weight: 500; }
+  .container { max-width: var(--max-w); margin: 0 auto; padding: 0 0.5rem; width: 100%; }
+
+  /* ===== BANNER ===== */
+  .banner {
+    background: var(--secondary);
+    padding: 0.75rem var(--space-sm);
+    display: none;
+  }
+  .banner-inner {
+    max-width: var(--max-w);
+    margin: 0 auto;
+    display: flex;
+    align-items: flex-start;
+    gap: var(--space-sm);
+    justify-content: center;
+  }
+  .banner-icon { flex-shrink: 0; margin-top: 2px; }
+  .banner p { color: white; font-size: 1rem; line-height: 1.5; text-align: center; }
+  .banner a { color: white; font-weight: 700; text-decoration: underline; }
+
+  /* ===== HEADER ===== */
+  header {
+    position: fixed;
+    top: 0; left: 0; right: 0;
+    background: white;
+    z-index: 1000;
+    box-shadow: 0 1px 0 rgba(0,0,0,0.08);
+    display: flex;
+    flex-direction: column;
+  }
+  .header-inner {
+    max-width: var(--max-w);
+    margin: 0 auto;
+    padding: 0.75rem var(--space-sm);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--space-sm);
+  }
+  .logo { width: 124px; flex-shrink: 0; }
+  .nav { margin-left: 12rem; }
+  .logo img { width: 100%; height: auto; }
+  .nav { display: flex; align-items: center; gap: var(--space-md); }
+  .nav-link { font-size: 1rem; font-weight: 500; color: var(--dark); white-space: nowrap; }
+  .nav-link:hover { text-decoration: underline; }
+  .nav-lang { display: flex; align-items: center; gap: 4px; font-size: 1rem; font-weight: 500; cursor: pointer; }
+  .nav-login { display: flex; align-items: center; gap: 6px; font-size: 1rem; font-weight: 500; }
+  .nav-login:hover { text-decoration: underline; }
+  .btn-primary {
+    background: var(--primary);
+    color: var(--dark);
+    font-weight: 500;
+    font-size: 1rem;
+    padding: 0.5rem 1.5rem;
+    border-radius: var(--space-xs);
+    border: none;
+    cursor: pointer;
+    font-family: inherit;
+    transition: background 0.2s;
+    white-space: nowrap;
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    text-decoration: none;
+  }
+  .btn-primary:hover { background: var(--primary-hover); }
+  .btn-primary-lg {
+    font-size: 1.25rem;
+    padding: 1.25rem 2rem;
+    border-radius: var(--space-xs);
+    line-height: 2rem;
+    gap: 10px;
+  }
+  .hamburger { display: none; flex-direction: column; gap: 5px; cursor: pointer; background: none; border: none; padding: 4px; }
+  .hamburger span { display: block; width: 30px; height: 3px; background: var(--dark); border-radius: 2px; }
+
+  /* Mobile Nav */
+  .mobile-nav {
+    display: none;
+    flex-direction: column;
+    background: white;
+    padding: var(--space-lg) var(--space-md);
+    gap: var(--space-sm);
+    box-shadow: 0 6px 15px -2px rgba(13,27,38,0.16);
+    border-radius: 0 0 var(--space-xs) var(--space-xs);
+  }
+  .mobile-nav.open { display: flex; }
+  .mobile-nav a { font-size: 1rem; font-weight: 500; color: var(--dark); padding: 0.5rem 0; }
+  .mobile-nav form button { font-size: 1rem; font-weight: 500; color: var(--dark); }
+
+  /* ===== HERO ===== */
+  .hero {
+    max-width: var(--max-w);
+    margin-left: auto;
+    margin-right: auto;
+    margin-top: calc(120px + 4rem);
+    padding: 2rem 0.5rem 0;
+    background-image: url('https://www.bondora.ee/wp-content/uploads/2024/11/hero-character.png');
+    background-repeat: no-repeat;
+    background-position: bottom right;
+    background-size: 33% auto;
+    min-height: 480px;
+  }
+  .hero-content { max-width: 75%; padding: 0 0.5rem; }
+  .hero h1 { max-width: 500px; margin-bottom: 2rem; }
+  .hero h4 { font-size: 1.75rem; line-height: 2.5rem; margin-bottom: var(--space-md); }
+  .hero-features { margin-bottom: var(--space-lg); }
+  .hero-feature {
+    display: flex; align-items: center; gap: 1rem;
+    margin-bottom: var(--space-sm);
+    font-size: 1.25rem;
+  }
+  .hero-feature svg { flex-shrink: 0; width: 2rem; height: 2rem; }
+
+  /* ===== CALCULATOR ===== */
+  .calc-section {
+    max-width: var(--max-w);
+    margin: 0 auto;
+    padding: var(--space-lg) var(--space-md);
+  }
+  .calc-wrapper {
+    background: rgba(255,255,255,0.5);
+    box-shadow: 0 8px 16px 1px rgba(13,27,38,0.16);
+    border: 1px solid white;
+    border-radius: 10px;
+    padding: 32px;
+  }
+  .calc-sliders { display: flex; flex-direction: column; gap: 0; width: 100%; }
+  .slider-block { width: 100%; padding-bottom: 22px; }
+  .slider-top { display: flex; justify-content: space-between; align-items: center; padding-bottom: 22px; }
+  .slider-label { font-size: 24px; font-weight: 500; line-height: 28px; color: #373a3c; }
+  .slider-val { font-size: 32px; font-weight: 900; color: #373a3c; }
+  .range-track { position: relative; width: 100%; height: 4px; border-radius: 45px; background: #2d94e6; }
+  .range-progress { position: absolute; left: 0; height: 4px; border-radius: 45px; background: #101828; }
+  .range-input {
+    position: absolute; width: 100%; height: 2px;
+    -webkit-appearance: none; background: none; outline: none;
+    pointer-events: none; top: 0;
+  }
+  .range-input::-webkit-slider-thumb {
+    pointer-events: auto; cursor: w-resize; -webkit-appearance: none;
+    background-color: #2D94E6;
+    width: 40px; height: 24px;
+    border: 1px solid #2D94E6;
+    box-shadow: 0 0 15px 0 #2D94E6;
+    border-radius: 30px;
+  }
+  .range-input::-moz-range-thumb {
+    pointer-events: auto; cursor: w-resize;
+    background-color: #2D94E6;
+    width: 40px; height: 24px;
+    border: 1px solid #2D94E6; border-radius: 30px;
+  }
+  .slider-bottom { display: flex; justify-content: space-between; padding-top: 18px; }
+  .range-min-max { font-size: 14px; color: #98a2b3; }
+  .calc-action { display: flex; flex-direction: column; align-items: center; width: 100%; }
+  .calc-monthly-label { font-size: 16px; font-weight: 500; color: #373a3c; margin-bottom: 0.5rem; text-align: center; }
+  .calc-monthly-val { font-size: 44px; font-weight: 900; color: #373a3c; margin-bottom: 0; }
+  .calc-btn {
+    background: #B5FE4D; color: var(--dark); font-family: inherit;
+    font-size: 20px; font-weight: 500; width: 100%;
+    border: none; border-radius: 8px; padding: 20px 24px;
+    cursor: pointer; margin: 24px 0;
+    display: flex; align-items: center; justify-content: center; gap: 6px;
+    transition: background 0.2s;
+  }
+  .calc-btn:hover { background: var(--primary-hover); }
+
+  /* ===== STATS ===== */
+  .stats-section { max-width: var(--max-w); margin: 0 auto; padding: var(--space-lg) var(--space-xs); display: flex; align-items: center; }
+  .stats-row { display: flex; flex-direction: row; width: 100%; justify-content: space-around; }
+  .stat-item { max-width: 33.3%; display: flex; align-items: center; flex-direction: column; text-align: center; }
+  .stat-num { font-size: 3.25rem; font-weight: 900; line-height: 1; margin-bottom: var(--space-sm); }
+  .stat-label { font-size: 1.25rem; font-weight: 400; }
+
+  /* ===== WHY US ===== */
+  .why-section { max-width: var(--max-w); margin: 0 auto; padding: 0 0.5rem; }
+  .why-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    grid-gap: 1.5rem;
+    padding: 2rem 0;
+  }
+  .why-card {
+    display: block;
+    border-radius: var(--radius);
+    background: var(--light-blue);
+    padding: 4rem 3rem 2rem;
+    min-height: 280px;
+  }
+  .why-card--plain { background: none; }
+  .why-card h3 { font-size: 2rem; line-height: 2.5rem; font-weight: 900; margin-bottom: 0.5rem; }
+  .why-card p { font-size: 1.25rem; line-height: 1.875rem; color: var(--gray); }
+  .why-card svg { height: 2.5rem; width: 2.5rem; margin-bottom: var(--space-sm); }
+  .btn-center { display: flex; justify-content: center; align-items: center; padding: 1.5rem 0 3rem; }
+
+  /* ===== HOW IT WORKS ===== */
+  .how-section { max-width: var(--max-w); margin: 0 auto; padding: 1.5rem 0.5rem 3rem; }
+  .how-title { text-align: center; margin-bottom: 2rem; }
+  .how-title h3 { font-size: 3.25rem; letter-spacing: -1px; font-weight: 900; }
+  .how-title .highlight { color: var(--secondary); }
+  .how-content { display: flex; flex-direction: row; align-items: center; }
+  .how-image {
+    position: relative;
+    max-width: 50%;
+    background-image: url('https://www.bondora.ee/wp-content/uploads/2024/10/hand-snap-triangle-stars.png');
+    background-size: 70%;
+    background-repeat: no-repeat;
+    background-position: center;
+    height: 450px;
+    flex: 1;
+  }
+  .how-steps { max-width: 50%; flex: 1; }
+  .how-step { margin-bottom: 1.5rem; display: flex; align-items: center; gap: var(--space-sm); }
+  .how-step-num { font-size: 5rem; line-height: 4rem; font-weight: 900; margin-bottom: 0.5rem; min-width: 80px; }
+  .how-step-text { font-size: 1.25rem; color: var(--dark); }
+
+  /* ===== TESTIMONIALS ===== */
+  .testimonials-section { max-width: 100vw; overflow: hidden; padding: 2rem 0.5rem 5rem; }
+  .testimonials-inner { max-width: var(--max-w); margin: 0 auto; position: relative; }
+  .testimonials-slider { display: flex; gap: 1.25rem; overflow: hidden; }
+  .testimonial-slide {
+    flex-shrink: 0; width: 100%;
+    border-radius: var(--radius);
+    padding: 5rem;
+    display: flex; flex-direction: row; align-items: flex-end;
+    justify-content: space-between;
+  }
+  .testimonial-slide--blue { background: #c0dff8; }
+  .testimonial-slide--green { background: var(--primary); }
+  .testimonial-slide--dark { background: var(--dark); }
+  .testimonial-quote { max-width: 1088px; text-align: left; }
+  .testimonial-quote h3 { font-size: 2.5rem; line-height: 3rem; font-weight: 900; margin-bottom: var(--space-xs); }
+  .testimonial-quote .author { font-size: 1.25rem; font-weight: 500; }
+  .testimonial-slide--dark .testimonial-quote h3,
+  .testimonial-slide--dark .author { color: var(--primary); }
+  .testimonial-img { width: 377px; height: auto; align-self: flex-end; }
+  .splide-pagination { display: flex; justify-content: center; gap: 8px; margin-top: 1rem; }
+  .splide-dot {
+    width: 10px; height: 10px; border-radius: 50%;
+    background: #d0d5dd; border: none; cursor: pointer; padding: 0;
+  }
+  .splide-dot.active { background: var(--dark); }
+
+  /* ===== TRUST ===== */
+  .trust-section { background: var(--bg-light); padding: 2rem 0.5rem var(--space-xl); }
+  .trust-inner { max-width: var(--max-w); margin: 0 auto; display: flex; justify-content: space-around; align-items: flex-start; flex-wrap: nowrap; padding: 1.5rem 0 3rem; }
+  .trust-item { display: flex; flex-direction: column; align-items: center; justify-content: center; max-width: 33%; }
+  .trust-item svg { height: 5rem; width: 5rem; margin-bottom: 2rem; }
+  .trust-item p { text-align: center; font-size: 1.25rem; color: var(--dark); width: 100%; }
+
+  /* ===== FAQ ===== */
+  .faq-section { max-width: var(--max-w); margin: 0 auto; padding: 1.5rem 0.5rem 3rem; display: flex; flex-direction: row; justify-content: space-around; align-items: center; }
+  .faq-left { max-width: 50%; }
+  .faq-title h3 { font-size: 3.25rem; letter-spacing: -1px; font-weight: 900; line-height: 1; }
+  .faq-title .blue { color: var(--secondary); margin-left: 0.5rem; }
+  .faq-right { max-width: 41.6%; width: 100%; }
+  .accordion { list-style: none; }
+  .accordion-item { border-bottom: 1px solid #e4e7ec; }
+  .accordion-title {
+    display: flex; align-items: center; gap: 0.75rem;
+    padding: 1rem 0; cursor: pointer; width: 100%;
+    background: none; border: none; text-align: left;
+    font-family: inherit; font-size: 1.25rem; font-weight: 400; color: var(--dark);
+  }
+  .accordion-title .acc-icon { width: 0.75rem; height: 0.75rem; fill: #98a2b3; transition: transform 0.2s; flex-shrink: 0; }
+  .accordion-title.open .acc-icon { transform: rotate(90deg); }
+  .accordion-body { display: none; padding: 0 0 1rem 1.5rem; font-size: 1rem; color: var(--dark); line-height: 1.6; }
+  .accordion-body.open { display: block; }
+  .accordion-body a { color: var(--secondary); }
+
+  /* ===== CONTACT ===== */
+  .contact-section { margin-bottom: var(--space-xxl); }
+  .contact-inner { max-width: var(--max-w); margin: 0 auto; padding: 2rem var(--space-sm); }
+  .contact-box {
+    background: var(--bg-light);
+    border-radius: var(--radius);
+    padding: 2rem;
+    display: flex; flex-direction: row; align-items: center; justify-content: center;
+    column-gap: var(--space-md);
+  }
+  .contact-img { max-width: 33%; }
+  .contact-img img { width: 307px; margin-top: -5rem; }
+  .contact-content h3 { font-size: 3.25rem; letter-spacing: -1px; font-weight: 900; margin-bottom: 1rem; line-height: 1; }
+  .contact-content p { font-size: 1.25rem; color: var(--dark); margin-bottom: 1rem; }
+  .contact-links { display: grid; grid-template-columns: 4fr 5fr; gap: 0; }
+  .contact-link { display: flex; align-items: center; gap: 1rem; flex-direction: row; }
+  .contact-link svg { width: 3rem; height: 2.5rem; flex-shrink: 0; }
+  .contact-link a { font-size: 1.25rem; font-weight: 500; color: var(--dark); }
+  .contact-link a:hover { text-decoration: underline; }
+
+  /* ===== FOOTER ===== */
+  footer { background: var(--bg-light); }
+  .footer-main { max-width: var(--max-w); margin: 0 auto; padding: 35px 15px; }
+  .footer-grid {
+    display: grid;
+    grid-template-columns: 2fr 1fr 1fr;
+    gap: 10px;
+    margin-bottom: var(--space-xl);
+    align-items: flex-start;
+  }
+  .footer-col h5 { font-weight: 500; margin-bottom: var(--space-sm); color: var(--dark); }
+  .footer-nav { list-style: none; columns: 2; }
+  .footer-nav li { margin-left: 0; margin-bottom: 0.25rem; }
+  .footer-nav a { font-size: 14px; color: #667085; line-height: 2rem; display: inline; }
+  .footer-nav a:hover { text-decoration: underline; }
+  .footer-brand { display: flex; flex-direction: column; align-items: flex-start; }
+  .footer-logo img { width: 100px; margin-bottom: 10px; }
+  .footer-contact-link { font-size: 14px; font-weight: 700; color: #667085; margin-top: 10px; }
+  .footer-contact-link:hover { text-decoration: underline; }
+  .footer-address { font-size: 14px; color: #667085; line-height: 1.6; }
+  .footer-phone { font-size: 14px; color: #667085; line-height: 1.6; }
+  .footer-email { font-size: 14px; font-weight: 600; color: #667085; }
+  .footer-email:hover { text-decoration: underline; }
+  .footer-legal { border-top: 1px solid #e4e7ec; padding: 36px 15px 34px; max-width: var(--max-w); margin: 0 auto; }
+  .footer-legal-title { font-size: 12px; font-weight: 700; color: #667085; margin-bottom: 0.5rem; }
+  .footer-legal-text { font-size: 12px; color: #667085; line-height: 1.5; margin-bottom: var(--space-md); }
+  .footer-terms-title { font-size: 12px; font-weight: 700; color: #667085; margin-bottom: 0.5rem; }
+  .footer-terms-text { font-size: 12px; color: #667085; line-height: 1.5; }
+
+  /* ===== RESPONSIVE ===== */
+  @media (min-width: 1200px) {
+    .nav { margin-left: 32rem; }
+  }
+  @media (max-width: 991px) {
+    h1 { font-size: 2.5rem; }
+    .hero { background-size: 35%; }
+  }
+  @media (max-width: 767px) {
+    h1 { font-size: 2rem; line-height: 40px; }
+    h2 { font-size: 24px; line-height: 32px; }
+    h3 { font-size: 20px; }
+    .header-inner { width: 100%; max-width: 100%; padding-left: var(--space-xl); padding-right: var(--space-xl); justify-content: space-between; }
+    .nav { display: none !important; }
+    .hamburger { display: flex; margin-left: auto; flex-shrink: 0; }
+    .hero { background-image: none !important; padding: var(--space-md); margin-top: calc(120px + 3.5rem); }
+    .hero-content { max-width: 100%; }
+    .how-content { flex-direction: column; }
+    .how-image { max-width: 100%; width: 100%; }
+    .how-steps { max-width: 100%; }
+    .faq-section { flex-direction: column; }
+    .faq-left { max-width: 100%; width: 100%; margin-bottom: var(--space-md); }
+    .faq-right { max-width: 100%; width: 100%; }
+    .contact-box { flex-direction: column; }
+    .contact-img { max-width: 100%; }
+    .contact-img img { margin-top: 0; }
+    .contact-links { grid-template-columns: 1fr; }
+    .footer-grid { grid-template-columns: 1fr; }
+    .testimonial-slide { padding: 2rem; }
+    .testimonial-img { display: none; }
+    .why-grid { grid-template-columns: 1fr; }
+    .stats-row { flex-direction: column; align-items: center; }
+    .stat-item { max-width: 100%; margin-bottom: 2rem; }
+    .trust-inner { flex-direction: column; align-items: center; }
+    .trust-item { max-width: 100%; flex-direction: row; align-items: flex-start; gap: 1.5rem; margin-bottom: 1.5rem; }
+    .trust-item svg { min-width: 4rem; height: 4rem; margin-bottom: 0; }
+    .trust-item p { text-align: left; font-weight: 500; }
+    .banner { display: flex; }
+  }
+  @media (max-width: 478px) {
+    .header-inner { padding-left: var(--space-lg); padding-right: var(--space-lg); }
+    h2 { font-size: 2.25rem; line-height: 2.5rem; }
+    h3 { font-size: 20px; }
+    .testimonial-quote h3 { font-size: 1.25rem; line-height: 1.75rem; }
+    .hero h1 { font-size: 2.5rem; line-height: 2.5rem; }
+    .btn-primary-lg { width: 100%; justify-content: center; }
+    .calc-btn { width: 100%; }
+    .how-step-num { font-size: 5rem; }
+    .faq-title h3 { font-size: 2.25rem; line-height: 2.5rem; }
+    .contact-content h3 { font-size: 2.25rem; line-height: 2.5rem; }
+    .stat-num { font-size: 2.25rem; }
+  }
+  @media (min-width: 768px) {
+    .nav { margin-left: 20rem; }
+    .banner { display: flex; }
+    .calc-sliders { flex-direction: row; gap: 32px; }
+    .calc-action { flex-direction: row; gap: 24px; }
+    .calc-monthly { flex-basis: 50%; }
+    .calc-btn { flex-basis: 50%; }
+    .calc-wrapper { padding: 32px; }
+  }
+
+  /* ===== LANGUAGE SELECTOR ===== */
+  .lang-form { display: inline-flex; align-items: center; }
+  .lang-select-wrap {
+    position: relative;
+    display: inline-flex;
+    align-items: center;
+  }
+  .lang-select-wrap::before {
+    content: '';
+    position: absolute;
+    left: 9px;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 16px;
+    height: 16px;
+    pointer-events: none;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='%23475467' stroke-width='1.8' stroke-linecap='round' stroke-linejoin='round'%3E%3Ccircle cx='12' cy='12' r='10'/%3E%3Cpath d='M2 12h20M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z'/%3E%3C/svg%3E");
+    background-repeat: no-repeat;
+    background-size: contain;
+    z-index: 1;
+  }
+  .lang-select-wrap::after {
+    content: '';
+    position: absolute;
+    right: 9px;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 10px;
+    height: 10px;
+    pointer-events: none;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='10' viewBox='0 0 12 12'%3E%3Cpath fill='%2398a2b3' d='M6 8L1 3h10z'/%3E%3C/svg%3E");
+    background-repeat: no-repeat;
+    background-size: contain;
+  }
+  .lang-select {
+    appearance: none;
+    -webkit-appearance: none;
+    background: #f2f4f7;
+    border: 1.5px solid #e4e7ec;
+    border-radius: 20px;
+    padding: 5px 28px 5px 30px;
+    font-family: inherit;
+    font-size: 0.85rem;
+    font-weight: 600;
+    color: var(--dark);
+    cursor: pointer;
+    outline: none;
+    transition: border-color 0.2s, background 0.2s, box-shadow 0.2s;
+    line-height: 1.4;
+  }
+  .lang-select:hover {
+    border-color: var(--secondary);
+    background: #fff;
+  }
+  .lang-select:focus {
+    border-color: var(--secondary);
+    background: #fff;
+    box-shadow: 0 0 0 3px rgba(43,141,219,0.12);
+  }
+  /* Mobile variant */
+  .lang-form-mobile { display: block; width: 100%; }
+  .lang-form-mobile .lang-select-wrap { width: 100%; }
+  .lang-form-mobile .lang-select {
+    width: 100%;
+    border-radius: 10px;
+    padding: 10px 32px 10px 32px;
+    font-size: 0.95rem;
+    background: #f2f4f7;
+    margin-bottom: 0.5rem;
+  }
+</style>
+</head>
+<body>
+
+<!-- HEADER -->
+<header>
+  <div class="banner" id="banner">
+    <div class="banner-inner">
+      <div class="banner-icon">
+        <svg width="16" height="17" viewBox="0 0 16 17" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <path d="M8.0013 8.94V6.45" stroke="white" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+          <path d="M8 10.95C7.91 10.95 7.83 11.02 7.83 11.11C7.83 11.21 7.91 11.28 8 11.28C8.09 11.28 8.17 11.21 8.17 11.11C8.17 11.02 8.09 10.95 8 10.95" stroke="white" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+          <path fill-rule="evenodd" clip-rule="evenodd" d="M9.35 2.96L14.46 11.89C15.05 12.93 14.3 14.22 13.1 14.22H2.89C1.7 14.22 0.95 12.93 1.54 11.89L6.65 2.96C7.24 1.91 8.75 1.91 9.35 2.96Z" stroke="white" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+      </div>
+      <p><strong>{% trans "Attention aux arnaques" %}</strong> : {% trans "Ne contractez jamais un prêt pour quelqu'un d'autre et ne partagez pas votre code PIN." %} <a href="mailto:credit@bondoraa.com">{% trans "Contactez-nous" %}</a> {% trans "en cas de doute." %}</p>
+    </div>
+  </div>
+  <div class="header-inner">
+    <a href="{% url 'home' %}" class="logo" aria-label="Bondoraa">
+      <img src="{% static 'img/bondora-logo.svg' %}" alt="Bondoraa" width="124" height="32">
+    </a>
+    <nav class="nav" id="desktop-nav">
+      <form action="{% url 'set_language' %}" method="post" class="lang-form" id="lang-form-desktop">{% csrf_token %}<input name="next" type="hidden" value="{{ request.get_full_path }}"><div class="lang-select-wrap"><select name="language" onchange="this.form.submit()" class="lang-select">{% get_current_language as CURRENT_LANG %}{% for lang_code, lang_name in LANGUAGES %}<option value="{{ lang_code }}" {% if lang_code == CURRENT_LANG %}selected{% endif %}>{{ lang_name }}</option>{% endfor %}</select></div></form>
+      <a href="https://www.bondora.com" target="_blank" class="nav-link">{% trans "Devenir investisseur" %}</a>
+      {% if user.is_authenticated %}
+      <a href="{% url 'demande' %}" class="nav-link">{% trans "Ma demande" %}</a>
+      <div class="nav-login">
+        <svg width="20" height="20" viewBox="0 0 20 20" fill="none"><path d="M14.8 15.76L14.51 15.03C14.36 14.65 14.13 14.32 13.84 14.05L13.79 14C13.32 13.57 12.72 13.33 12.09 13.33H7.91C7.28 13.33 6.67 13.57 6.21 14L6.16 14.05C5.86 14.32 5.64 14.65 5.49 15.03L5.2 15.76" stroke="#101828" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/><path d="M12.06 6.21C13.2 7.34 13.2 9.19 12.06 10.33C10.92 11.47 9.08 11.47 7.94 10.33C6.8 9.19 6.8 7.34 7.94 6.21C9.08 5.07 10.92 5.07 12.06 6.21" stroke="#101828" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/><path d="M15.3 4.7C18.23 7.63 18.23 12.37 15.3 15.3C12.37 18.23 7.63 18.23 4.7 15.3C1.77 12.37 1.77 7.63 4.7 4.7C7.63 1.77 12.37 1.77 15.3 4.7" stroke="#101828" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        <form method="post" action="{% url 'logout' %}" style="display:inline;">{% csrf_token %}<button type="submit" class="nav-link" style="background:none;border:none;cursor:pointer;font:inherit;padding:0;">{% trans "Déconnexion" %}</button></form>
+      </div>
+      <a href="{% url 'demande' %}" class="btn-primary">{% trans "Faire une demande" %}</a>
+      {% else %}
+      <div class="nav-login">
+        <svg width="20" height="20" viewBox="0 0 20 20" fill="none"><path d="M14.8 15.76L14.51 15.03C14.36 14.65 14.13 14.32 13.84 14.05L13.79 14C13.32 13.57 12.72 13.33 12.09 13.33H7.91C7.28 13.33 6.67 13.57 6.21 14L6.16 14.05C5.86 14.32 5.64 14.65 5.49 15.03L5.2 15.76" stroke="#101828" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/><path d="M12.06 6.21C13.2 7.34 13.2 9.19 12.06 10.33C10.92 11.47 9.08 11.47 7.94 10.33C6.8 9.19 6.8 7.34 7.94 6.21C9.08 5.07 10.92 5.07 12.06 6.21" stroke="#101828" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/><path d="M15.3 4.7C18.23 7.63 18.23 12.37 15.3 15.3C12.37 18.23 7.63 18.23 4.7 15.3C1.77 12.37 1.77 7.63 4.7 4.7C7.63 1.77 12.37 1.77 15.3 4.7" stroke="#101828" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        <a href="{% url 'login' %}" class="nav-link">{% trans "Se connecter" %}</a>
+      </div>
+      <a href="{% url 'signup' %}" class="btn-primary">{% trans "Faire une demande" %}</a>
+      {% endif %}
+    </nav>
+    <button class="hamburger" id="hamburger" aria-label="Menu">
+      <span></span><span></span><span></span>
+    </button>
+  </div>
+  <div class="mobile-nav" id="mobile-nav">
+    <form action="{% url 'set_language' %}" method="post" class="lang-form-mobile">{% csrf_token %}<input name="next" type="hidden" value="{{ request.get_full_path }}"><div class="lang-select-wrap"><select name="language" onchange="this.form.submit()" class="lang-select">{% get_current_language as CURRENT_LANG %}{% for lang_code, lang_name in LANGUAGES %}<option value="{{ lang_code }}" {% if lang_code == CURRENT_LANG %}selected{% endif %}>{{ lang_name }}</option>{% endfor %}</select></div></form>
+    <a href="https://www.bondora.com" target="_blank">{% trans "Devenir investisseur" %}</a>
+    <a href="https://help.bondora.ee/hc/en-ee">{% trans "Aide & support" %}</a>
+    {% if user.is_authenticated %}
+    <a href="{% url 'demande' %}">{% trans "Ma demande" %}</a>
+    <form method="post" action="{% url 'logout' %}" style="margin:0;">{% csrf_token %}<button type="submit" class="mobile-nav-logout" style="background:none;border:none;cursor:pointer;font:inherit;padding:0.5rem 0;color:inherit;text-align:left;width:100%;font-size:1rem;font-weight:500;">{% trans "Déconnexion" %}</button></form>
+    <a href="{% url 'demande' %}" class="btn-primary" style="justify-content:center;">{% trans "Faire une demande" %}</a>
+    {% else %}
+    <a href="{% url 'login' %}">{% trans "Se connecter" %}</a>
+    <a href="{% url 'signup' %}" class="btn-primary" style="justify-content:center;">{% trans "Faire une demande" %}</a>
+    {% endif %}
+  </div>
+</header>
+
+<main>
+  {% block content %}{% endblock %}
+</main>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-main">
+    <div class="footer-grid">
+      <div class="footer-brand">
+        <a href="{% url 'home' %}" class="footer-logo" aria-label="{% trans 'Accueil' %}">
+          <img src="{% static 'img/bondora-logo.svg' %}" alt="Bondora" width="100">
+        </a>
+        <a href="https://help.bondora.ee/hc/en-ee/categories/12624803479954-Contact-Customer-Support" target="_blank" class="footer-contact-link">{% trans "Contacts" %}</a>
+        <p class="footer-address" style="margin-top:10px;">157 Rue Anatole France, 92300 Levallois-Perret<br>3 Cr Mirabeau, 13100 Aix-en-Provence<br></p>
+        <div class="footer-phone" style="margin-top:10px;">{% trans "Service client" %} :<br><strong>+33 7 56 92 61 20</strong></div>
+        <a href="mailto:info@bondoraa.com" class="footer-email" style="display:block;margin-top:4px;">info@bondoraa.com</a>
+      </div>
+      <div class="footer-col">
+        <h5>{% trans "À propos" %}</h5>
+        <ul class="footer-nav">
+          <li><a href="https://www.bondora.ee/en/about-bondora/">{% trans "À propos de Bondora" %}</a></li>
+          <li><a href="https://www.bondora.ee/en/bsecure/">B Secure</a></li>
+          <li><a href="https://www.bondora.ee/en/bsecureplus/">B Secure+</a></li>
+          <li><a href="https://www.bondora.ee/en/bontrack/">B On Track</a></li>
+          <li><a href="https://bondora.group/" target="_blank">{% trans "Carrières Bondora" %}</a></li>
+          <li><a href="https://www.bondora.fi/">Bondora Suomi</a></li>
+          <li><a href="https://www.bondora.es/">Bondora España</a></li>
+          <li><a href="https://www.bondora.nl/">Bondora Nederland</a></li>
+          <li><a href="https://bondora.lv/">Bondora Latvja</a></li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <h5>{% trans "Questions" %}</h5>
+        <ul class="footer-nav">
+          <li><a href="{% if user.is_authenticated %}{% url 'demande' %}{% else %}{% url 'signup' %}{% endif %}">{% trans "Demande de prêt" %}</a></li>
+          <li><a href="https://www.bondora.ee/en/loan/how-to-get-a-loan/">{% trans "Comment obtenir un prêt ?" %}</a></li>
+          <li><a href="https://www.bondora.ee/en/loan/why-borrow-from-bondora/">{% trans "Pourquoi emprunter chez Bondora ?" %}</a></li>
+          <li><a href="https://www.bondora.ee/en/contracts/fees/">{% trans "Frais" %}</a></li>
+          <li><a href="https://help.bondora.ee/hc/en-ee/">{% trans "Service client" %}</a></li>
+          <li><a href="https://www.bondora.ee/en/contracts/terms-of-use/">{% trans "Informations légales" %}</a></li>
+          <li><a href="https://help.bondora.ee/hc/en-ee/categories/12624838505362-Frequently-Asked-Questions">{% trans "FAQ" %}</a></li>
+        </ul>
+      </div>
+    </div>
+  </div>
+  <div class="footer-legal">
+    <div class="footer-legal-title">{% trans "Exemple représentatif" %}</div>
+    <p class="footer-legal-text">Un prêt de 2 870 € sur 5 ans vous coûtera 85,16 € par mois. TAEG représentatif 32,94 %. Le montant total à payer sur 5 ans est de 5 295,52 €, ce qui comprend 1 680,76 € d'intérêts à 19,88 % fixe et des frais de gestion de compte de 574 €. Des frais de dossier de 170 € seront prélevés immédiatement après le versement du prêt. Le coût total après 5 ans est de 2 425,52 €. Le montant total du crédit est de 2 870 €. Le taux qui vous est proposé dépend de votre situation individuelle. Veuillez examiner les conditions générales de notre service financier et consulter un expert si nécessaire.</p>
+    <div class="footer-terms-title">{% trans "Nos conditions de prêt" %}</div>
+    <p class="footer-terms-text">Montant du prêt de 100 € à 20 000 €. Durée de remboursement de 6 à 120 mois. Taux annuel effectif global (TAEG) de 16,21 % à 46,86 %. Le taux proposé dépend de votre situation personnelle.</p>
+  </div>
+</footer>
+
+<script>
+document.getElementById('hamburger').addEventListener('click', function() {
+  document.getElementById('mobile-nav').classList.toggle('open');
+});
+document.getElementById('banner').style.display = 'flex';
+</script>
+{% block extra_js %}{% endblock %}
+</body>
+</html>
