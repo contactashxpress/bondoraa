@@ -1,32 +1,208 @@
 {% extends 'base.html' %}
 {% load static i18n %}
 
-{% block title %}{% trans "Vérification envoyée" %} | Bondoraa{% endblock %}
+{% block title %}{% trans "Vérification envoyée" %} | Bondora{% endblock %}
 
 {% block content %}
-<section class="auth-section" style="max-width:var(--max-w);margin:0 auto;padding:calc(120px + 4rem) 1rem 4rem;">
-  <div class="auth-box" style="background:var(--bg-light);border-radius:var(--radius);padding:2.5rem;max-width:560px;margin:0 auto;box-shadow:0 4px 16px rgba(0,0,0,0.08);text-align:center;">
-    <div style="width:64px;height:64px;background:var(--primary);border-radius:50%;margin:0 auto 1.5rem;display:flex;align-items:center;justify-content:center;">
-      <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-        <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/>
-        <polyline points="22,6 12,13 2,6"/>
+<section class="auth-section" style="
+  max-width: var(--max-w);
+  margin: 0 auto;
+  padding: calc(65px + 6rem) 1rem 6rem;
+  min-height: 80vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+">
+
+  <div style="
+    background: var(--white);
+    border-radius: var(--radius);
+    padding: 3rem 3.5rem;
+    max-width: 580px;
+    width: 100%;
+    margin: 0 auto;
+    box-shadow: 0 8px 32px rgba(13, 27, 38, 0.10);
+    text-align: center;
+    position: relative;
+    overflow: hidden;
+  ">
+
+    <!-- Decorative top bar (primary color accent, like hero CTA) -->
+    <div style="
+      position: absolute;
+      top: 0; left: 0; right: 0;
+      height: 6px;
+      background: var(--primary);
+      border-radius: var(--radius) var(--radius) 0 0;
+    "></div>
+
+    <!-- Icon -->
+    <div style="
+      width: 80px; height: 80px;
+      background: var(--light-blue);
+      border-radius: 50%;
+      margin: 0.5rem auto 2rem;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    ">
+      <svg xmlns="http://www.w3.org/2000/svg" width="40" height="40" viewBox="0 0 50 49" fill="none">
+        <path d="M22.95 36.87H12.83C9.48 36.87 6.76 34.15 6.76 30.8V14.61C6.76 11.25 9.48 8.54 12.83 8.54H37.11C40.47 8.54 43.19 11.25 43.19 14.61V24.73"
+          stroke="#2b8ddb" stroke-width="3.2" stroke-linecap="round" stroke-linejoin="round"/>
+        <path d="M43.11 13.83L28.07 22.61C26.18 23.71 23.84 23.71 21.95 22.61L6.84 13.78"
+          stroke="#2b8ddb" stroke-width="3.2" stroke-linecap="round" stroke-linejoin="round"/>
+        <path fill-rule="evenodd" clip-rule="evenodd"
+          d="M36.72 32.97L37.12 33.37L37.52 32.97C38.25 32.23 39.25 31.81 40.29 31.81C41.33 31.81 42.33 32.23 43.06 32.97
+             C44.58 34.53 44.58 37.03 43.06 38.59L39.95 41.75C39.2 42.51 38.18 42.94 37.12 42.94
+             C36.06 42.94 35.04 42.51 34.29 41.75L31.18 38.59C29.65 37.03 29.65 34.53 31.18 32.97
+             C31.91 32.23 32.91 31.81 33.95 31.81C34.99 31.81 35.99 32.23 36.72 32.97Z"
+          stroke="#2b8ddb" stroke-width="3.2" stroke-linecap="round" stroke-linejoin="round"/>
       </svg>
     </div>
-    <h2 style="font-size:2rem;margin-bottom:0.75rem;">{% trans "E-mail de vérification envoyé" %}</h2>
-    <p style="color:var(--gray);line-height:1.6;margin-bottom:1.5rem;">
+
+    <!-- Heading -->
+    <h2 style="
+      font-size: 2rem;
+      font-weight: 900;
+      line-height: 1.2;
+      color: var(--dark);
+      margin-bottom: 1rem;
+    ">{% trans "E-mail de vérification envoyé" %}</h2>
+
+    <!-- Main message -->
+    <p style="
+      color: var(--gray);
+      font-size: 1.125rem;
+      line-height: 1.7;
+      margin-bottom: 0.75rem;
+    ">
       {% trans "Un e-mail de vérification a été envoyé à votre adresse. Cliquez sur le lien dans l'e-mail pour activer votre compte." %}
     </p>
-    <p style="color:var(--gray);font-size:0.9375rem;margin-bottom:1.5rem;">
-      {% trans "Si vous ne recevez pas l'e-mail, vérifiez votre dossier spam ou" %} <a href="{% url 'resend_verification' %}" style="color:var(--secondary);font-weight:500;">{% trans "renvoyer la vérification" %}</a>.
+
+    <!-- Steps hint -->
+    <div style="
+      background: var(--bg-light);
+      border-radius: 0.75rem;
+      padding: 1.25rem 1.5rem;
+      margin: 1.75rem 0;
+      text-align: left;
+    ">
+      <div style="display:flex;align-items:flex-start;gap:0.875rem;margin-bottom:0.875rem;">
+        <div style="
+          min-width: 28px; height: 28px;
+          background: var(--primary);
+          border-radius: 50%;
+          display: flex; align-items: center; justify-content: center;
+          font-weight: 900; font-size: 0.85rem; color: var(--dark);
+          flex-shrink: 0; margin-top: 1px;
+        ">1</div>
+        <p style="color:var(--dark);font-size:0.9375rem;line-height:1.6;margin:0;">
+          {% trans "Ouvrez votre boîte mail et recherchez un e-mail de" %} <strong>Bondora</strong>.
+        </p>
+      </div>
+      <div style="display:flex;align-items:flex-start;gap:0.875rem;margin-bottom:0.875rem;">
+        <div style="
+          min-width: 28px; height: 28px;
+          background: var(--primary);
+          border-radius: 50%;
+          display: flex; align-items: center; justify-content: center;
+          font-weight: 900; font-size: 0.85rem; color: var(--dark);
+          flex-shrink: 0; margin-top: 1px;
+        ">2</div>
+        <p style="color:var(--dark);font-size:0.9375rem;line-height:1.6;margin:0;">
+          {% trans "Cliquez sur le lien de confirmation dans l'e-mail." %}
+        </p>
+      </div>
+      <div style="display:flex;align-items:flex-start;gap:0.875rem;">
+        <div style="
+          min-width: 28px; height: 28px;
+          background: var(--primary);
+          border-radius: 50%;
+          display: flex; align-items: center; justify-content: center;
+          font-weight: 900; font-size: 0.85rem; color: var(--dark);
+          flex-shrink: 0; margin-top: 1px;
+        ">3</div>
+        <p style="color:var(--dark);font-size:0.9375rem;line-height:1.6;margin:0;">
+          {% trans "Votre compte sera activé et vous pourrez vous connecter." %}
+        </p>
+      </div>
+    </div>
+
+    <!-- Spam note -->
+    <p style="
+      color: var(--light-gray);
+      font-size: 0.9rem;
+      margin-bottom: 2rem;
+      line-height: 1.6;
+    ">
+      {% trans "Vous ne trouvez pas l'e-mail ? Vérifiez votre dossier spam ou" %}
+      <a href="{% url 'resend_verification' %}" style="
+        color: var(--secondary);
+        font-weight: 600;
+        text-decoration: none;
+        border-bottom: 1px solid var(--secondary);
+      ">{% trans "renvoyer la vérification" %}</a>.
     </p>
+
+    <!-- CTAs -->
     <div style="display:flex;gap:1rem;justify-content:center;flex-wrap:wrap;">
-      <a href="{% url 'home' %}" class="btn-primary" style="display:inline-flex;">
+      <a href="{% url 'home' %}" style="
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        background: var(--primary);
+        color: var(--dark);
+        font-weight: 600;
+        font-size: 1rem;
+        padding: 0.875rem 1.75rem;
+        border-radius: 0.5rem;
+        text-decoration: none;
+        transition: background 0.2s;
+        font-family: inherit;
+      " onmouseover="this.style.background='#83c41e'" onmouseout="this.style.background='var(--primary)'">
         {% trans "Retour à l'accueil" %}
       </a>
-      <a href="{% url 'login' %}" style="display:inline-flex;align-items:center;padding:0.5rem 1.5rem;font-weight:500;color:var(--secondary);border:2px solid var(--secondary);border-radius:0.5rem;text-decoration:none;">
+      <a href="{% url 'login' %}" style="
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        padding: 0.875rem 1.75rem;
+        font-weight: 600;
+        font-size: 1rem;
+        color: var(--secondary);
+        border: 2px solid var(--secondary);
+        border-radius: 0.5rem;
+        text-decoration: none;
+        font-family: inherit;
+        transition: background 0.2s, color 0.2s;
+      " onmouseover="this.style.background='var(--secondary)';this.style.color='#fff'"
+         onmouseout="this.style.background='transparent';this.style.color='var(--secondary)'">
         {% trans "Se connecter" %}
       </a>
     </div>
+
+    <!-- Trust badge -->
+    <div style="
+      margin-top: 2rem;
+      padding-top: 1.5rem;
+      border-top: 1px solid #e4e7ec;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0.5rem;
+    ">
+      <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 96 97" fill="none">
+        <path fill-rule="evenodd" clip-rule="evenodd"
+          d="M68 84.73H28C23.58 84.73 20 81.15 20 76.73V44.73C20 40.31 23.58 36.73 28 36.73H68C72.42 36.73 76 40.31 76 44.73V76.73C76 81.15 72.42 84.73 68 84.73Z"
+          stroke="#98a2b3" stroke-width="6" stroke-linecap="round" stroke-linejoin="round"/>
+        <path d="M32 36.73V28.73C32 19.89 39.16 12.73 48 12.73C56.84 12.73 64 19.89 64 28.73V36.73"
+          stroke="#98a2b3" stroke-width="6" stroke-linecap="round" stroke-linejoin="round"/>
+      </svg>
+      <span style="font-size:0.85rem;color:var(--light-gray);">
+        {% trans "Vos données sont protégées conformément aux standards UE" %}
+      </span>
+    </div>
+
   </div>
 </section>
 {% endblock %}

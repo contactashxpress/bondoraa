@@ -145,6 +145,11 @@ STATICFILES_DIRS = [BASE_DIR / 'static']
 
 # WhiteNoise : compression + cache long terme
 STORAGES = {
+    # Stockage des fichiers uploadés (FileField, ImageField, etc.)
+    'default': {
+        'BACKEND': 'django.core.files.storage.FileSystemStorage',
+    },
+    # Fichiers statiques servis via WhiteNoise
     'staticfiles': {
         'BACKEND': 'whitenoise.storage.CompressedManifestStaticFilesStorage',
     },
@@ -161,7 +166,7 @@ LOGOUT_REDIRECT_URL   = 'home'
 DEFAULT_AUTO_FIELD    = 'django.db.models.BigAutoField'
 
 # ─── EMAIL ────────────────────────────────────────────────────────────────────
-EMAIL_BACKEND       = 'django.core.mail.backends.smtp.EmailBackend'
+EMAIL_BACKEND = os.environ.get('EMAIL_BACKEND', 'django.core.mail.backends.smtp.EmailBackend')
 EMAIL_HOST          = os.environ.get('EMAIL_HOST', 'smtp.sendgrid.net')
 EMAIL_PORT          = int(os.environ.get('EMAIL_PORT', 587))
 EMAIL_USE_TLS       = os.environ.get('EMAIL_USE_TLS', 'True') == 'True'
@@ -205,4 +210,4 @@ LOGGING = {
 }
 
 # ─── URL DU SITE ──────────────────────────────────────────────────────────────
-SITE_URL = os.environ.get('SITE_URL', 'https://www.bondoraa.com')
+SITE_URL = os.environ.get('SITE_URL', 'http://127.0.0.1:8000')

@@ -1,17 +1,15 @@
-# SOME DESCRIPTIVE TITLE.
-# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
-# This file is distributed under the same license as the PACKAGE package.
-# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+# Bondoraa - English translations
+# Copyright (C) 2026 Bondoraa
+# This file is distributed under the same license as the Bondoraa package.
 #
-#, fuzzy
 msgid ""
 msgstr ""
-"Project-Id-Version: PACKAGE VERSION\n"
+"Project-Id-Version: Bondoraa 1.0\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2026-02-26 13:39+0000\n"
-"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
-"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
-"Language-Team: LANGUAGE <LL@li.org>\n"
+"PO-Revision-Date: 2026-03-03 22:00+0000\n"
+"Last-Translator: Bondoraa Team\n"
+"Language-Team: English\n"
 "Language: en\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -53,55 +51,55 @@ msgstr ""
 
 #: accounts/models.py:13
 msgid "L'adresse e-mail est requise."
-msgstr ""
+msgstr "Email address is required."
 
 #: accounts/models.py:31
 msgid "E-mail vérifié"
-msgstr ""
+msgstr "Verified email"
 
 #: accounts/models.py:38 signups/models.py:15 signups/models.py:83
 msgid "Utilisateur"
-msgstr ""
+msgstr "User"
 
 #: accounts/models.py:39
 msgid "Utilisateurs"
-msgstr ""
+msgstr "Users"
 
 #: accounts/models.py:49
 msgid "Token de vérification e-mail"
-msgstr ""
+msgstr "Email verification token"
 
 #: accounts/models.py:50
 msgid "Tokens de vérification e-mail"
-msgstr ""
+msgstr "Email verification tokens"
 
 #: accounts/views.py:15
 msgid "Ce lien de vérification est invalide ou a expiré."
-msgstr ""
+msgstr "This verification link is invalid or has expired."
 
 #: accounts/views.py:20
 msgid "Ce lien de vérification a expiré. Demandez un nouvel e-mail."
-msgstr ""
+msgstr "This verification link has expired. Please request a new email."
 
 #: accounts/views.py:29
 msgid "Votre adresse e-mail a été validée. Bienvenue !"
-msgstr ""
+msgstr "Your email address has been verified. Welcome!"
 
 #: accounts/views.py:60
 msgid "Un nouvel e-mail de vérification a été envoyé."
-msgstr ""
+msgstr "A new verification email has been sent."
 
 #: signups/demande_views.py:21
 msgid "Requête invalide"
-msgstr ""
+msgstr "Invalid request"
 
 #: signups/demande_views.py:73
 msgid "Pièce d'identité recto requise"
-msgstr ""
+msgstr "ID document (front) is required"
 
 #: signups/demande_views.py:78
 msgid "Justificatif de revenus requis"
-msgstr ""
+msgstr "Proof of income is required"
 
 #: signups/forms.py:17 templates/demande.html:594 templates/signup.html:278
 msgid "E-mail"
@@ -117,650 +115,664 @@ msgstr "Confirm password"
 
 #: signups/forms.py:52
 msgid "Un compte existe déjà avec cette adresse e-mail."
-msgstr ""
+msgstr "An account already exists with this email address."
 
 #: signups/forms.py:60
 msgid "Les deux mots de passe ne correspondent pas."
-msgstr ""
+msgstr "The two passwords do not match."
 
 #: signups/forms.py:77
 msgid "Le montant doit être entre 100 € et 250 000 €."
-msgstr ""
+msgstr "The amount must be between €100 and €250,000."
 
 #: signups/forms.py:83
 msgid "La durée doit être entre 6 et 120 mois."
-msgstr ""
+msgstr "The duration must be between 6 and 120 months."
 
 #: signups/forms.py:92
 msgid "Vous devez avoir au moins 18 ans."
-msgstr ""
+msgstr "You must be at least 18 years old."
 
 #: signups/models.py:19
 msgid "Montant du prêt en euros"
-msgstr ""
+msgstr "Loan amount in euros"
 
 #: signups/models.py:20
 msgid "Durée en mois"
-msgstr ""
+msgstr "Duration in months"
 
 #: signups/models.py:24 templates/base.html:521
 msgid "Demande de prêt"
-msgstr ""
+msgstr "Loan application"
 
 #: signups/models.py:25
 msgid "Demandes de prêt"
-msgstr ""
+msgstr "Loan applications"
 
 #: signups/models.py:40
 msgid "Nouvelle"
-msgstr ""
+msgstr "New"
 
 #: signups/models.py:41
 msgid "En cours d'étude"
-msgstr ""
+msgstr "Under review"
 
 #: signups/models.py:42
 msgid "Acceptée"
-msgstr ""
+msgstr "Approved"
 
 #: signups/models.py:43
 msgid "Refusée"
-msgstr ""
+msgstr "Rejected"
 
 #: signups/models.py:46 templates/demande.html:390
 msgid "Célibataire"
-msgstr ""
+msgstr "Single"
 
 #: signups/models.py:47 templates/demande.html:394
 msgid "Marié(e)"
-msgstr ""
+msgstr "Married"
 
 #: signups/models.py:48 templates/demande.html:398
 msgid "Divorcé(e)"
-msgstr ""
+msgstr "Divorced"
 
 #: signups/models.py:53 templates/demande.html:431
 msgid "Indépendant"
-msgstr ""
+msgstr "Self-employed"
 
 #: signups/models.py:54 templates/demande.html:435
 msgid "Retraité(e)"
-msgstr ""
+msgstr "Retired"
 
 #: signups/models.py:55 templates/demande.html:439
 msgid "Sans emploi"
-msgstr ""
+msgstr "Unemployed"
 
 #: signups/models.py:56 signups/models.py:64 templates/demande.html:443
 #: templates/demande.html:490
 msgid "Autre"
-msgstr ""
+msgstr "Other"
 
 #: signups/models.py:59 templates/demande.html:485
 msgid "Travaux"
-msgstr ""
+msgstr "Home improvement"
 
 #: signups/models.py:60 templates/demande.html:486
 msgid "Automobile"
-msgstr ""
+msgstr "Automobile"
 
 #: signups/models.py:61 templates/demande.html:487
 msgid "Santé"
-msgstr ""
+msgstr "Health"
 
 #: signups/models.py:62 templates/demande.html:488
 msgid "Vacances"
-msgstr ""
+msgstr "Holidays"
 
 #: signups/models.py:63 templates/demande.html:489
 msgid "Rachat crédit"
-msgstr ""
+msgstr "Debt consolidation"
 
 #: signups/models.py:67 templates/demande.html:518
 msgid "Carte nationale d'identité"
-msgstr ""
+msgstr "National identity card"
 
 #: signups/models.py:68 templates/demande.html:519
 msgid "Passeport"
-msgstr ""
+msgstr "Passport"
 
 #: signups/models.py:69 templates/demande.html:520
 msgid "Titre de séjour"
-msgstr ""
+msgstr "Residence permit"
 
 #: signups/models.py:72 templates/demande.html:474
 msgid "Propriétaire sans crédit"
-msgstr ""
+msgstr "Homeowner without mortgage"
 
 #: signups/models.py:73 templates/demande.html:475
 msgid "Propriétaire avec crédit"
-msgstr ""
+msgstr "Homeowner with mortgage"
 
 #: signups/models.py:74 templates/demande.html:476
 msgid "Locataire"
-msgstr ""
+msgstr "Tenant"
 
 #: signups/models.py:75 templates/demande.html:477
 msgid "Hébergé à titre gratuit"
-msgstr ""
+msgstr "Hosted free of charge"
 
 #: signups/models.py:88
 msgid "Montant (€)"
-msgstr ""
+msgstr "Amount (€)"
 
 #: signups/models.py:89
 msgid "Durée (mois)"
-msgstr ""
+msgstr "Duration (months)"
 
 #: signups/models.py:104 templates/demande.html:452
 msgid "Revenu net mensuel (€)"
-msgstr ""
+msgstr "Monthly net income (€)"
 
 #: signups/models.py:105
 msgid "Autres revenus (€)"
-msgstr ""
+msgstr "Other income (€)"
 
 #: signups/models.py:106
 msgid "Charges (€)"
-msgstr ""
+msgstr "Monthly expenses (€)"
 
 #: signups/models.py:122 templates/demande.html:7
 msgid "Demande de crédit"
-msgstr ""
+msgstr "Credit application"
 
 #: signups/models.py:123
 msgid "Demandes de crédit"
-msgstr ""
+msgstr "Credit applications"
 
 #: signups/models.py:151
 msgid "Pièce d'identité recto"
-msgstr ""
+msgstr "ID document (front)"
 
 #: signups/models.py:152
 msgid "Pièce d'identité verso"
-msgstr ""
+msgstr "ID document (back)"
 
 #: signups/models.py:153 templates/demande.html:548
 msgid "Justificatif de revenus"
-msgstr ""
+msgstr "Proof of income"
 
 #: signups/models.py:154 templates/demande.html:562
 msgid "Justificatif de domicile"
-msgstr ""
+msgstr "Proof of address"
 
 #: signups/models.py:166
 msgid "Document de demande"
-msgstr ""
+msgstr "Application document"
 
 #: signups/models.py:167
 msgid "Documents de demande"
-msgstr ""
+msgstr "Application documents"
 
 #: signups/views.py:36
 msgid ""
 "Votre compte a été créé. Un e-mail de vérification a été envoyé à votre "
 "adresse. Cliquez sur le lien pour activer votre compte."
 msgstr ""
+"Your account has been created. A verification email has been sent to your "
+"address. Click the link to activate your account."
 
 #: templates/base.html:8
 msgid "Pensez grand avec Bondoraa | Prêts de 100 € à 250 000 €"
-msgstr ""
+msgstr "Think big with Bondoraa | Loans from €100 to €250,000"
 
 #: templates/base.html:9
 msgid ""
 "Découvrez vos offres de prêt Bondoraa. Offre en 1 minute. Virement le jour "
 "même sur votre compte bancaire. Faites une demande maintenant !"
 msgstr ""
+"Discover your Bondoraa loan offers. Decision in 1 minute. Transfer the same "
+"day to your bank account. Apply now!"
 
 #: templates/base.html:443
 msgid "Attention aux arnaques"
-msgstr ""
+msgstr "Beware of scams"
 
 #: templates/base.html:443
 msgid ""
 "Ne contractez jamais un prêt pour quelqu'un d'autre et ne partagez pas votre "
 "code PIN."
 msgstr ""
+"Never take out a loan for someone else and never share your PIN code."
 
 #: templates/base.html:443
 msgid "Contactez-nous"
-msgstr ""
+msgstr "Contact us"
 
 #: templates/base.html:443
 msgid "en cas de doute."
-msgstr ""
+msgstr "if in doubt."
 
 #: templates/base.html:452 templates/base.html:474
 msgid "Devenir investisseur"
-msgstr ""
+msgstr "Become an investor"
 
 #: templates/base.html:454 templates/base.html:477
 msgid "Ma demande"
-msgstr ""
+msgstr "My application"
 
 #: templates/base.html:457 templates/base.html:478 templates/demande.html:220
 msgid "Déconnexion"
-msgstr ""
+msgstr "Log out"
 
 #: templates/base.html:459 templates/base.html:465 templates/base.html:479
 #: templates/base.html:482
 msgid "Faire une demande"
-msgstr ""
+msgstr "Apply now"
 
 #: templates/base.html:463 templates/base.html:481 templates/login.html:254
 #: templates/signup_verification_sent.html:27
 msgid "Se connecter"
-msgstr ""
+msgstr "Log in"
 
 #: templates/base.html:475
 msgid "Aide & support"
-msgstr ""
+msgstr "Help & support"
 
 #: templates/base.html:496 templates/demande.html:219
 msgid "Accueil"
-msgstr ""
+msgstr "Home"
 
 #: templates/base.html:499
 msgid "Contacts"
-msgstr ""
+msgstr "Contacts"
 
 #: templates/base.html:501 templates/base.html:525
 msgid "Service client"
-msgstr ""
+msgstr "Customer service"
 
 #: templates/base.html:505
 msgid "À propos"
-msgstr ""
+msgstr "About"
 
 #: templates/base.html:507
 msgid "À propos de Bondora"
-msgstr ""
+msgstr "About Bondora"
 
 #: templates/base.html:511
 msgid "Carrières Bondora"
-msgstr ""
+msgstr "Bondora careers"
 
 #: templates/base.html:519
 msgid "Questions"
-msgstr ""
+msgstr "Questions"
 
 #: templates/base.html:522
 msgid "Comment obtenir un prêt ?"
-msgstr ""
+msgstr "How to get a loan?"
 
 #: templates/base.html:523
 msgid "Pourquoi emprunter chez Bondora ?"
-msgstr ""
+msgstr "Why borrow from Bondora?"
 
 #: templates/base.html:524
 msgid "Frais"
-msgstr ""
+msgstr "Fees"
 
 #: templates/base.html:526
 msgid "Informations légales"
-msgstr ""
+msgstr "Legal information"
 
 #: templates/base.html:527
 msgid "FAQ"
-msgstr ""
+msgstr "FAQ"
 
 #: templates/base.html:533
 msgid "Exemple représentatif"
-msgstr ""
+msgstr "Representative example"
 
 #: templates/base.html:535
 msgid "Nos conditions de prêt"
-msgstr ""
+msgstr "Our loan terms"
 
 #: templates/demande.html:221
 msgid "Connexion sécurisée SSL"
-msgstr ""
+msgstr "Secure SSL connection"
 
 #: templates/demande.html:233
 msgid "Votre prêt"
-msgstr ""
+msgstr "Your loan"
 
 #: templates/demande.html:237 templates/demande.html:685
 msgid "Informations personnelles"
-msgstr ""
+msgstr "Personal information"
 
 #: templates/demande.html:241 templates/demande.html:686
 msgid "Situation financière"
-msgstr ""
+msgstr "Financial situation"
 
 #: templates/demande.html:245
 msgid "Documents"
-msgstr ""
+msgstr "Documents"
 
 #: templates/demande.html:249
 msgid "Signature"
-msgstr ""
+msgstr "Signature"
 
 #: templates/demande.html:258
 msgid "Étape 1 sur 5"
-msgstr ""
+msgstr "Step 1 of 5"
 
 #: templates/demande.html:259 templates/demande.html:684
 msgid "Configurer votre prêt"
-msgstr ""
+msgstr "Configure your loan"
 
 #: templates/demande.html:260
 msgid "Choisissez le montant et la durée de votre prêt selon vos besoins."
-msgstr ""
+msgstr "Choose the amount and duration of your loan according to your needs."
 
 #: templates/demande.html:271
 msgid "Montant du prêt souhaité"
-msgstr ""
+msgstr "Desired loan amount"
 
 #: templates/demande.html:275
 msgid "de 100 € à 20 000 €"
-msgstr ""
+msgstr "from €100 to €20,000"
 
 #: templates/demande.html:283
 msgid "Durée de remboursement"
-msgstr ""
+msgstr "Repayment period"
 
 #: templates/demande.html:287
 msgid "de 6 à 120 mois"
-msgstr ""
+msgstr "from 6 to 120 months"
 
 #: templates/demande.html:298
 msgid "Mensualité estimée à partir de"
-msgstr ""
+msgstr "Estimated monthly payment from"
 
 #: templates/demande.html:300
 #, python-format
 msgid "TAEG indicatif 17,71%%"
-msgstr ""
+msgstr "Indicative APR 17.71%%"
 
 #: templates/demande.html:303
 msgid "Coût total estimé"
-msgstr ""
+msgstr "Estimated total cost"
 
 #: templates/demande.html:305
 msgid "Intérêts + capital"
-msgstr ""
+msgstr "Interest + principal"
 
 #: templates/demande.html:310
 msgid ""
 "Le taux final dépendra de votre profil. Ceci est une estimation indicative. "
 "Aucun engagement à cette étape."
 msgstr ""
+"The final rate will depend on your profile. This is an indicative estimate. "
+"No commitment at this stage."
 
 #: templates/demande.html:316 templates/demande.html:409
 #: templates/demande.html:500 templates/demande.html:579
 msgid "Continuer"
-msgstr ""
+msgstr "Continue"
 
 #: templates/demande.html:327
 msgid "Prénom"
-msgstr ""
+msgstr "First name"
 
 #: templates/demande.html:328
 msgid "ex : Marie"
-msgstr ""
+msgstr "e.g. John"
 
 #: templates/demande.html:329
 msgid "Veuillez saisir votre prénom"
-msgstr ""
+msgstr "Please enter your first name"
 
 #: templates/demande.html:332
 msgid "Nom de famille"
-msgstr ""
+msgstr "Last name"
 
 #: templates/demande.html:333
 msgid "ex : Dupont"
-msgstr ""
+msgstr "e.g. Smith"
 
 #: templates/demande.html:334
 msgid "Veuillez saisir votre nom"
-msgstr ""
+msgstr "Please enter your last name"
 
 #: templates/demande.html:340
 msgid "Date de naissance"
-msgstr ""
+msgstr "Date of birth"
 
 #: templates/demande.html:342
 msgid "Vous devez avoir au moins 18 ans"
-msgstr ""
+msgstr "You must be at least 18 years old"
 
 #: templates/demande.html:345
 msgid "Nationalité"
-msgstr ""
+msgstr "Nationality"
 
 #: templates/demande.html:347 templates/demande.html:473
 msgid "Sélectionnez…"
-msgstr ""
+msgstr "Select…"
 
 #: templates/demande.html:354
 msgid "Veuillez sélectionner votre nationalité"
-msgstr ""
+msgstr "Please select your nationality"
 
 #: templates/demande.html:358
 msgid "Coordonnées"
-msgstr ""
+msgstr "Contact details"
 
 #: templates/demande.html:362 templates/login.html:207
 msgid "Adresse e-mail"
-msgstr ""
+msgstr "Email address"
 
 #: templates/demande.html:364
 msgid "Veuillez saisir une adresse e-mail valide"
-msgstr ""
+msgstr "Please enter a valid email address"
 
 #: templates/demande.html:368 templates/demande.html:595
 msgid "Téléphone"
-msgstr ""
+msgstr "Phone"
 
 #: templates/demande.html:370
 msgid "Numéro de téléphone requis"
-msgstr ""
+msgstr "Phone number required"
 
 #: templates/demande.html:373
 msgid "Code postal"
-msgstr ""
+msgstr "Postal code"
 
 #: templates/demande.html:378
 msgid "Adresse complète"
-msgstr ""
+msgstr "Full address"
 
 #: templates/demande.html:383
 msgid "Situation personnelle"
-msgstr ""
+msgstr "Personal situation"
 
 #: templates/demande.html:386
 msgid "Situation familiale"
-msgstr ""
+msgstr "Marital status"
 
 #: templates/demande.html:406 templates/demande.html:497
 #: templates/demande.html:576 templates/demande.html:634
 msgid "Retour"
-msgstr ""
+msgstr "Back"
 
 #: templates/demande.html:419
 msgid "Situation professionnelle"
-msgstr ""
+msgstr "Employment status"
 
 #: templates/demande.html:423
 msgid "Contrat à durée indéterminée"
-msgstr ""
+msgstr "Permanent contract (CDI)"
 
 #: templates/demande.html:427
 msgid "Contrat à durée déterminée"
-msgstr ""
+msgstr "Fixed-term contract (CDD)"
 
 #: templates/demande.html:431
 msgid "Travailleur autonome"
-msgstr ""
+msgstr "Self-employed"
 
 #: templates/demande.html:435
 msgid "Pension de retraite"
-msgstr ""
+msgstr "Retirement pension"
 
 #: templates/demande.html:439
 msgid "En recherche d'emploi"
-msgstr ""
+msgstr "Job seeker"
 
 #: templates/demande.html:443
 msgid "Autre situation"
-msgstr ""
+msgstr "Other situation"
 
 #: templates/demande.html:448
 msgid "Revenus & charges"
-msgstr ""
+msgstr "Income & expenses"
 
 #: templates/demande.html:454
 msgid "Salaires, pensions, revenus locatifs…"
-msgstr ""
+msgstr "Salaries, pensions, rental income…"
 
 #: templates/demande.html:455
 msgid "Veuillez saisir vos revenus"
-msgstr ""
+msgstr "Please enter your income"
 
 #: templates/demande.html:458
 msgid "Autres revenus mensuels (€)"
-msgstr ""
+msgstr "Other monthly income (€)"
 
 #: templates/demande.html:460
 msgid "Allocations, aides sociales…"
-msgstr ""
+msgstr "Benefits, social assistance…"
 
 #: templates/demande.html:466
 msgid "Charges mensuelles (€)"
-msgstr ""
+msgstr "Monthly expenses (€)"
 
 #: templates/demande.html:468
 msgid "Loyer, crédits en cours…"
-msgstr ""
+msgstr "Rent, ongoing loans…"
 
 #: templates/demande.html:471
 msgid "Situation de logement"
-msgstr ""
+msgstr "Housing situation"
 
 #: templates/demande.html:483
 msgid "Motif de la demande de prêt"
-msgstr ""
+msgstr "Purpose of loan"
 
 #: templates/demande.html:511
 msgid ""
 "Tous vos documents sont chiffrés et sécurisés. Ils seront utilisés "
 "uniquement pour l'étude de votre dossier."
 msgstr ""
+"All your documents are encrypted and secure. They will be used "
+"solely for the review of your application."
 
 #: templates/demande.html:516
 msgid "Pièce d'identité"
-msgstr ""
+msgstr "Identity document"
 
 #: templates/demande.html:524
 msgid "Recto"
-msgstr ""
+msgstr "Front"
 
 #: templates/demande.html:528 templates/demande.html:538
 #: templates/demande.html:567
 msgid "Déposez ou"
-msgstr ""
+msgstr "Drop or"
 
 #: templates/demande.html:528 templates/demande.html:538
 #: templates/demande.html:553 templates/demande.html:567
 msgid "parcourez"
-msgstr ""
+msgstr "browse"
 
 #: templates/demande.html:534
 msgid "Verso"
-msgstr ""
+msgstr "Back"
 
 #: templates/demande.html:549
 msgid "3 derniers bulletins de salaire, avis d'imposition ou relevé de pension"
-msgstr ""
+msgstr "Last 3 payslips, tax notice or pension statement"
 
 #: templates/demande.html:553
 msgid "Déposez vos justificatifs ou"
-msgstr ""
+msgstr "Drop your documents or"
 
 #: templates/demande.html:554
 msgid "Plusieurs fichiers acceptés"
-msgstr ""
+msgstr "Multiple files accepted"
 
 #: templates/demande.html:563
 msgid "Facture EDF, eau, téléphone ou quittance de loyer (moins de 3 mois)"
-msgstr ""
+msgstr "EDF, water, phone bill or rent receipt (less than 3 months old)"
 
 #: templates/demande.html:588
 msgid "Récapitulatif de votre demande"
-msgstr ""
+msgstr "Summary of your application"
 
 #: templates/demande.html:590
 msgid "Montant demandé"
-msgstr ""
+msgstr "Requested amount"
 
 #: templates/demande.html:591 templates/index.html:53 templates/signup.html:255
 msgid "Durée"
-msgstr ""
+msgstr "Duration"
 
 #: templates/demande.html:592
 msgid "Mensualité estimée"
-msgstr ""
+msgstr "Estimated monthly payment"
 
 #: templates/demande.html:593
 msgid "Nom complet"
-msgstr ""
+msgstr "Full name"
 
 #: templates/demande.html:596
 msgid "Revenus nets"
-msgstr ""
+msgstr "Net income"
 
 #: templates/demande.html:597
 msgid "Situation"
-msgstr ""
+msgstr "Status"
 
 #: templates/demande.html:600
 msgid "Signature électronique"
-msgstr ""
+msgstr "Electronic signature"
 
 #: templates/demande.html:603
 msgid "Signez dans le cadre ci-dessous"
-msgstr ""
+msgstr "Sign in the box below"
 
 #: templates/demande.html:606
 msgid "Signez ici avec votre doigt ou votre souris"
-msgstr ""
+msgstr "Sign here with your finger or mouse"
 
 #: templates/demande.html:608
 msgid "Signez pour confirmer votre demande"
-msgstr ""
+msgstr "Sign to confirm your application"
 
 #: templates/demande.html:609
 msgid "Effacer"
-msgstr ""
+msgstr "Clear"
 
 #: templates/demande.html:614
 msgid "Consentements"
-msgstr ""
+msgstr "Consents"
 
 #: templates/demande.html:619
 msgid ""
 "J'accepte les <a href=\"#\">Conditions Générales d'Utilisation</a> et la <a "
 "href=\"#\">Politique de confidentialité</a> de Bondora."
 msgstr ""
+"I accept the <a href=\"#\">Terms and Conditions</a> and the <a "
+"href=\"#\">Privacy Policy</a> of Bondora."
 
 #: templates/demande.html:623
 msgid ""
 "Je certifie que toutes les informations fournies sont exactes et sincères."
 msgstr ""
+"I certify that all information provided is accurate and truthful."
 
 #: templates/demande.html:627
 msgid ""
 "J'accepte de recevoir des offres personnalisées et communications marketing "
 "de Bondora. (Optionnel)"
 msgstr ""
+"I agree to receive personalised offers and marketing communications "
+"from Bondora. (Optional)"
 
 #: templates/demande.html:637
 msgid "Soumettre ma demande"
-msgstr ""
+msgstr "Submit my application"
 
 #: templates/demande.html:646
 msgid "Demande envoyée !"
-msgstr ""
+msgstr "Application submitted!"
 
 #: templates/demande.html:647
 msgid ""
@@ -768,273 +780,289 @@ msgid ""
 "demande et vous contactera dans les <strong>24 à 48 heures</strong> "
 "ouvrables."
 msgstr ""
+"Your application has been successfully submitted. Our team will review your "
+"application and contact you within <strong>24 to 48 hours</strong> "
+"on business days."
 
 #: templates/demande.html:649
 msgid "Référence de votre dossier :"
-msgstr ""
+msgstr "Your application reference:"
 
 #: templates/demande.html:652
 msgid "Suivre mon dossier"
-msgstr ""
+msgstr "Track my application"
 
 #: templates/demande.html:653 templates/signup_verification_sent.html:24
 msgid "Retour à l'accueil"
-msgstr ""
+msgstr "Back to home"
 
 #: templates/demande.html:664
 msgid "Veuillez sélectionner votre situation familiale."
-msgstr ""
+msgstr "Please select your marital status."
 
 #: templates/demande.html:665
 msgid "Veuillez sélectionner votre situation professionnelle."
-msgstr ""
+msgstr "Please select your employment status."
 
 #: templates/demande.html:666
 msgid "Veuillez télécharger les documents obligatoires."
-msgstr ""
+msgstr "Please upload the required documents."
 
 #: templates/demande.html:667
 msgid "Veuillez corriger les champs en rouge."
-msgstr ""
+msgstr "Please correct the fields highlighted in red."
 
 #: templates/demande.html:668
 msgid "Veuillez accepter les conditions obligatoires."
-msgstr ""
+msgstr "Please accept the required conditions."
 
 #: templates/demande.html:669
 msgid "Veuillez signer votre demande."
-msgstr ""
+msgstr "Please sign your application."
 
 #: templates/demande.html:670
 msgid "Envoi en cours…"
-msgstr ""
+msgstr "Sending…"
 
 #: templates/demande.html:671
 msgid "Une erreur est survenue."
-msgstr ""
+msgstr "An error has occurred."
 
 #: templates/demande.html:672
 msgid "Erreur de connexion. Réessayez."
-msgstr ""
+msgstr "Connection error. Please try again."
 
 #: templates/demande.html:673
 msgid "Étape"
-msgstr ""
+msgstr "Step"
 
 #: templates/demande.html:674
 msgid "sur"
-msgstr ""
+msgstr "of"
 
 #: templates/demande.html:684
 msgid "Choisissez le montant et la durée selon vos besoins."
-msgstr ""
+msgstr "Choose the amount and duration according to your needs."
 
 #: templates/demande.html:685
 msgid "Renseignez vos coordonnées et votre situation personnelle."
-msgstr ""
+msgstr "Enter your contact details and personal situation."
 
 #: templates/demande.html:686
 msgid "Partagez vos informations professionnelles et financières."
-msgstr ""
+msgstr "Share your professional and financial information."
 
 #: templates/demande.html:687
 msgid "Pièces justificatives"
-msgstr ""
+msgstr "Supporting documents"
 
 #: templates/demande.html:687
 msgid "Téléchargez vos documents pour constituer votre dossier."
-msgstr ""
+msgstr "Upload your documents to complete your application."
 
 #: templates/demande.html:688
 msgid "Récapitulatif & Signature"
-msgstr ""
+msgstr "Summary & Signature"
 
 #: templates/demande.html:688
 msgid "Vérifiez vos informations et signez électroniquement."
-msgstr ""
+msgstr "Review your information and sign electronically."
 
 #: templates/index.html:9
 msgid "Prêts personnels pour tous vos projets"
-msgstr ""
+msgstr "Personal loans for all your projects"
 
 #: templates/index.html:10
 msgid "Faites une demande et obtenez une décision instantanée."
-msgstr ""
+msgstr "Apply and get an instant decision."
 
 #: templates/index.html:14
 #, python-format
 msgid "Taux d'intérêt à partir de 6,9 %%"
-msgstr ""
+msgstr "Interest rate from 6.9%%"
 
 #: templates/index.html:18
 msgid "Mensualités abordables"
-msgstr ""
+msgstr "Affordable monthly payments"
 
 #: templates/index.html:22 templates/index.html:119
 msgid "Virement le jour même"
-msgstr ""
+msgstr "Same-day transfer"
 
 #: templates/index.html:26 templates/index.html:72 templates/index.html:135
 #: templates/index.html:167 templates/index.html:225
 msgid "Faire une demande ici"
-msgstr ""
+msgstr "Apply here"
 
 #: templates/index.html:34 templates/index.html:61 templates/index.html:62
 msgid "mois"
-msgstr ""
+msgstr "months"
 
 #: templates/index.html:39
 msgid "Montant"
-msgstr ""
+msgstr "Amount"
 
 #: templates/index.html:68
 msgid "Mensualité approximative"
-msgstr ""
+msgstr "Approximate monthly payment"
 
 #: templates/index.html:85
 msgid "de demandeurs"
-msgstr ""
+msgstr "applicants"
 
 #: templates/index.html:88
 msgid "17 ans"
-msgstr ""
+msgstr "17 years"
 
 #: templates/index.html:89
 msgid "d'expérience"
-msgstr ""
+msgstr "of experience"
 
 #: templates/index.html:92
 msgid "1 milliard €"
-msgstr ""
+msgstr "€1 billion"
 
 #: templates/index.html:93
 msgid "en petits prêts"
-msgstr ""
+msgstr "in small loans"
 
 #: templates/index.html:104
 msgid "Pourquoi choisir Bondoraa"
-msgstr ""
+msgstr "Why choose Bondoraa"
 
 #: templates/index.html:105
 msgid ""
 "Choisissez-nous comme partenaire financier de confiance pour des solutions "
 "financières sécurisées et simples, adaptées à vos besoins."
 msgstr ""
+"Choose us as your trusted financial partner for secure and simple financial "
+"solutions tailored to your needs."
 
 #: templates/index.html:109
 msgid "Demande simple"
-msgstr ""
+msgstr "Simple application"
 
 #: templates/index.html:110
 msgid ""
 "Faites votre demande entièrement en ligne et obtenez une offre instantanée."
 msgstr ""
+"Complete your application entirely online and get an instant offer."
 
 #: templates/index.html:114
 msgid "Frais transparents"
-msgstr ""
+msgstr "Transparent fees"
 
 #: templates/index.html:115
 msgid "Vous voyez le détail clair des coûts avant de signer."
-msgstr ""
+msgstr "You see a clear breakdown of costs before signing."
 
 #: templates/index.html:120
 msgid "L'argent vous est envoyé directement après la signature du contrat."
-msgstr ""
+msgstr "The money is sent directly to you after signing the contract."
 
 #: templates/index.html:124
 msgid "Remboursement flexible"
-msgstr ""
+msgstr "Flexible repayment"
 
 #: templates/index.html:125
 msgid ""
 "Remboursement anticipé sans frais supplémentaires. Modifiez votre calendrier "
 "avec nos services B Secure."
 msgstr ""
+"Early repayment with no additional fees. Modify your schedule "
+"with our B Secure services."
 
 #: templates/index.html:129
 msgid "Sans garantie requise"
-msgstr ""
+msgstr "No collateral required"
 
 #: templates/index.html:130
 msgid ""
 "Tous nos prêts sont sans garantie, pour plus de tranquillité d'esprit et de "
 "liberté."
 msgstr ""
+"All our loans are unsecured, for greater peace of mind and "
+"freedom."
 
 #: templates/index.html:146
 msgid "Demandez. Signez."
-msgstr ""
+msgstr "Apply. Sign."
 
 #: templates/index.html:146
 msgid "Recevez."
-msgstr ""
+msgstr "Receive."
 
 #: templates/index.html:153
 msgid "Remplissez la simple demande de prêt en ligne."
-msgstr ""
+msgstr "Fill in the simple online loan application."
 
 #: templates/index.html:157
 msgid "Signez numériquement l'offre la mieux adaptée à votre situation."
-msgstr ""
+msgstr "Digitally sign the offer best suited to your situation."
 
 #: templates/index.html:161
 msgid ""
 "Recevez l'argent directement sur votre compte bancaire presque "
 "instantanément."
 msgstr ""
+"Receive the money directly in your bank account almost "
+"instantly."
 
 #: templates/index.html:180
 msgid ""
 "« C'est rapide et facile, et vous pouvez tout faire sur mobile, même en "
 "déplacement. »"
 msgstr ""
+"\"It's fast and easy, and you can do everything on mobile, even "
+"on the go.\""
 
 #: templates/index.html:181
 msgid "– Markus, client Bondoraa depuis 2013"
-msgstr ""
+msgstr "– Markus, Bondoraa customer since 2013"
 
 #: templates/index.html:187
 msgid ""
 "« J'ai décidé de contracter un prêt chez Bondoraa pour des rénovations "
 "domiciliaires. L'expérience fluide m'a agréablement surpris. »"
 msgstr ""
+"\"I decided to take out a loan with Bondoraa for home renovations. "
+"The smooth experience pleasantly surprised me.\""
 
 #: templates/index.html:188
 msgid "– Emma, cliente Bondoraa depuis 2022"
-msgstr ""
+msgstr "– Emma, Bondoraa customer since 2022"
 
 #: templates/index.html:193
 msgid "« C'était presque comme un claquement de doigts. »"
-msgstr ""
+msgstr "\"It was almost like a snap of the fingers.\""
 
 #: templates/index.html:194
 msgid "– Alexander, client Bondoraa depuis 2013"
-msgstr ""
+msgstr "– Alexander, Bondoraa customer since 2013"
 
 #: templates/index.html:212
 msgid "Réglementé par l'Autorité de supervision financière estonienne"
-msgstr ""
+msgstr "Regulated by the Estonian Financial Supervision Authority"
 
 #: templates/index.html:216
 msgid "Standards de protection des données de l'UE"
-msgstr ""
+msgstr "EU data protection standards"
 
 #: templates/index.html:220
 msgid "Conformément aux lignes directrices sur le prêt responsable"
-msgstr ""
+msgstr "In accordance with responsible lending guidelines"
 
 #: templates/index.html:237
 msgid "Vos questions,"
-msgstr ""
+msgstr "Your questions,"
 
 #: templates/index.html:238
 msgid "nos réponses"
-msgstr ""
+msgstr "our answers"
 
 #: templates/index.html:246
 msgid "Quels sont les frais ?"
-msgstr ""
+msgstr "What are the fees?"
 
 #: templates/index.html:249
 msgid ""
@@ -1043,10 +1071,14 @@ msgid ""
 "page</a>. Si vous contractez un prêt avec nous, vous verrez une description "
 "claire de vos frais avant de signer le contrat."
 msgstr ""
+"You can view all our transparent fees on <a href=\"https://www."
+"bondora.ee/en/contracts/fees/\" target=\"_blank\" rel=\"noopener\">this "
+"page</a>. If you take out a loan with us, you will see a clear "
+"description of your fees before signing the contract."
 
 #: templates/index.html:255
 msgid "Comment rembourser mon prêt ?"
-msgstr ""
+msgstr "How do I repay my loan?"
 
 #: templates/index.html:258
 msgid ""
@@ -1054,10 +1086,13 @@ msgid ""
 "Bondoraa avant la date d'échéance. Vous pouvez effectuer des versements "
 "ponctuels depuis votre banque en ligne, ou configurer un ordre permanent."
 msgstr ""
+"Simply add the required amount for your monthly payment to your Bondoraa "
+"account before the due date. You can make one-off transfers from your online "
+"bank, or set up a standing order."
 
 #: templates/index.html:264
 msgid "Puis-je rembourser mon prêt par anticipation ?"
-msgstr ""
+msgstr "Can I repay my loan early?"
 
 #: templates/index.html:267
 msgid ""
@@ -1067,10 +1102,15 @@ msgid ""
 "sections/12671560159250-Repaying-my-loan\" target=\"_blank\">Centre d'aide</"
 "a>."
 msgstr ""
+"Yes, and there are no additional fees for early repayment. "
+"You can make partial or full repayments of your loan. "
+"Learn more in our <a href=\"https://help.bondora.ee/hc/en-ee/"
+"sections/12671560159250-Repaying-my-loan\" target=\"_blank\">Help Centre</"
+"a>."
 
 #: templates/index.html:273
 msgid "Combien puis-je emprunter ?"
-msgstr ""
+msgstr "How much can I borrow?"
 
 #: templates/index.html:276
 msgid ""
@@ -1080,113 +1120,124 @@ msgid ""
 "exactement quel montant vous pouvez obtenir. Conseil : obtenir une offre ne "
 "signifie pas que vous devez accepter le prêt."
 msgstr ""
+"You can get a personal loan ranging from €100 to €250,000. "
+"However, as the loan amount is calculated based on your unique financial "
+"situation, please submit an application to see exactly how much you can get. "
+"Tip: getting an offer does not mean you have to accept the loan."
 
 #: templates/index.html:282
 msgid "Bondoraa est-elle sécurisée ?"
-msgstr ""
+msgstr "Is Bondoraa secure?"
 
 #: templates/index.html:285
 msgid ""
 "Bondoraa est votre partenaire de prêt de confiance. Nous proposons des "
 "solutions financières sécurisées et transparentes, adaptées à vos besoins."
 msgstr ""
+"Bondoraa is your trusted lending partner. We offer secure and transparent "
+"financial solutions tailored to your needs."
 
 #: templates/index.html:286
 msgid ""
 "Nous mettons la sécurité et la confiance au cœur de notre service pour vous "
 "accompagner dans tous vos projets."
 msgstr ""
+"We place security and trust at the heart of our service to support you "
+"in all your projects."
 
 #: templates/index.html:302
 msgid "Vous souhaitez nous contacter ?"
-msgstr ""
+msgstr "Would you like to contact us?"
 
 #: templates/index.html:303
 msgid ""
 "Nous sommes heureux de vous aider et de répondre à toutes vos questions."
 msgstr ""
+"We are happy to help you and answer all your questions."
 
 #: templates/login.html:4 templates/signup.html:334
 msgid "Connexion"
-msgstr ""
+msgstr "Login"
 
 #: templates/login.html:194
 msgid "Connectez-vous à votre"
-msgstr ""
+msgstr "Log in to your"
 
 #: templates/login.html:194
 msgid "compte"
-msgstr ""
+msgstr "account"
 
 #: templates/login.html:215
 msgid "Entrez votre e-mail"
-msgstr ""
+msgstr "Enter your email"
 
 #: templates/login.html:236
 msgid "Entrez votre mot de passe"
-msgstr ""
+msgstr "Enter your password"
 
 #: templates/login.html:242
 msgid "Mot de passe oublié ?"
-msgstr ""
+msgstr "Forgot password?"
 
 #: templates/login.html:261 templates/signup.html:338
 msgid "ou continuer avec"
-msgstr ""
+msgstr "or continue with"
 
 #: templates/login.html:263 templates/signup.html:340
 msgid "Connexion Google (à venir)"
-msgstr ""
+msgstr "Google login (coming soon)"
 
 #: templates/login.html:276
 msgid "Vous n'avez pas de compte ?"
-msgstr ""
+msgstr "Don't have an account?"
 
 #: templates/login.html:276
 msgid "Inscrivez-vous ici"
-msgstr ""
+msgstr "Sign up here"
 
 #: templates/login.html:279
 msgid ""
 "En cliquant sur « Se connecter », vous acceptez nos <a href=\"https://www."
 "bondora.ee/fr/contracts/terms-of-use/\">Conditions d'utilisation</a>."
 msgstr ""
+"By clicking \"Log in\", you agree to our <a href=\"https://www."
+"bondora.ee/en/contracts/terms-of-use/\">Terms of Use</a>."
 
 #: templates/signup.html:4
 msgid "Inscription"
-msgstr ""
+msgstr "Sign up"
 
 #: templates/signup.html:233
 msgid "La réussite commence avec"
-msgstr ""
+msgstr "Success starts with"
 
 #: templates/signup.html:245
 msgid "Montant du prêt"
-msgstr ""
+msgstr "Loan amount"
 
 #: templates/signup.html:251 templates/signup.html:261
 msgid "Modifier"
-msgstr ""
+msgstr "Edit"
 
 #: templates/signup.html:251
 msgid "Modifier le montant"
-msgstr ""
+msgstr "Edit amount"
 
 #: templates/signup.html:260
 msgid "Mois"
-msgstr ""
+msgstr "Months"
 
 #: templates/signup.html:261
 msgid "Modifier la durée"
-msgstr ""
+msgstr "Edit duration"
 
 #: templates/signup.html:296
 msgid "Mot de passe (min. 8 caractères)"
-msgstr ""
+msgstr "Password (min. 8 characters)"
 
 #: templates/signup.html:324
 msgid "Demander ici"
-msgstr ""
+msgstr "Apply here"
 
 #: templates/signup.html:329
 msgid ""
@@ -1197,37 +1248,44 @@ msgid ""
 "use/#privacyPolicy\" target=\"_blank\" rel=\"noopener\">Politique de "
 "confidentialité</a>."
 msgstr ""
+"*By submitting your email address, you agree to our <a href=\"https://www."
+"bondora.ee/en/contracts/terms-of-use/\" target=\"_blank\" "
+"rel=\"noopener\">Terms of Use</a>. We process your data "
+"in accordance with our <a href=\"https://www.bondora.ee/en/contracts/terms-of-"
+"use/#privacyPolicy\" target=\"_blank\" rel=\"noopener\">Privacy Policy</a>."
 
 #: templates/signup.html:334
 msgid "Vous avez déjà un compte Bondora ?"
-msgstr ""
+msgstr "Already have a Bondora account?"
 
 #: templates/signup.html:351
 msgid "Montant souhaité (€) :"
-msgstr ""
+msgstr "Desired amount (€):"
 
 #: templates/signup.html:351
 msgid "Durée souhaitée (mois) :"
-msgstr ""
+msgstr "Desired duration (months):"
 
 #: templates/signup_verification_sent.html:4
 msgid "Vérification envoyée"
-msgstr ""
+msgstr "Verification sent"
 
 #: templates/signup_verification_sent.html:15
 msgid "E-mail de vérification envoyé"
-msgstr ""
+msgstr "Verification email sent"
 
 #: templates/signup_verification_sent.html:17
 msgid ""
 "Un e-mail de vérification a été envoyé à votre adresse. Cliquez sur le lien "
 "dans l'e-mail pour activer votre compte."
 msgstr ""
+"A verification email has been sent to your address. Click the link "
+"in the email to activate your account."
 
 #: templates/signup_verification_sent.html:20
 msgid "Si vous ne recevez pas l'e-mail, vérifiez votre dossier spam ou"
-msgstr ""
+msgstr "If you do not receive the email, check your spam folder or"
 
 #: templates/signup_verification_sent.html:20
 msgid "renvoyer la vérification"
-msgstr ""
+msgstr "resend the verification"

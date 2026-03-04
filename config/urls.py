@@ -26,7 +26,7 @@ from config import views
 from signups import views as signup_views
 
 urlpatterns = [
-    path('i18n/', include('django.conf.urls.i18n')),
+    path('i18n/set_language/', views.set_language, name='set_language'),
     path('admin/', admin.site.urls),
 ]
 
