@@ -66,7 +66,7 @@ class CreditDemandForm(forms.ModelForm):
 
     class Meta:
         model = CreditDemand
-        exclude = ('reference', 'user', 'statut', 'signature', 'created_at')
+        exclude = ('reference', 'user', 'statut', 'created_at')
         widgets = {
             'date_naissance': forms.DateInput(attrs={'type': 'date'}),
         }

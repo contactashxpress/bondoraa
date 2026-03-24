@@ -1,12 +1,20 @@
 """Vues pour le formulaire de demande de crédit."""
+import logging
+
 from django.contrib.auth.decorators import login_required
 from django.http import JsonResponse
 from django.shortcuts import redirect, render
 from django.utils.translation import gettext
 from django.views.decorators.http import require_http_methods
 
+from config.file_validation import DOCUMENT_PRESET, validate_upload
+
+from .emails import send_demande_recue_email
 from .forms import CreditDemandForm
 from .models import CreditDemand, DemandDocument
+from .services import init_step_statuses_for_demand
+
+logger = logging.getLogger(__name__)
 
 
 @login_required(login_url='signup')
@@ -14,7 +22,29 @@ from .models import CreditDemand, DemandDocument
 def demande_view(request):
     """Affiche le formulaire ou traite la soumission."""
     if request.method == "GET":
-        return render(request, "demande.html")
+        demandes = CreditDemand.objects.filter(user=request.user).order_by("-created_at")
+        suivi_demande = demandes.first()
+        etapes_suivi = []
+        autres_demandes = []
+        if suivi_demande:
+            if not suivi_demande.step_statuses.exists():
+                init_step_statuses_for_demand(suivi_demande)
+            etapes_suivi = list(
+                suivi_demande.step_statuses.select_related("step").order_by(
+                    "step__order", "step__pk"
+                )
+            )
+            if demandes.count() > 1:
+                autres_demandes = list(demandes[1:6])
+        return render(
+            request,
+            "demande.html",
+            {
+                "suivi_demande": suivi_demande,
+                "etapes_suivi": etapes_suivi,
+                "autres_demandes": autres_demandes,
+            },
+        )
 
     # POST : soumission AJAX
     if not request.headers.get("X-Requested-With") == "XMLHttpRequest":
@@ -49,14 +79,6 @@ def demande_view(request):
             "accepte_marketing": data.get("marketing") == "on" or data.get("marketing") == "true",
         }
 
-        # Signature (base64)
-        signature = data.get("signature", "").strip()
-        if signature and signature.startswith("data:image"):
-            # Garder uniquement la partie base64 si besoin
-            form_data["signature"] = signature
-        else:
-            form_data["signature"] = signature or ""
-
         form = CreditDemandForm(data=form_data)
         if not form.is_valid():
             errors = {k: v[0] for k, v in form.errors.items()}
@@ -79,10 +101,30 @@ def demande_view(request):
                 status=400,
             )
 
+        # Validation sécurisée des fichiers (MIME, extension, taille)
+        field_labels = {
+            "id_recto": gettext("Pièce d'identité recto"),
+            "id_verso": gettext("Pièce d'identité verso"),
+            "revenus": gettext("Justificatif de revenus"),
+            "domicile": gettext("Justificatif de domicile"),
+        }
+        for field_key, file_list in [
+            ("id_recto", id_recto),
+            ("id_verso", id_verso),
+            ("revenus", revenus),
+            ("domicile", domicile),
+        ]:
+            for f in file_list:
+                ok, err = validate_upload(f, DOCUMENT_PRESET, field_labels[field_key])
+                if not ok:
+                    return JsonResponse(
+                        {"success": False, "errors": {field_key: err}},
+                        status=400,
+                    )
+
         # Créer la demande (sans sauvegarder pour avoir la ref)
         demande_obj = form.save(commit=False)
         demande_obj.user = request.user
-        demande_obj.signature = form_data.get("signature", "")
         demande_obj.save()
 
         # Enregistrer les documents
@@ -94,6 +136,17 @@ def demande_view(request):
             DemandDocument.objects.create(demande=demande_obj, doc_type="revenus", fichier=f)
         for f in domicile:
             DemandDocument.objects.create(demande=demande_obj, doc_type="domicile", fichier=f)
+
+        init_step_statuses_for_demand(demande_obj)
+
+        try:
+            send_demande_recue_email(demande_obj)
+        except Exception:
+            logger.exception(
+                "Échec envoi e-mail confirmation demande (réf. %s, user_id=%s)",
+                demande_obj.reference,
+                request.user.pk,
+            )
 
         return JsonResponse(
             {"success": True, "reference": demande_obj.reference},

@@ -110,8 +110,7 @@ class CreditDemand(models.Model):
     # Étape 4 - Documents
     type_piece_identite = models.CharField(max_length=20, choices=TYPE_ID_CHOICES, default='cni')
 
-    # Étape 5 - Signature & consentements
-    signature = models.TextField(blank=True)  # Base64 PNG
+    # Étape 5 - Consentements
     accepte_cgu = models.BooleanField(default=False)
     certifie_exactitude = models.BooleanField(default=False)
     accepte_marketing = models.BooleanField(default=False)
@@ -143,6 +142,80 @@ class CreditDemand(models.Model):
     def _generate_reference(self):
         year = timezone.now().year
         return f"BD-{year}-{uuid.uuid4().hex[:8].upper()}"
+
+
+class DemandProcessStep(models.Model):
+    """
+    Catalogue des étapes du parcours (modifiable en admin).
+    Chaque nouvelle demande crée une ligne CreditDemandStepStatus par étape active.
+    """
+    order = models.PositiveSmallIntegerField(default=0, db_index=True)
+    code = models.SlugField(max_length=64, unique=True)
+    title = models.CharField(max_length=200, verbose_name=_("Titre"))
+    description = models.TextField(
+        blank=True,
+        verbose_name=_("Description client"),
+        help_text=_("Texte affiché au demandeur sous le titre de l'étape."),
+    )
+    is_active = models.BooleanField(
+        default=True,
+        verbose_name=_("Active"),
+        help_text=_("Si coché, l'étape est utilisée pour les nouvelles demandes."),
+    )
+
+    class Meta:
+        verbose_name = _("Étape du processus")
+        verbose_name_plural = _("Étapes du processus")
+        ordering = ["order", "pk"]
+
+    def __str__(self):
+        return f"{self.order}. {self.title}"
+
+
+class CreditDemandStepStatus(models.Model):
+    """État d'avancement d'une demande pour une étape donnée."""
+
+    STATUT_ETAPE_CHOICES = [
+        ("pending", _("En attente")),
+        ("in_progress", _("En cours")),
+        ("completed", _("Terminée")),
+    ]
+
+    demande = models.ForeignKey(
+        CreditDemand,
+        on_delete=models.CASCADE,
+        related_name="step_statuses",
+    )
+    step = models.ForeignKey(
+        DemandProcessStep,
+        on_delete=models.PROTECT,
+        related_name="demand_statuses",
+    )
+    status = models.CharField(
+        max_length=20,
+        choices=STATUT_ETAPE_CHOICES,
+        default="pending",
+        verbose_name=_("État"),
+    )
+    client_message = models.TextField(
+        blank=True,
+        verbose_name=_("Message au client"),
+        help_text=_("Optionnel : précision visible sur la page « Ma demande »."),
+    )
+    completed_at = models.DateTimeField(null=True, blank=True)
+
+    updated_at = models.DateTimeField(auto_now=True)
+
+    class Meta:
+        verbose_name = _("Suivi d'étape")
+        verbose_name_plural = _("Suivis d'étapes")
+        ordering = ["step__order", "step__pk"]
+        constraints = [
+            models.UniqueConstraint(fields=["demande", "step"], name="unique_demande_step"),
+        ]
+
+    def __str__(self):
+        return f"{self.demande.reference} — {self.step.title}"
 
 
 class DemandDocument(models.Model):

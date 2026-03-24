@@ -140,15 +140,6 @@ input[type=range]::-webkit-slider-thumb:hover{transform:scale(1.15)}
 .summary-item .s-value{font-size:.95rem;font-weight:700;color:var(--dark)}
 .summary-item .s-value.highlight{color:var(--blue);font-size:1.1rem}
 
-/* ── SIGNATURE PAD ── */
-.sig-pad-wrap{border:1.5px solid var(--border);border-radius:var(--radius-sm);overflow:hidden;background:#fafafa;position:relative}
-.sig-pad-wrap canvas{display:block;width:100%;touch-action:none}
-.sig-toolbar{display:flex;justify-content:space-between;align-items:center;padding:8px 14px;background:#fff;border-top:1px solid var(--border)}
-.sig-toolbar span{font-size:.78rem;color:var(--gray-light)}
-.sig-clear{background:none;border:1px solid var(--border);border-radius:6px;padding:5px 14px;font-size:.78rem;font-family:inherit;cursor:pointer;color:var(--gray);transition:all .15s}
-.sig-clear:hover{border-color:#e53e3e;color:#e53e3e}
-.sig-placeholder{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;pointer-events:none;font-size:.85rem;color:#ccc;font-style:italic}
-
 /* ── CHECKBOX ── */
 .checkbox-field{display:flex;gap:12px;align-items:flex-start;padding:14px 16px;background:var(--bg);border-radius:var(--radius-sm);border:1.5px solid transparent;transition:border-color .2s}
 .checkbox-field:has(input:checked){border-color:var(--green-dark);background:rgba(125,187,28,.05)}
@@ -199,6 +190,37 @@ input[type=range]::-webkit-slider-thumb:hover{transform:scale(1.15)}
 .estimate-bar .est-amount{font-size:1.4rem;font-weight:800;color:var(--dark)}
 .estimate-bar .est-sub{font-size:.72rem;color:var(--gray-light)}
 
+/* ── SUIVI DOSSIER ── */
+.suivi-card{background:#fff;border-radius:var(--radius);box-shadow:var(--shadow-card);padding:28px 32px 32px;margin-bottom:28px;border:1px solid #e8ecf1}
+.suivi-card h2{font-size:1.35rem;font-weight:800;color:var(--dark);margin-bottom:14px}
+.suivi-meta{display:flex;flex-wrap:wrap;align-items:center;gap:10px 16px;margin-bottom:12px}
+.suivi-ref{font-family:ui-monospace,monospace;font-size:.95rem;font-weight:800;color:var(--blue);letter-spacing:.5px}
+.suivi-badge{display:inline-block;padding:5px 12px;border-radius:20px;font-size:.78rem;font-weight:700}
+.suivi-badge.statut-nouvelle{background:#eaf4fd;color:#2d6e9e}
+.suivi-badge.statut-en_cours{background:#fff7e6;color:#b7791f;border:1px solid #f5e0b3}
+.suivi-badge.statut-acceptee{background:#ecfdf3;color:#166534;border:1px solid #bbf7d0}
+.suivi-badge.statut-refusee{background:#fef2f2;color:#b91c1c;border:1px solid #fecaca}
+.suivi-intro{font-size:.9rem;color:var(--gray);margin-bottom:22px;line-height:1.5}
+.suivi-autres{font-size:.82rem;color:var(--gray-light);margin-bottom:0}
+.suivi-mini-ref{font-weight:600;color:var(--gray)}
+.page-section-hint{font-size:.88rem;color:var(--gray);text-align:center;margin-bottom:20px;padding:0 8px}
+.timeline{list-style:none;margin:0;padding:0}
+.timeline-item{display:flex;gap:16px;margin:0;padding:0 0 20px;position:relative}
+.timeline-item:last-child{padding-bottom:0}
+.timeline-axis{display:flex;flex-direction:column;align-items:center;width:22px;flex-shrink:0;padding-top:4px}
+.timeline-dot{width:14px;height:14px;border-radius:50%;border:3px solid var(--border);background:#fff;transition:all .2s}
+.timeline-line{flex:1;width:2px;min-height:24px;background:var(--border);margin-top:4px}
+.timeline-item.status-completed .timeline-dot{border-color:var(--green-dark);background:var(--green-dark);box-shadow:0 0 0 3px rgba(125,187,28,.2)}
+.timeline-item.status-completed .timeline-line{background:linear-gradient(var(--green-dark),var(--border))}
+.timeline-item.status-in_progress .timeline-dot{border-color:var(--blue);background:var(--blue);box-shadow:0 0 0 4px rgba(68,141,191,.25);animation:pulseDot 2s ease-in-out infinite}
+@keyframes pulseDot{0%,100%{box-shadow:0 0 0 4px rgba(68,141,191,.25)}50%{box-shadow:0 0 0 8px rgba(68,141,191,.12)}}
+.timeline-item.status-pending .timeline-dot{background:#f3f4f6}
+.timeline-content{flex:1;min-width:0}
+.timeline-content h3{font-size:.95rem;font-weight:700;color:var(--dark);margin:0 0 6px;line-height:1.3}
+.timeline-content .step-desc{font-size:.84rem;color:var(--gray);line-height:1.55;margin:0 0 8px}
+.timeline-content .step-msg{font-size:.82rem;color:#2d6e9e;background:#f0f6ff;border:1px solid #c9dcf0;border-radius:var(--radius-sm);padding:10px 12px;margin:0;line-height:1.5}
+.timeline-item.status-completed .timeline-content h3{color:var(--green-dark)}
+
 /* ── MOBILE ── */
 @media(max-width:640px){
   .card-header,.card-body{padding-left:20px;padding-right:20px}
@@ -225,6 +247,52 @@ input[type=range]::-webkit-slider-thumb:hover{transform:scale(1.15)}
 
 <div class="page">
 
+  {% if suivi_demande %}
+  <aside class="suivi-card" aria-labelledby="suivi-title">
+    <h2 id="suivi-title">{% trans "Suivi de votre dossier" %}</h2>
+    <div class="suivi-meta">
+      <span class="suivi-ref">{{ suivi_demande.reference }}</span>
+      <span class="suivi-badge statut-{{ suivi_demande.statut }}">{{ suivi_demande.get_statut_display }}</span>
+    </div>
+    <p class="suivi-intro">
+      {% trans "Montant demandé" %} : <strong>{{ suivi_demande.montant }} €</strong>
+      — {% trans "Durée" %} : <strong>{{ suivi_demande.duree }} {% trans "mois" %}</strong>
+    </p>
+    {% if autres_demandes %}
+    <p class="suivi-autres">
+      {% trans "Autres références de dossiers" %} :
+      {% for d in autres_demandes %}
+        <span class="suivi-mini-ref">{{ d.reference }}</span>{% if not forloop.last %} · {% endif %}
+      {% endfor %}
+    </p>
+    {% endif %}
+    {% if etapes_suivi %}
+    <ul class="timeline">
+      {% for row in etapes_suivi %}
+      <li class="timeline-item status-{{ row.status }}">
+        <div class="timeline-axis">
+          <span class="timeline-dot" aria-hidden="true"></span>
+          {% if not forloop.last %}<span class="timeline-line" aria-hidden="true"></span>{% endif %}
+        </div>
+        <div class="timeline-content">
+          <h3>{{ row.step.title }}</h3>
+          {% if row.step.description %}
+          <p class="step-desc">{{ row.step.description }}</p>
+          {% endif %}
+          {% if row.client_message %}
+          <p class="step-msg">{{ row.client_message }}</p>
+          {% endif %}
+        </div>
+      </li>
+      {% endfor %}
+    </ul>
+    {% else %}
+    <p class="suivi-intro">{% trans "Le détail des étapes sera affiché dès que votre dossier sera pris en charge." %}</p>
+    {% endif %}
+  </aside>
+  <p class="page-section-hint">{% trans "Pour déposer une nouvelle demande, complétez le formulaire ci-dessous." %}</p>
+  {% endif %}
+
   <!-- PROGRESS -->
   <div class="progress-track">
     <div class="progress-steps" id="progressSteps">
@@ -246,7 +314,7 @@ input[type=range]::-webkit-slider-thumb:hover{transform:scale(1.15)}
       </div>
       <div class="step-dot" data-step="5">
         <div class="step-circle"><span>5</span></div>
-        <div class="step-label">{% trans "Signature" %}</div>
+        <div class="step-label">{% trans "Récapitulatif" %}</div>
       </div>
     </div>
     <div class="progress-fill" id="progressFill" style="width:0%"></div>
@@ -597,21 +665,7 @@ input[type=range]::-webkit-slider-thumb:hover{transform:scale(1.15)}
           <div class="summary-item"><div class="s-label">{% trans "Situation" %}</div><div class="s-value" id="sum-emploi">—</div></div>
         </div>
 
-        <div class="section-divider">{% trans "Signature électronique" %}</div>
-
-        <div class="field">
-          <label>{% trans "Signez dans le cadre ci-dessous" %} <span class="req">*</span></label>
-          <div class="sig-pad-wrap">
-            <canvas id="sigCanvas" height="130"></canvas>
-            <div class="sig-placeholder" id="sigPlaceholder">{% trans "Signez ici avec votre doigt ou votre souris" %}</div>
-            <div class="sig-toolbar">
-              <span>{% trans "Signez pour confirmer votre demande" %}</span>
-              <button class="sig-clear" onclick="clearSig()">{% trans "Effacer" %}</button>
-            </div>
-          </div>
-        </div>
-
-        <div class="section-divider" style="margin-top:22px">{% trans "Consentements" %}</div>
+        <div class="section-divider">{% trans "Consentements" %}</div>
 
         <div style="display:flex;flex-direction:column;gap:10px;margin-bottom:8px">
           <div class="checkbox-field">
@@ -666,7 +720,6 @@ window.I18N = {
   msgDocuments: "{% trans 'Veuillez télécharger les documents obligatoires.' %}",
   msgCorriger: "{% trans 'Veuillez corriger les champs en rouge.' %}",
   msgCgu: "{% trans 'Veuillez accepter les conditions obligatoires.' %}",
-  msgSigner: "{% trans 'Veuillez signer votre demande.' %}",
   msgEnvoi: "{% trans 'Envoi en cours…' %}",
   msgErreur: "{% trans 'Une erreur est survenue.' %}",
   msgConnexion: "{% trans 'Erreur de connexion. Réessayez.' %}",
@@ -685,7 +738,7 @@ const stepsMeta = [
   {title:"{% trans 'Informations personnelles' %}", desc:"{% trans 'Renseignez vos coordonnées et votre situation personnelle.' %}"},
   {title:"{% trans 'Situation financière' %}", desc:"{% trans 'Partagez vos informations professionnelles et financières.' %}"},
   {title:"{% trans 'Pièces justificatives' %}", desc:"{% trans 'Téléchargez vos documents pour constituer votre dossier.' %}"},
-  {title:"{% trans 'Récapitulatif & Signature' %}", desc:"{% trans 'Vérifiez vos informations et signez électroniquement.' %}"}
+  {title:"{% trans 'Récapitulatif & validation' %}", desc:"{% trans 'Vérifiez vos informations et validez votre demande.' %}"}
 ];
 
 // ── SLIDERS ──
@@ -884,39 +937,6 @@ function dropFile(e, el, zone) {
   files.forEach(f => { uploadedFiles[zone].push(f); renderFileItem(f, zone); });
 }
 
-// ── SIGNATURE PAD ──
-const canvas = document.getElementById('sigCanvas');
-const ctx = canvas.getContext('2d');
-let drawing = false;
-let hasSig = false;
-
-function resizeCanvas() {
-  const rect = canvas.parentElement.getBoundingClientRect();
-  canvas.width = rect.width;
-}
-resizeCanvas();
-window.addEventListener('resize', resizeCanvas);
-
-function getPos(e) {
-  const rect = canvas.getBoundingClientRect();
-  const src = e.touches ? e.touches[0] : e;
-  return { x: (src.clientX - rect.left) * (canvas.width / rect.width), y: (src.clientY - rect.top) * (canvas.height / rect.height) };
-}
-
-canvas.addEventListener('mousedown', e => { drawing = true; hasSig = true; document.getElementById('sigPlaceholder').style.display='none'; ctx.beginPath(); const p=getPos(e); ctx.moveTo(p.x,p.y); });
-canvas.addEventListener('mousemove', e => { if (!drawing) return; const p=getPos(e); ctx.lineWidth=2.5; ctx.lineCap='round'; ctx.strokeStyle='#101828'; ctx.lineTo(p.x,p.y); ctx.stroke(); });
-canvas.addEventListener('mouseup', () => drawing = false);
-canvas.addEventListener('mouseleave', () => drawing = false);
-canvas.addEventListener('touchstart', e => { e.preventDefault(); drawing = true; hasSig = true; document.getElementById('sigPlaceholder').style.display='none'; ctx.beginPath(); const p=getPos(e); ctx.moveTo(p.x,p.y); }, {passive:false});
-canvas.addEventListener('touchmove', e => { e.preventDefault(); if (!drawing) return; const p=getPos(e); ctx.lineWidth=2.5; ctx.lineCap='round'; ctx.strokeStyle='#101828'; ctx.lineTo(p.x,p.y); ctx.stroke(); }, {passive:false});
-canvas.addEventListener('touchend', () => drawing = false);
-
-function clearSig() {
-  ctx.clearRect(0, 0, canvas.width, canvas.height);
-  hasSig = false;
-  document.getElementById('sigPlaceholder').style.display = 'flex';
-}
-
 // ── SUMMARY ──
 function buildSummary() {
   const montant = (+sliderMontant.value).toLocaleString('fr-FR') + ' €';
@@ -947,10 +967,6 @@ async function submitForm() {
   var i18n = window.I18N || {};
   if (!document.getElementById('cgu').checked || !document.getElementById('exacts').checked) {
     showToast('⚠️ ' + (i18n.msgCgu || 'Veuillez accepter les conditions obligatoires.'));
-    return;
-  }
-  if (!hasSig) {
-    showToast('✍️ ' + (i18n.msgSigner || 'Veuillez signer votre demande.'));
     return;
   }
 
@@ -994,9 +1010,6 @@ async function submitForm() {
   fd.append('cgu', document.getElementById('cgu').checked ? 'on' : '');
   fd.append('exacts', document.getElementById('exacts').checked ? 'on' : '');
   fd.append('marketing', document.getElementById('marketing').checked ? 'on' : '');
-
-  const sigData = canvas.toDataURL('image/png');
-  fd.append('signature', sigData);
 
   if (uploadedFiles['id-recto'] && uploadedFiles['id-recto'].length > 0) {
     uploadedFiles['id-recto'].forEach(f => fd.append('id_recto', f));

@@ -10,6 +10,7 @@ dotenv==0.9.9
 gunicorn==25.1.0
 packaging==26.0
 pillow==12.1.1
+python-magic==0.4.27
 psycopg2-binary==2.9.11
 pycparser==3.0
 python-dotenv==1.2.1
