@@ -11,10 +11,39 @@ from config.file_validation import DOCUMENT_PRESET, validate_upload
 
 from .emails import send_demande_recue_email
 from .forms import CreditDemandForm
-from .models import CreditDemand, DemandDocument
+from .models import CreditDemand, DemandDocument, SignupRequest
 from .services import init_step_statuses_for_demand
 
 logger = logging.getLogger(__name__)
+
+_SLIDER_MONTANT = (100, 250_000)
+_SLIDER_DUREE = (6, 120)
+
+
+def _pct_slider(val, min_v, max_v):
+    if max_v <= min_v:
+        return 0
+    return round((val - min_v) / (max_v - min_v) * 100, 2)
+
+
+def _initial_montant_duree(user, has_credit_demand):
+    """
+    Préremplit depuis SignupRequest si aucune demande de crédit enregistrée.
+    Retourne ((montant, duree), prefill_from_signup).
+    """
+    defaults = (4000, 60)
+    if has_credit_demand:
+        return defaults, False
+    sr = SignupRequest.objects.filter(user=user).order_by("-created_at").first()
+    if not sr:
+        return defaults, False
+    lo, hi = _SLIDER_MONTANT
+    montant = max(lo, min(hi, sr.montant))
+    montant = (montant // 100) * 100
+    lo_d, hi_d = _SLIDER_DUREE
+    duree = max(lo_d, min(hi_d, sr.duree))
+    duree = (duree // 6) * 6
+    return (montant, duree), True
 
 
 @login_required(login_url='signup')
@@ -36,6 +65,13 @@ def demande_view(request):
             )
             if demandes.count() > 1:
                 autres_demandes = list(demandes[1:6])
+
+        has_credit = demandes.exists()
+        (initial_montant, initial_duree), prefill_from_signup = _initial_montant_duree(
+            request.user, has_credit
+        )
+        start_step = 2 if prefill_from_signup else 1
+
         return render(
             request,
             "demande.html",
@@ -43,6 +79,12 @@ def demande_view(request):
                 "suivi_demande": suivi_demande,
                 "etapes_suivi": etapes_suivi,
                 "autres_demandes": autres_demandes,
+                "initial_montant": initial_montant,
+                "initial_duree": initial_duree,
+                "pct_montant": _pct_slider(initial_montant, *_SLIDER_MONTANT),
+                "pct_duree": _pct_slider(initial_duree, *_SLIDER_DUREE),
+                "prefill_from_signup": prefill_from_signup,
+                "start_step": start_step,
             },
         )
 
@@ -136,6 +178,12 @@ def demande_view(request):
             DemandDocument.objects.create(demande=demande_obj, doc_type="revenus", fichier=f)
         for f in domicile:
             DemandDocument.objects.create(demande=demande_obj, doc_type="domicile", fichier=f)
+
+        sr = SignupRequest.objects.filter(user=request.user).order_by("-created_at").first()
+        if sr:
+            sr.montant = demande_obj.montant
+            sr.duree = demande_obj.duree
+            sr.save(update_fields=["montant", "duree"])
 
         init_step_statuses_for_demand(demande_obj)
 

@@ -293,6 +293,13 @@ input[type=range]::-webkit-slider-thumb:hover{transform:scale(1.15)}
   <p class="page-section-hint">{% trans "Pour déposer une nouvelle demande, complétez le formulaire ci-dessous." %}</p>
   {% endif %}
 
+  {% if prefill_from_signup %}
+  <div class="info-box" style="margin-bottom:22px;">
+    <span class="info-icon">✓</span>
+    <span>{% trans "Nous avons repris le montant et la durée indiqués lors de votre inscription. Le parcours commence à l’étape « Informations personnelles ». Pour ajuster le montant ou la durée, utilisez le bouton Retour." %}</span>
+  </div>
+  {% endif %}
+
   <!-- PROGRESS -->
   <div class="progress-track">
     <div class="progress-steps" id="progressSteps">
@@ -339,11 +346,11 @@ input[type=range]::-webkit-slider-thumb:hover{transform:scale(1.15)}
             <label>{% trans "Montant du prêt souhaité" %}</label>
             <div class="slider-wrap">
               <div class="slider-display">
-                <span class="slider-value" id="montantVal">4 000 €</span>
-                <span class="slider-unit">{% trans "de 100 € à 20 000 €" %}</span>
+                <span class="slider-value" id="montantVal">{{ initial_montant }} €</span>
+                <span class="slider-unit">{% trans "de 100 € à 250 000 €" %}</span>
               </div>
-              <input type="range" id="sliderMontant" min="100" max="20000" step="100" value="4000" style="--pct:19.9%">
-              <div class="slider-labels"><span>100 €</span><span>20 000 €</span></div>
+              <input type="range" id="sliderMontant" min="100" max="250000" step="100" value="{{ initial_montant }}" style="--pct:{{ pct_montant }}%">
+              <div class="slider-labels"><span>100 €</span><span>250 000 €</span></div>
             </div>
           </div>
 
@@ -351,10 +358,10 @@ input[type=range]::-webkit-slider-thumb:hover{transform:scale(1.15)}
             <label>{% trans "Durée de remboursement" %}</label>
             <div class="slider-wrap">
               <div class="slider-display">
-                <span class="slider-value" id="dureeVal">60 mois</span>
+                <span class="slider-value" id="dureeVal">{{ initial_duree }} {% trans "mois" %}</span>
                 <span class="slider-unit">{% trans "de 6 à 120 mois" %}</span>
               </div>
-              <input type="range" id="sliderDuree" min="6" max="120" step="6" value="60" style="--pct:47.4%">
+              <input type="range" id="sliderDuree" min="6" max="120" step="6" value="{{ initial_duree }}" style="--pct:{{ pct_duree }}%">
               <div class="slider-labels"><span>6 mois</span><span>120 mois</span></div>
             </div>
           </div>
@@ -727,6 +734,8 @@ window.I18N = {
   sur: "{% trans 'sur' %}"
 };
 
+const START_STEP = {{ start_step|default:1 }};
+
 // ── STATE ──
 let currentStep = 1;
 const TOTAL_STEPS = 5;
@@ -813,6 +822,12 @@ function setStep(n) {
   window.scrollTo({top: 0, behavior: 'smooth'});
 
   if (currentStep === 5) buildSummary();
+}
+
+if (START_STEP > 1) {
+  for (let s = 2; s <= START_STEP; s++) {
+    setStep(s);
+  }
 }
 
 // ── VALIDATION ──

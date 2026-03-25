@@ -15,12 +15,16 @@ SECRET_KEY = os.environ['DJANGO_SECRET_KEY']
 
 DEBUG = os.environ.get('DEBUG', 'False') == 'True'
 
-ALLOWED_HOSTS = os.environ.get('ALLOWED_HOSTS', 'www.bondoraa.com,bondoraa.com').split(',')
+ALLOWED_HOSTS = [h.strip() for h in os.environ.get('ALLOWED_HOSTS', 'www.bondoraa.com,bondoraa.com').split(',') if h.strip()]
 
-CSRF_TRUSTED_ORIGINS = [
-    'https://www.bondoraa.com',
-    'https://bondoraa.com',
-]
+# Origines autorisées pour le contrôle CSRF (Referer / Origin). Doivent correspondre à l’URL
+# publique en HTTPS (ex. https://www.bondoraa.com). Ajoutez le hostname du VPS si vous y accédez.
+# Variable d’environnement : liste séparée par des virgules.
+_csrf_origins = os.environ.get(
+    'CSRF_TRUSTED_ORIGINS',
+    'https://www.bondoraa.com,https://bondoraa.com',
+)
+CSRF_TRUSTED_ORIGINS = [o.strip() for o in _csrf_origins.split(',') if o.strip()]
 
 # Sécurité HTTPS
 SECURE_SSL_REDIRECT             = not DEBUG #True

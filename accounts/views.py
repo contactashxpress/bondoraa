@@ -1,4 +1,5 @@
 from django.shortcuts import render, redirect
+from django.urls import reverse
 from django.contrib import messages
 from django.contrib.auth import login
 from django.utils.translation import gettext
@@ -123,7 +124,9 @@ def verify_email(request, token):
             pass
         messages.info(request, gettext("Votre adresse e-mail est déjà validée."))
         try:
-            return redirect('home')
+            if request.user.is_authenticated and request.user.pk == user.pk:
+                return redirect('demande')
+            return redirect(f"{reverse('login')}?next={reverse('demande')}")
         except Exception:
             return render(request, 'index.html')
 
@@ -158,13 +161,13 @@ def verify_email(request, token):
             gettext("Votre adresse e-mail a été validée. Connectez-vous pour continuer.")
         )
         try:
-            return redirect('login')
+            return redirect(f"{reverse('login')}?next={reverse('demande')}")
         except Exception:
             return render(request, 'registration/login.html')
 
     messages.success(request, gettext("Votre adresse e-mail a été validée. Bienvenue !"))
     try:
-        return redirect('home')
+        return redirect('demande')
     except Exception:
         return render(request, 'index.html')
 
@@ -183,7 +186,7 @@ def verification_pending(request):
             return render(request, 'registration/login.html')
     if request.user.email_verified:
         try:
-            return redirect('home')
+            return redirect('demande')
         except Exception:
             return render(request, 'index.html')
     return render(request, 'verification_pending.html')
