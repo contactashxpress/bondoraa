@@ -7,7 +7,8 @@ from django.shortcuts import redirect, render
 from django.utils.translation import gettext
 from django.views.decorators.http import require_http_methods
 
-from config.file_validation import DOCUMENT_PRESET, validate_upload
+from config.file_validation import DOCUMENT_PRESET
+from config.secure_upload import process_demand_upload
 
 from .emails import send_demande_recue_email
 from .forms import CreditDemandForm
@@ -150,6 +151,7 @@ def demande_view(request):
             "revenus": gettext("Justificatif de revenus"),
             "domicile": gettext("Justificatif de domicile"),
         }
+        processed_docs = []
         for field_key, file_list in [
             ("id_recto", id_recto),
             ("id_verso", id_verso),
@@ -157,27 +159,26 @@ def demande_view(request):
             ("domicile", domicile),
         ]:
             for f in file_list:
-                ok, err = validate_upload(f, DOCUMENT_PRESET, field_labels[field_key])
-                if not ok:
+                content_file, err = process_demand_upload(
+                    f, DOCUMENT_PRESET, field_labels[field_key]
+                )
+                if err:
                     return JsonResponse(
                         {"success": False, "errors": {field_key: err}},
                         status=400,
                     )
+                processed_docs.append((field_key, content_file))
 
         # Créer la demande (sans sauvegarder pour avoir la ref)
         demande_obj = form.save(commit=False)
         demande_obj.user = request.user
         demande_obj.save()
 
-        # Enregistrer les documents
-        for f in id_recto:
-            DemandDocument.objects.create(demande=demande_obj, doc_type="id_recto", fichier=f)
-        for f in id_verso:
-            DemandDocument.objects.create(demande=demande_obj, doc_type="id_verso", fichier=f)
-        for f in revenus:
-            DemandDocument.objects.create(demande=demande_obj, doc_type="revenus", fichier=f)
-        for f in domicile:
-            DemandDocument.objects.create(demande=demande_obj, doc_type="domicile", fichier=f)
+        # Enregistrer les documents (fichiers normalisés, noms uuid)
+        for doc_type_key, content_file in processed_docs:
+            DemandDocument.objects.create(
+                demande=demande_obj, doc_type=doc_type_key, fichier=content_file
+            )
 
         sr = SignupRequest.objects.filter(user=request.user).order_by("-created_at").first()
         if sr:

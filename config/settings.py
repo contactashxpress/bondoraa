@@ -38,6 +38,17 @@ SECURE_BROWSER_XSS_FILTER       = True
 SECURE_CONTENT_TYPE_NOSNIFF     = True
 X_FRAME_OPTIONS                 = 'DENY'
 
+# Uploads : exiger la détection par magic bytes hors DEBUG (production).
+_default_require_magic = 'true' if not DEBUG else 'false'
+FILE_VALIDATION_REQUIRE_MAGIC = os.environ.get(
+    'FILE_VALIDATION_REQUIRE_MAGIC',
+    _default_require_magic,
+).lower() == 'true'
+
+# Fichiers jusqu’à 5 Mo par pièce : laisser un peu de marge mémoire côté Django.
+FILE_UPLOAD_MAX_MEMORY_SIZE = 6 * 1024 * 1024
+DATA_UPLOAD_MAX_MEMORY_SIZE = 20 * 1024 * 1024
+
 # ─── APPLICATIONS ─────────────────────────────────────────────────────────────
 INSTALLED_APPS = [
     'django.contrib.admin',
